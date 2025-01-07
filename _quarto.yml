@@ -3,7 +3,7 @@ project:
   output-dir: docs
 
 website:
-  title: "YOURNAME Data Analysis Portfolio"
+  title: "Natalie Cann Data Analysis Portfolio"
   navbar:
     left:
       - text: "About Me"
@@ -16,10 +16,10 @@ website:
             file: coding-exercise/coding-exercise.qmd
     right:
       - icon: github 
-        href: URL-TO-THIS-REPOSITORY-HERE        
+        href: https://github.com/NatalieCann16/nataliecann-MADA-portfolio        
 format:
   html:
-    theme: cosmo
+    theme: journal
     highlight: zenburn
     css: styles.css
     toc: FALSE

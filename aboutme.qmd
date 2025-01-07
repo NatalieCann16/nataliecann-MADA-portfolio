@@ -1,7 +1,17 @@
 ---
 title: "About me"
 ---
+# **Introduction and Background**
 
-Add some text and a figure describing myself.
+-   My name is Natalie and I am a first-year Epidemiology student. I'm from Radford, Virginia and graduated from Virginia Tech this past May with a degree in Microbiology.
+-   I participated in a few research projects during my time as an undergrad student. These were all wet lab focused (working with La Crosse virus and the fungus *P. destructans*). I am familiar with R since taking the EPID 7500 course last semester. However, I have not done any research involving programming and coding.
+-   A fun fact is that I have been to 46 out of the 50 states. The four I have not been to are: Alaska, Hawaii, New Mexico, and Vermont.
 
-For details, see the exercise instructions. 
+![Graduation Photo](GraduationPicture.jpg)
+
+# **Article and Brief Summary**
+
+I chose to read a small article on the history of data analytics: [A Brief History of Data Analytics](https://www.nobledesktop.com/classes-near-me/blog/history-of-data-analytics)
+
+The article highlights how data analytics has been around for much longer than many of us realize. Data analytics looked much different than it does now, but it was still occurring in some form. For example, in 18,000 BCE bones and sticks were used to keep records of trading behaviors and the use of supplies. Statistics weren't brought into the picture until 1663, when John Graunt kept mortality data in an effort to help track the plague. The article discusses how the internet had a great effect on the way data was collected and analyzed. The internet made communication between researchers much easier and for some data to be made public. The development of software also had a great impact on data analytics.
+
