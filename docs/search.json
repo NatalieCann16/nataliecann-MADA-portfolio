@@ -1,0 +1,212 @@
+[
+  {
+    "objectID": "tidytuesday-exercise/tidytuesday-exercise.html",
+    "href": "tidytuesday-exercise/tidytuesday-exercise.html",
+    "title": "Tidy Tuesday Exercise",
+    "section": "",
+    "text": "Placeholder file for the future Tidy Tuesday exercise."
+  },
+  {
+    "objectID": "starter-analysis-exercise/results/readme.html",
+    "href": "starter-analysis-exercise/results/readme.html",
+    "title": "YOURNAME Data Analysis Portfolio",
+    "section": "",
+    "text": "This folder contains results produced by the code, such as figures and tables.\nDepending on the size and type of your project, you can either place it all in a single folder or create sub-folders. For instance you could create a folder for figures, another for tables. Or you could create a sub-folder for dataset 1, another for dataset 2. Or you could have a subfolder for exploratory analysis, another for final analysis. The options are endless, choose whatever makes sense for your project. For this template, there is just a a single folder, but having sub-folders is often a good idea."
+  },
+  {
+    "objectID": "starter-analysis-exercise/products/report/starter-analysis-report.html",
+    "href": "starter-analysis-exercise/products/report/starter-analysis-report.html",
+    "title": "Manuscript/Report Template for a Data Analysis Project",
+    "section": "",
+    "text": "The structure below is one possible setup for a data analysis project (including the course project). For a manuscript, adjust as needed. You don’t need to have exactly these sections, but the content covering those sections should be addressed.\nThis uses MS Word as output format. See here for more information. You can switch to other formats, like html or pdf. See the Quarto documentation for other formats."
+  },
+  {
+    "objectID": "starter-analysis-exercise/products/report/starter-analysis-report.html#general-background-information",
+    "href": "starter-analysis-exercise/products/report/starter-analysis-report.html#general-background-information",
+    "title": "Manuscript/Report Template for a Data Analysis Project",
+    "section": "2.1 General Background Information",
+    "text": "2.1 General Background Information\nProvide enough background on your topic that others can understand the why and how of your analysis"
+  },
+  {
+    "objectID": "starter-analysis-exercise/products/report/starter-analysis-report.html#description-of-data-and-data-source",
+    "href": "starter-analysis-exercise/products/report/starter-analysis-report.html#description-of-data-and-data-source",
+    "title": "Manuscript/Report Template for a Data Analysis Project",
+    "section": "2.2 Description of data and data source",
+    "text": "2.2 Description of data and data source\nDescribe what the data is, what it contains, where it is from, etc. Eventually this might be part of a methods section."
+  },
+  {
+    "objectID": "starter-analysis-exercise/products/report/starter-analysis-report.html#questionshypotheses-to-be-addressed",
+    "href": "starter-analysis-exercise/products/report/starter-analysis-report.html#questionshypotheses-to-be-addressed",
+    "title": "Manuscript/Report Template for a Data Analysis Project",
+    "section": "2.3 Questions/Hypotheses to be addressed",
+    "text": "2.3 Questions/Hypotheses to be addressed\nState the research questions you plan to answer with this analysis.\nTo cite other work (important everywhere, but likely happens first in introduction), make sure your references are in the bibtex file specified in the YAML header above (here dataanalysis_template_references.bib) and have the right bibtex key. Then you can include like this:\nExamples of reproducible research projects can for instance be found in (McKay, Ebell, Billings, et al., 2020; McKay, Ebell, Dale, Shen, & Handel, 2020)"
+  },
+  {
+    "objectID": "starter-analysis-exercise/products/report/starter-analysis-report.html#data-aquisition",
+    "href": "starter-analysis-exercise/products/report/starter-analysis-report.html#data-aquisition",
+    "title": "Manuscript/Report Template for a Data Analysis Project",
+    "section": "3.1 Data aquisition",
+    "text": "3.1 Data aquisition\nAs applicable, explain where and how you got the data. If you directly import the data from an online source, you can combine this section with the next."
+  },
+  {
+    "objectID": "starter-analysis-exercise/products/report/starter-analysis-report.html#data-import-and-cleaning",
+    "href": "starter-analysis-exercise/products/report/starter-analysis-report.html#data-import-and-cleaning",
+    "title": "Manuscript/Report Template for a Data Analysis Project",
+    "section": "3.2 Data import and cleaning",
+    "text": "3.2 Data import and cleaning\nWrite code that reads in the file and cleans it so it’s ready for analysis. Since this will be fairly long code for most datasets, it might be a good idea to have it in one or several R scripts. If that is the case, explain here briefly what kind of cleaning/processing you do, and provide more details and well documented code somewhere (e.g. as supplement in a paper). All materials, including files that contain code, should be commented well so everyone can follow along."
+  },
+  {
+    "objectID": "starter-analysis-exercise/products/report/starter-analysis-report.html#statistical-analysis",
+    "href": "starter-analysis-exercise/products/report/starter-analysis-report.html#statistical-analysis",
+    "title": "Manuscript/Report Template for a Data Analysis Project",
+    "section": "3.3 Statistical analysis",
+    "text": "3.3 Statistical analysis\nExplain anything related to your statistical analyses."
+  },
+  {
+    "objectID": "starter-analysis-exercise/products/report/starter-analysis-report.html#exploratorydescriptive-analysis",
+    "href": "starter-analysis-exercise/products/report/starter-analysis-report.html#exploratorydescriptive-analysis",
+    "title": "Manuscript/Report Template for a Data Analysis Project",
+    "section": "4.1 Exploratory/Descriptive analysis",
+    "text": "4.1 Exploratory/Descriptive analysis\nUse a combination of text/tables/figures to explore and describe your data. Show the most important descriptive results here. Additional ones should go in the supplement. Even more can be in the R and Quarto files that are part of your project.\nTable 1 shows a summary of the data.\nNote the loading of the data providing a relative path using the ../../ notation. (Two dots means a folder up). You never want to specify an absolute path like C:\\ahandel\\myproject\\results\\ because if you share this with someone, it won’t work for them since they don’t have that path. You can also use the here R package to create paths. See examples of that below. I recommend the here package, but I’m showing the other approach here just in case you encounter it.\n\n\n\n\nTable 1: Data summary table.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nskim_type\nskim_variable\nn_missing\ncomplete_rate\nfactor.ordered\nfactor.n_unique\nfactor.top_counts\nnumeric.mean\nnumeric.sd\nnumeric.p0\nnumeric.p25\nnumeric.p50\nnumeric.p75\nnumeric.p100\nnumeric.hist\n\n\n\n\nfactor\nGender\n0\n1\nFALSE\n3\nM: 4, F: 3, O: 2\nNA\nNA\nNA\nNA\nNA\nNA\nNA\nNA\n\n\nnumeric\nHeight\n0\n1\nNA\nNA\nNA\n165.66667\n15.97655\n133\n156\n166\n178\n183\n▂▁▃▃▇\n\n\nnumeric\nWeight\n0\n1\nNA\nNA\nNA\n70.11111\n21.24526\n45\n55\n70\n80\n110\n▇▂▃▂▂"
+  },
+  {
+    "objectID": "starter-analysis-exercise/products/report/starter-analysis-report.html#basic-statistical-analysis",
+    "href": "starter-analysis-exercise/products/report/starter-analysis-report.html#basic-statistical-analysis",
+    "title": "Manuscript/Report Template for a Data Analysis Project",
+    "section": "4.2 Basic statistical analysis",
+    "text": "4.2 Basic statistical analysis\nTo get some further insight into your data, if reasonable you could compute simple statistics (e.g. simple models with 1 predictor) to look for associations between your outcome(s) and each individual predictor variable. Though note that unless you pre-specified the outcome and main exposure, any “p&lt;0.05 means statistical significance” interpretation is not valid.\nFigure 1 shows a scatterplot figure produced by one of the R scripts.\n\n\n\n\n\nFigure 1: Height and weight stratified by gender."
+  },
+  {
+    "objectID": "starter-analysis-exercise/products/report/starter-analysis-report.html#full-analysis",
+    "href": "starter-analysis-exercise/products/report/starter-analysis-report.html#full-analysis",
+    "title": "Manuscript/Report Template for a Data Analysis Project",
+    "section": "4.3 Full analysis",
+    "text": "4.3 Full analysis\nUse one or several suitable statistical/machine learning methods to analyze your data and to produce meaningful figures, tables, etc. This might again be code that is best placed in one or several separate R scripts that need to be well documented. You want the code to produce figures and data ready for display as tables, and save those. Then you load them here.\nExample Table 2 shows a summary of a linear model fit.\n\n\n\n\nTable 2: Linear model fit table.\n\n\nterm\nestimate\nstd.error\nstatistic\np.value\n\n\n\n\n(Intercept)\n149.2726967\n23.3823360\n6.3839942\n0.0013962\n\n\nWeight\n0.2623972\n0.3512436\n0.7470519\n0.4886517\n\n\nGenderM\n-2.1244913\n15.5488953\n-0.1366329\n0.8966520\n\n\nGenderO\n-4.7644739\n19.0114155\n-0.2506112\n0.8120871"
+  },
+  {
+    "objectID": "starter-analysis-exercise/products/report/starter-analysis-report.html#summary-and-interpretation",
+    "href": "starter-analysis-exercise/products/report/starter-analysis-report.html#summary-and-interpretation",
+    "title": "Manuscript/Report Template for a Data Analysis Project",
+    "section": "5.1 Summary and Interpretation",
+    "text": "5.1 Summary and Interpretation\nSummarize what you did, what you found and what it means."
+  },
+  {
+    "objectID": "starter-analysis-exercise/products/report/starter-analysis-report.html#strengths-and-limitations",
+    "href": "starter-analysis-exercise/products/report/starter-analysis-report.html#strengths-and-limitations",
+    "title": "Manuscript/Report Template for a Data Analysis Project",
+    "section": "5.2 Strengths and Limitations",
+    "text": "5.2 Strengths and Limitations\nDiscuss what you perceive as strengths and limitations of your analysis."
+  },
+  {
+    "objectID": "starter-analysis-exercise/products/report/starter-analysis-report.html#conclusions",
+    "href": "starter-analysis-exercise/products/report/starter-analysis-report.html#conclusions",
+    "title": "Manuscript/Report Template for a Data Analysis Project",
+    "section": "5.3 Conclusions",
+    "text": "5.3 Conclusions\nWhat are the main take-home messages?\nInclude citations in your Rmd file using bibtex, the list of references will automatically be placed at the end\nThis paper (Leek & Peng, 2015) discusses types of analyses.\nThese papers (McKay, Ebell, Billings, et al., 2020; McKay, Ebell, Dale, et al., 2020) are good examples of papers published using a fully reproducible setup similar to the one shown in this template.\nNote that this cited reference will show up at the end of the document, the reference formatting is determined by the CSL file specified in the YAML header. Many more style files for almost any journal are available. You also specify the location of your bibtex reference file in the YAML. You can call your reference file anything you like, I just used the generic word references.bib but giving it a more descriptive name is probably better."
+  },
+  {
+    "objectID": "starter-analysis-exercise/data/readme.html",
+    "href": "starter-analysis-exercise/data/readme.html",
+    "title": "YOURNAME Data Analysis Portfolio",
+    "section": "",
+    "text": "The folders inside this folder should contain all data at various stages.\nThis data is being loaded/manipulated/changed/saved with code from the code folders.\nYou should place the raw data in the raw_data folder and not edit it. Ever!\nIdeally, load the raw data into R and do all changes there with code, so everything is automatically reproducible and documented.\nSometimes, you need to edit the files in the format you got. For instance, Excel files are sometimes so poorly formatted that it’s close to impossible to read them into R, or the persons you got the data from used color to code some information, which of course won’t import into R. In those cases, you might have to make modifications in a software other than R. If you need to make edits in whatever format you got the data (e.g. Excel), make a copy and place those copies in a separate folder, AND ONLY EDIT THOSE COPIES. Also, write down somewhere the edits you made.\nAdd as many sub-folders as suitable. If you only have a single processing step, one sub-folder for processed data is enough. If you have multiple stages of cleaning and processing, additional sub-folders might be useful. Adjust based on the complexity of your project.\nI suggest you save your processed and cleaned data as RDS or RDA/Rdata files. This preserves coding like factors, characters, numeric, etc. If you save as CSV, that information would get lost. However, CSV is better for sharing with others since it’s plain text. If you do CSV, you might want to write down somewhere what each variable is.\nSee here for some suggestions on how to store your processed data:\nhttp://www.sthda.com/english/wiki/saving-data-into-r-data-format-rds-and-rdata"
+  },
+  {
+    "objectID": "starter-analysis-exercise/code/readme.html",
+    "href": "starter-analysis-exercise/code/readme.html",
+    "title": "YOURNAME Data Analysis Portfolio",
+    "section": "",
+    "text": "Place your various R or Quarto files in the appropriate folders.\nYou can either have fewer large scripts, or multiple scripts that do only specific actions. Those can be R or Quarto files. In either case, document the scripts and what goes on in them so well that someone else (including future you) can easily figure out what is happening.\nThe scripts should load the appropriate data (e.g. raw or processed), perform actions, and save results (e.g. processed data, figures, computed values) in the appropriate folders. Document somewhere what inputs each script takes and where output is placed.\nIf scripts need to be run in a specific order, document this. Either as comments in the script, or in a separate text file such as this readme file. Ideally of course in both locations.\nDepending on your specific project, you might want to have further folders/sub-folders."
+  },
+  {
+    "objectID": "starter-analysis-exercise/code/processing-code/processingfile.html",
+    "href": "starter-analysis-exercise/code/processing-code/processingfile.html",
+    "title": "An example cleaning script",
+    "section": "",
+    "text": "Processing script\nThis Quarto file contains a mix of code and explanatory text to illustrate a simple data processing/cleaning setup.\n\n\nSetup\nLoad needed packages. make sure they are installed.\n\nlibrary(readxl) #for loading Excel files\nlibrary(dplyr) #for data processing/cleaning\n\n\nAttaching package: 'dplyr'\n\n\nThe following objects are masked from 'package:stats':\n\n    filter, lag\n\n\nThe following objects are masked from 'package:base':\n\n    intersect, setdiff, setequal, union\n\nlibrary(tidyr) #for data processing/cleaning\nlibrary(skimr) #for nice visualization of data \nlibrary(here) #to set paths\n\nhere() starts at C:/Data/Github/andreashandel/online-portfolio-template\n\n\n\n\nData loading\nNote that for functions that come from specific packages (instead of base R), I often specify both package and function like so: package::function() that’s not required one could just call the function specifying the package makes it clearer where the function “lives”, but it adds typing. You can do it either way.\n\n# path to data\n# note the use of the here() package and not absolute paths\ndata_location &lt;- here::here(\"starter-analysis-exercise\",\"data\",\"raw-data\",\"exampledata.xlsx\")\nrawdata &lt;- readxl::read_excel(data_location)\n\n\n\nCheck data\nFirst we can look at the codebook\n\ncodebook &lt;- readxl::read_excel(data_location, sheet =\"Codebook\")\nprint(codebook)\n\n# A tibble: 3 × 3\n  `Variable Name` `Variable Definition`                 `Allowed Values`      \n  &lt;chr&gt;           &lt;chr&gt;                                 &lt;chr&gt;                 \n1 Height          height in centimeters                 numeric value &gt;0 or NA\n2 Weight          weight in kilograms                   numeric value &gt;0 or NA\n3 Gender          identified gender (male/female/other) M/F/O/NA              \n\n\nSeveral ways of looking at the data\n\ndplyr::glimpse(rawdata)\n\nRows: 14\nColumns: 3\n$ Height &lt;chr&gt; \"180\", \"175\", \"sixty\", \"178\", \"192\", \"6\", \"156\", \"166\", \"155\", …\n$ Weight &lt;dbl&gt; 80, 70, 60, 76, 90, 55, 90, 110, 54, 7000, NA, 45, 55, 50\n$ Gender &lt;chr&gt; \"M\", \"O\", \"F\", \"F\", \"NA\", \"F\", \"O\", \"M\", \"N\", \"M\", \"F\", \"F\", \"M…\n\nsummary(rawdata)\n\n    Height              Weight          Gender         \n Length:14          Min.   :  45.0   Length:14         \n Class :character   1st Qu.:  55.0   Class :character  \n Mode  :character   Median :  70.0   Mode  :character  \n                    Mean   : 602.7                     \n                    3rd Qu.:  90.0                     \n                    Max.   :7000.0                     \n                    NA's   :1                          \n\nhead(rawdata)\n\n# A tibble: 6 × 3\n  Height Weight Gender\n  &lt;chr&gt;   &lt;dbl&gt; &lt;chr&gt; \n1 180        80 M     \n2 175        70 O     \n3 sixty      60 F     \n4 178        76 F     \n5 192        90 NA    \n6 6          55 F     \n\nskimr::skim(rawdata)\n\n\nData summary\n\n\nName\nrawdata\n\n\nNumber of rows\n14\n\n\nNumber of columns\n3\n\n\n_______________________\n\n\n\nColumn type frequency:\n\n\n\ncharacter\n2\n\n\nnumeric\n1\n\n\n________________________\n\n\n\nGroup variables\nNone\n\n\n\nVariable type: character\n\n\n\n\n\n\n\n\n\n\n\n\n\nskim_variable\nn_missing\ncomplete_rate\nmin\nmax\nempty\nn_unique\nwhitespace\n\n\n\n\nHeight\n0\n1\n1\n5\n0\n13\n0\n\n\nGender\n0\n1\n1\n2\n0\n5\n0\n\n\n\nVariable type: numeric\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nskim_variable\nn_missing\ncomplete_rate\nmean\nsd\np0\np25\np50\np75\np100\nhist\n\n\n\n\nWeight\n1\n0.93\n602.69\n1922.25\n45\n55\n70\n90\n7000\n▇▁▁▁▁\n\n\n\n\n\n\n\nCleaning\nBy inspecting the data as done above, we find some problems that need addressing:\nFirst, there is an entry for height which says “sixty” instead of a number. Does that mean it should be a numeric 60? It somehow doesn’t make sense since the weight is 60kg, which can’t happen for a 60cm person (a baby). Since we don’t know how to fix this, we might decide to remove the person. This “sixty” entry also turned all Height entries into characters instead of numeric. That conversion to character also means that our summary function isn’t very meaningful. So let’s fix that first.\n\nd1 &lt;- rawdata %&gt;% dplyr::filter( Height != \"sixty\" ) %&gt;% \n                  dplyr::mutate(Height = as.numeric(Height))\nskimr::skim(d1)\n\n\nData summary\n\n\nName\nd1\n\n\nNumber of rows\n13\n\n\nNumber of columns\n3\n\n\n_______________________\n\n\n\nColumn type frequency:\n\n\n\ncharacter\n1\n\n\nnumeric\n2\n\n\n________________________\n\n\n\nGroup variables\nNone\n\n\n\nVariable type: character\n\n\n\n\n\n\n\n\n\n\n\n\n\nskim_variable\nn_missing\ncomplete_rate\nmin\nmax\nempty\nn_unique\nwhitespace\n\n\n\n\nGender\n0\n1\n1\n2\n0\n5\n0\n\n\n\nVariable type: numeric\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nskim_variable\nn_missing\ncomplete_rate\nmean\nsd\np0\np25\np50\np75\np100\nhist\n\n\n\n\nHeight\n0\n1.00\n151.62\n46.46\n6\n154.00\n165\n175\n192\n▁▁▁▂▇\n\n\nWeight\n1\n0.92\n647.92\n2000.48\n45\n54.75\n73\n90\n7000\n▇▁▁▁▁\n\n\n\n\nhist(d1$Height)\n\n\n\n\nNow we see that there is one person with a height of 6. That could be a typo, or someone mistakenly entered their height in feet. Since we unfortunately don’t know, we might need to remove this person, which we’ll do here.\n\nd2 &lt;- d1 %&gt;% dplyr::mutate( Height = replace(Height, Height==\"6\",round(6*30.48,0)) )\nskimr::skim(d2)\n\n\nData summary\n\n\nName\nd2\n\n\nNumber of rows\n13\n\n\nNumber of columns\n3\n\n\n_______________________\n\n\n\nColumn type frequency:\n\n\n\ncharacter\n1\n\n\nnumeric\n2\n\n\n________________________\n\n\n\nGroup variables\nNone\n\n\n\nVariable type: character\n\n\n\n\n\n\n\n\n\n\n\n\n\nskim_variable\nn_missing\ncomplete_rate\nmin\nmax\nempty\nn_unique\nwhitespace\n\n\n\n\nGender\n0\n1\n1\n2\n0\n5\n0\n\n\n\nVariable type: numeric\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nskim_variable\nn_missing\ncomplete_rate\nmean\nsd\np0\np25\np50\np75\np100\nhist\n\n\n\n\nHeight\n0\n1.00\n165.23\n16.52\n133\n155.00\n166\n178\n192\n▂▇▆▆▃\n\n\nWeight\n1\n0.92\n647.92\n2000.48\n45\n54.75\n73\n90\n7000\n▇▁▁▁▁\n\n\n\n\n\nHeight values seem ok now.\nNow let’s look at the Weight variable. There is a person with weight of 7000, which is impossible, and one person with missing weight. To be able to analyze the data, we’ll remove those individuals as well.\n\nd3 &lt;- d2 %&gt;%  dplyr::filter(Weight != 7000) %&gt;% tidyr::drop_na()\nskimr::skim(d3)\n\n\nData summary\n\n\nName\nd3\n\n\nNumber of rows\n11\n\n\nNumber of columns\n3\n\n\n_______________________\n\n\n\nColumn type frequency:\n\n\n\ncharacter\n1\n\n\nnumeric\n2\n\n\n________________________\n\n\n\nGroup variables\nNone\n\n\n\nVariable type: character\n\n\n\n\n\n\n\n\n\n\n\n\n\nskim_variable\nn_missing\ncomplete_rate\nmin\nmax\nempty\nn_unique\nwhitespace\n\n\n\n\nGender\n0\n1\n1\n2\n0\n5\n0\n\n\n\nVariable type: numeric\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nskim_variable\nn_missing\ncomplete_rate\nmean\nsd\np0\np25\np50\np75\np100\nhist\n\n\n\n\nHeight\n0\n1\n167.09\n16.81\n133\n155.5\n166\n179\n192\n▂▇▅▇▅\n\n\nWeight\n0\n1\n70.45\n20.65\n45\n54.5\n70\n85\n110\n▇▂▃▃▂\n\n\n\n\n\nNow checking the Gender variable. Gender should be a categorical/factor variable but is loaded as character. We can fix that with simple base R code to mix things up.\n\nd3$Gender &lt;- as.factor(d3$Gender)  \nskimr::skim(d3)\n\n\nData summary\n\n\nName\nd3\n\n\nNumber of rows\n11\n\n\nNumber of columns\n3\n\n\n_______________________\n\n\n\nColumn type frequency:\n\n\n\nfactor\n1\n\n\nnumeric\n2\n\n\n________________________\n\n\n\nGroup variables\nNone\n\n\n\nVariable type: factor\n\n\n\n\n\n\n\n\n\n\n\nskim_variable\nn_missing\ncomplete_rate\nordered\nn_unique\ntop_counts\n\n\n\n\nGender\n0\n1\nFALSE\n5\nM: 4, F: 3, O: 2, N: 1\n\n\n\nVariable type: numeric\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nskim_variable\nn_missing\ncomplete_rate\nmean\nsd\np0\np25\np50\np75\np100\nhist\n\n\n\n\nHeight\n0\n1\n167.09\n16.81\n133\n155.5\n166\n179\n192\n▂▇▅▇▅\n\n\nWeight\n0\n1\n70.45\n20.65\n45\n54.5\n70\n85\n110\n▇▂▃▃▂\n\n\n\n\n\nNow we see that there is another NA, but it’s not NA from R, instead it was loaded as character and is now considered as a category. Well proceed here by removing that individual with that NA entry. Since this keeps an empty category for Gender, I’m also using droplevels() to get rid of it.\n\nd4 &lt;- d3 %&gt;% dplyr::filter( !(Gender %in% c(\"NA\",\"N\")) ) %&gt;% droplevels()\nskimr::skim(d4)\n\n\nData summary\n\n\nName\nd4\n\n\nNumber of rows\n9\n\n\nNumber of columns\n3\n\n\n_______________________\n\n\n\nColumn type frequency:\n\n\n\nfactor\n1\n\n\nnumeric\n2\n\n\n________________________\n\n\n\nGroup variables\nNone\n\n\n\nVariable type: factor\n\n\n\n\n\n\n\n\n\n\n\nskim_variable\nn_missing\ncomplete_rate\nordered\nn_unique\ntop_counts\n\n\n\n\nGender\n0\n1\nFALSE\n3\nM: 4, F: 3, O: 2\n\n\n\nVariable type: numeric\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nskim_variable\nn_missing\ncomplete_rate\nmean\nsd\np0\np25\np50\np75\np100\nhist\n\n\n\n\nHeight\n0\n1\n165.67\n15.98\n133\n156\n166\n178\n183\n▂▁▃▃▇\n\n\nWeight\n0\n1\n70.11\n21.25\n45\n55\n70\n80\n110\n▇▂▃▂▂\n\n\n\n\n\nAll done, data is clean now.\nLet’s assign at the end to some final variable, this makes it easier to add further cleaning steps above.\n\nprocesseddata &lt;- d4\n\n\n\nSave data\nFinally, we save the clean data as RDS file. I suggest you save your processed and cleaned data as RDS or RDA/Rdata files. This preserves coding like factors, characters, numeric, etc. If you save as CSV, that information would get lost. However, CSV is better for sharing with others since it’s plain text. If you do CSV, you might want to write down somewhere what each variable is.\nSee here for some suggestions on how to store your processed data: http://www.sthda.com/english/wiki/saving-data-into-r-data-format-rds-and-rdata\n\nsave_data_location &lt;- here::here(\"starter-analysis-exercise\",\"data\",\"processed-data\",\"processeddata.rds\")\nsaveRDS(processeddata, file = save_data_location)\n\nNote the use of the here package and here command to specify a path relative to the main project directory, that is the folder that contains the .Rproj file. Always use this approach instead of hard-coding file paths that only exist on your computer.\n\n\nNotes\nRemoving anyone observation with “faulty” or missing data is one approach. It’s often not the best. based on your question and your analysis approach, you might want to do cleaning differently (e.g. keep observations with some missing information)."
+  },
+  {
+    "objectID": "starter-analysis-exercise/code/eda-code/eda.html",
+    "href": "starter-analysis-exercise/code/eda-code/eda.html",
+    "title": "An example exploratory analysis script",
+    "section": "",
+    "text": "This Quarto file loads the cleaned data and does some exploring.\nI’m only showing it the way where the code is included in the file. As described in the processing_code materials, I currently prefer the approach of having R code in a separate file and pulling it in.\nBut I already had this written and haven’t yet re-done it that way. Feel free to redo and send a pull request on GitHub :)\nAgain, it is largely a matter of preference and what makes the most sense to decide if one wants to have code inside Quarto files, or as separate R files. And sometimes, an R script with enough comments is good enough and one doesn’t need a Quarto file.\nAlso note that while here I split cleaning and exploring, this is iterative. You saw that as part of the processing, we already had to explore the data somewhat to understand how to clean it. In general, as you explore, you’ll find things that need cleaning. As you clean, you can explore more. Therefore, at times it might make more sense to combine the cleaning and exploring code parts into a single R or Quarto file. Or split things in any other logical way.\nAs part of the exploratory analysis, you should produce plots or tables or other summary quantities for the most interesting/important quantities in your data. Depending on the total number of variables in your dataset, explore all or some of the others. Figures produced here might be histograms or density plots, correlation plots, etc. Tables might summarize your data.\nStart by exploring one variable at a time. Then continue by creating plots or tables of the outcome(s) of interest and the predictor/exposure/input variables you are most interested in. If your dataset is small, you can do that for all variables.\nPlots produced here can be scatterplots, boxplots, violinplots, etc. Tables can be simple 2x2 tables or larger ones.\n\nSetup\n\n#load needed packages. make sure they are installed.\nlibrary(here) #for data loading/saving\n\nhere() starts at C:/Data/Github/andreashandel/online-portfolio-template\n\nlibrary(dplyr)\n\n\nAttaching package: 'dplyr'\n\n\nThe following objects are masked from 'package:stats':\n\n    filter, lag\n\n\nThe following objects are masked from 'package:base':\n\n    intersect, setdiff, setequal, union\n\nlibrary(skimr)\nlibrary(ggplot2)\n\nLoad the data.\n\n#Path to data. Note the use of the here() package and not absolute paths\ndata_location &lt;- here::here(\"starter-analysis-exercise\",\"data\",\"processed-data\",\"processeddata.rds\")\n#load data\nmydata &lt;- readRDS(data_location)\n\n\n\nData exploration through tables\nShowing a bit of code to produce and save a summary table.\n\nsummary_df = skimr::skim(mydata)\nprint(summary_df)\n\n── Data Summary ────────────────────────\n                           Values\nName                       mydata\nNumber of rows             9     \nNumber of columns          3     \n_______________________          \nColumn type frequency:           \n  factor                   1     \n  numeric                  2     \n________________________         \nGroup variables            None  \n\n── Variable type: factor ───────────────────────────────────────────────────────\n  skim_variable n_missing complete_rate ordered n_unique top_counts      \n1 Gender                0             1 FALSE          3 M: 4, F: 3, O: 2\n\n── Variable type: numeric ──────────────────────────────────────────────────────\n  skim_variable n_missing complete_rate  mean   sd  p0 p25 p50 p75 p100 hist \n1 Height                0             1 166.  16.0 133 156 166 178  183 ▂▁▃▃▇\n2 Weight                0             1  70.1 21.2  45  55  70  80  110 ▇▂▃▂▂\n\n# save to file\nsummarytable_file = here(\"starter-analysis-exercise\",\"results\", \"tables-files\", \"summarytable.rds\")\nsaveRDS(summary_df, file = summarytable_file)\n\nWe are saving the results to the results/tables folder. Structure the folders inside results such that they make sense for your specific analysis. Provide enough documentation that someone can understand what you are doing and what goes where. readme.md files inside each folder are a good idea.\n\n\nData exploration through figures\nHistogram plots for the continuous outcomes.\nHeight first.\n\np1 &lt;- mydata %&gt;% ggplot(aes(x=Height)) + geom_histogram() \nplot(p1)\n\n`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.\n\n\n\n\nfigure_file = here(\"starter-analysis-exercise\",\"results\",\"figures\",\"height-distribution.png\")\nggsave(filename = figure_file, plot=p1) \n\nSaving 7 x 5 in image\n`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.\n\n\nNow weights.\n\np2 &lt;- mydata %&gt;% ggplot(aes(x=Weight)) + geom_histogram() \nplot(p2)\n\n`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.\n\n\n\n\nfigure_file = here(\"starter-analysis-exercise\",\"results\",\"figures\",\"weight-distribution.png\")\nggsave(filename = figure_file, plot=p2) \n\nSaving 7 x 5 in image\n`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.\n\n\nNow height as function of weight.\n\np3 &lt;- mydata %&gt;% ggplot(aes(x=Height, y=Weight)) + geom_point() + geom_smooth(method='lm')\nplot(p3)\n\n`geom_smooth()` using formula = 'y ~ x'\n\n\n\n\nfigure_file = here(\"starter-analysis-exercise\",\"results\",\"figures\",\"height-weight.png\")\nggsave(filename = figure_file, plot=p3) \n\nSaving 7 x 5 in image\n`geom_smooth()` using formula = 'y ~ x'\n\n\nOnce more height as function of weight, stratified by gender. Note that there is so little data, it’s a bit silly. But we’ll plot it anyway.\n\np4 &lt;- mydata %&gt;% ggplot(aes(x=Height, y=Weight, color = Gender)) + geom_point() + geom_smooth(method='lm')\nplot(p4)\n\n`geom_smooth()` using formula = 'y ~ x'\n\n\nWarning in qt((1 - level)/2, df): NaNs produced\n\n\nWarning in max(ids, na.rm = TRUE): no non-missing arguments to max; returning\n-Inf\n\n\n\n\nfigure_file = here(\"starter-analysis-exercise\",\"results\",\"figures\",\"height-weight-stratified.png\")\nggsave(filename = figure_file, plot=p4) \n\nSaving 7 x 5 in image\n`geom_smooth()` using formula = 'y ~ x'\n\n\nWarning in qt((1 - level)/2, df): NaNs produced\n\nWarning in qt((1 - level)/2, df): no non-missing arguments to max; returning\n-Inf\n\n\n\n\nNotes\nFor your own explorations, tables and figures can be “quick and dirty”. As long as you can see what’s going on, there is no need to polish them. That’s in contrast to figures you’ll produce for your final products (paper, report, presentation, website, etc.). Those should look as nice, polished and easy to understand as possible."
+  },
+  {
+    "objectID": "presentation-exercise/presentation-exercise.html",
+    "href": "presentation-exercise/presentation-exercise.html",
+    "title": "Presentation Exercise",
+    "section": "",
+    "text": "Placeholder file for the future data/results presentation exercise."
+  },
+  {
+    "objectID": "coding-exercise/coding-exercise.html",
+    "href": "coding-exercise/coding-exercise.html",
+    "title": "R Coding Exercise",
+    "section": "",
+    "text": "Placeholder file for the future R coding exercise."
+  },
+  {
+    "objectID": "aboutme.html",
+    "href": "aboutme.html",
+    "title": "About me",
+    "section": "",
+    "text": "Add some text and a figure describing myself.\nFor details, see the exercise instructions."
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "My website and data analysis portfolio",
+    "section": "",
+    "text": "Hello\n\nAnd hello again\nWelcome to my website and data analysis portfolio.\n\nPlease use the Menu Bar above to look around.\nHave fun!\n\nFeel free to change this text any way you want 😁!"
+  },
+  {
+    "objectID": "starter-analysis-exercise/code/analysis-code/readme.html",
+    "href": "starter-analysis-exercise/code/analysis-code/readme.html",
+    "title": "YOURNAME Data Analysis Portfolio",
+    "section": "",
+    "text": "This folder contains code to do some simple exploratory analysis and statistical analysis on the processed/cleaned data. The code produces a few tables and figures, which are saved in the results folder.\nIt’s the same code done 3 times:\n\nFirst, there is an R script that you can run which does all the computations.\nSecond, there is a Quarto file which contains exactly the same code as the R script.\nThird, my current favorite, is a Quarto file with an approach where the code is pulled in from the R script and run.\n\nThe last version has the advantage of having code in one place for easy writing/debugging, and then being able to pull the code into the Quarto file for a nice combination of text/commentary and code.\nEach way of doing this is a reasonable approach, pick whichever one you prefer or makes the most sense for your setup. Whichever approach you choose, add ample documentation/commentary so you and others can easily understand what’s going on and what is done."
+  },
+  {
+    "objectID": "starter-analysis-exercise/code/eda-code/readme.html",
+    "href": "starter-analysis-exercise/code/eda-code/readme.html",
+    "title": "YOURNAME Data Analysis Portfolio",
+    "section": "",
+    "text": "This folder contains code to do some simple exploratory data analysis (EDA) on the processed/cleaned data. The code produces a few tables and figures, which are saved in the appropriate results sub-folder."
+  },
+  {
+    "objectID": "starter-analysis-exercise/code/processing-code/readme.html",
+    "href": "starter-analysis-exercise/code/processing-code/readme.html",
+    "title": "YOURNAME Data Analysis Portfolio",
+    "section": "",
+    "text": "This folder contains code for processing data.\nCurrently, there is just a single Quarto file to illustrate how the processing can look like.\nInstead of a Quarto file that contains code, it is also possible to use R scripts or a combination of R scripts and Quarto code. Those approaches are illustrated in the full dataanalysis-template repository."
+  },
+  {
+    "objectID": "starter-analysis-exercise/data/raw-data/readme.html",
+    "href": "starter-analysis-exercise/data/raw-data/readme.html",
+    "title": "YOURNAME Data Analysis Portfolio",
+    "section": "",
+    "text": "This folder contains a simple made-up data-set in an Excel file.\nIt contains the variables Height, Weight and Gender of a few imaginary individuals.\nThe dataset purposefully contains some faulty entries that need to be cleaned.\nGenerally, any dataset should contain some meta-data explaining what each variable in the dataset is. (This is often called a Codebook.) For this simple example, the codebook is given as a second sheet in the Excel file.\nThis raw data-set should generally not be edited by hand. It should instead be loaded and processed/cleaned using code."
+  },
+  {
+    "objectID": "starter-analysis-exercise/products/readme.html",
+    "href": "starter-analysis-exercise/products/readme.html",
+    "title": "YOURNAME Data Analysis Portfolio",
+    "section": "",
+    "text": "The folders inside this folder should contain all the products of your project.\nFor a classical academic project, this will be a peer-reviewed manuscript, and should be placed into a manuscript folder.\nFor our case, since we’ll want to put it on the website, we call it a report.\nOften you need a library of references in bibtex format, as well as a CSL style file that determines reference formatting. Since those files might be used by several of the products, I’m placing them in the main products folder. Feel free to re-organize."
+  },
+  {
+    "objectID": "starter-analysis-exercise/results/figures/readme.html",
+    "href": "starter-analysis-exercise/results/figures/readme.html",
+    "title": "YOURNAME Data Analysis Portfolio",
+    "section": "",
+    "text": "Folder for all figures.\nYou can create further sub-folders if that makes sense."
+  },
+  {
+    "objectID": "starter-analysis-exercise/results/tables-files/readme.html",
+    "href": "starter-analysis-exercise/results/tables-files/readme.html",
+    "title": "YOURNAME Data Analysis Portfolio",
+    "section": "",
+    "text": "Folder for all tables (generally stored as Rds files) and other files.\nYou can create further sub-folders if that makes sense."
+  }
+]
