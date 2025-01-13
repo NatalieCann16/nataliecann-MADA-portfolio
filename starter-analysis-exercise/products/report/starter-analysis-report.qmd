@@ -40,6 +40,7 @@ _Provide enough background on your topic that others can understand the why and 
 
 ## Description of data and data source
 _Describe what the data is, what it contains, where it is from, etc. Eventually this might be part of a methods section._
+This data is example data created for the MADA course. The variables are: height, weight, gender, age, and hair color. The two variables I added are: age and hair color. Age is any number greater than 0 (years). Hair color fits into one of several categories: black, blonde, brunette, red, or other.
 
 ## Questions/Hypotheses to be addressed
 _State the research questions you plan to answer with this analysis._
