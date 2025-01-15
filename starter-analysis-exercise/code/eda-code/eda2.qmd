@@ -6,7 +6,7 @@ output: html_document
 ---
 
   
-  
+
 This Quarto file loads the cleaned data and does some exploring.
 
 I'm only showing it the way where the code is included in the file. 
@@ -44,6 +44,7 @@ data_location <- here::here("starter-analysis-exercise","data","processed-data",
 #load data
 mydata <- readRDS(data_location)
 head(mydata)
+
 ```
 
 
@@ -73,16 +74,18 @@ Histogram plots for the continuous outcomes.
 Height first.
 
 ```{r}
-p1 <- mydata %>% ggplot(aes(x=Height)) + geom_histogram() 
+p1 <- mydata %>% ggplot(aes(x=Height)) + 
+  geom_histogram() #Creating a histogram 
 plot(p1)
-figure_file = here("starter-analysis-exercise","results","figures","height-distribution.png")
+figure_file = here("starter-analysis-exercise","results","figures","height-distribution.png") # Set up location for the plot created 
 ggsave(filename = figure_file, plot=p1) 
 ```
 
 Now weights.
 
 ```{r}
-p2 <- mydata %>% ggplot(aes(x=Weight)) + geom_histogram() 
+p2 <- mydata %>% ggplot(aes(x=Weight)) + 
+  geom_histogram() 
 plot(p2)
 figure_file = here("starter-analysis-exercise","results","figures","weight-distribution.png")
 ggsave(filename = figure_file, plot=p2) 
@@ -91,7 +94,9 @@ ggsave(filename = figure_file, plot=p2)
 Now height as function of weight.
 
 ```{r}
-p3 <- mydata %>% ggplot(aes(x=Height, y=Weight)) + geom_point() + geom_smooth(method='lm')
+p3 <- mydata %>% ggplot(aes(x=Height, y=Weight)) + 
+  geom_point() + 
+  geom_smooth(method='lm')
 plot(p3)
 figure_file = here("starter-analysis-exercise","results","figures","height-weight.png")
 ggsave(filename = figure_file, plot=p3) 
@@ -100,8 +105,13 @@ ggsave(filename = figure_file, plot=p3)
 Once more height as function of weight, stratified by gender. Note that there is so little data, it's a bit silly. But we'll plot it anyway.
 
 ```{r}
-p4 <- mydata %>% ggplot(aes(x=Height, y=Weight, color = Gender)) + geom_point() + geom_smooth(method='lm')
+p4 <- mydata %>% ggplot(aes(x=Height, y=Weight, color = Gender)) + 
+  geom_point() + 
+  geom_smooth(method='lm') +
+  scale_color_manual(values = c("M" = "yellow", "F" = "red", "O" = "blue")) + #to set choose different color 
+  labs(color = "Gender")#color statement idicate the gender 
 plot(p4)
+
 figure_file = here("starter-analysis-exercise","results","figures","height-weight-stratified.png")
 ggsave(filename = figure_file, plot=p4) 
 ```
@@ -111,5 +121,9 @@ ggsave(filename = figure_file, plot=p4)
 # Notes
 
 For your own explorations, tables and figures can be "quick and dirty". As long as you can see what's going on, there is no need to polish them. That's in contrast to figures you'll produce for your final products (paper, report, presentation, website, etc.). Those should look as nice, polished and easy to understand as possible.
+
+
+#Note from Nasir
+There is no problem on the provided code. Additionally, I added color statement to create differrent color in the plot. I also provide additional note in almost each line of the code. It will help us to understand the purpose of each line of the code as a learner. 
 
 
