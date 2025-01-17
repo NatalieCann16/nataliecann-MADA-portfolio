@@ -118,7 +118,8 @@ plot_boxplot <- ggplot(data = mydata, aes(x = Gender, y = Height, fill = Gender)
   scale_fill_manual(values = c("blue", "pink", "green"))
 plot_boxplot
 
-
+figure_file = here("starter-analysis-exercise","results","figures","boxplot gender height.png")
+ggsave(filename = figure_file, plot=plot_boxplot) 
 ```
 Scatter plot 
 
@@ -132,18 +133,24 @@ plot_scatter <- ggplot(data = mydata, aes(x = Weight, y = Height)) +
   ) +
   theme_minimal()  
 plot_scatter
+
+
+figure_file = here("starter-analysis-exercise","results","figures","Scatterplot Height Weight .png")
+ggsave(filename = figure_file, plot=plot_scatter) 
 ```
 
 
 
 I create QQ-Plot for height 
 ```{r}
-ggplot(d4, aes(sample = Height)) +
+QQ_plot <- ggplot(mydata, aes(sample = Height)) +
   stat_qq() +
   stat_qq_line(color = "red") +
   labs(title = "Q-Q Plot for Height", x = "Theoretical Quantiles", y = "Sample Quantiles") +
   theme_minimal()
 
+figure_file = here("starter-analysis-exercise","results","figures","QQ Plot  Height .png")
+ggsave(filename = figure_file, plot= QQ_plot) 
 ```
 
 
