@@ -111,13 +111,15 @@ figure_file = here("starter-analysis-exercise","results","figures","height-weigh
 ggsave(filename = figure_file, plot=p4) 
 ```
 I create QQ-Plot for height 
+Note from Natalie: "d4" was not being recognized here, so I noticed you assigned d4 to "processeddata2". As you can see "processeddata2" was assigned to "mydata" previously in this document. So "mydata" needs to be used here.
 ```{r}
-ggplot(d4, aes(sample = Height)) +
+p5 <- ggplot(mydata, aes(sample = Height)) +
   stat_qq() +
   stat_qq_line(color = "red") +
   labs(title = "Q-Q Plot for Height", x = "Theoretical Quantiles", y = "Sample Quantiles") +
   theme_minimal()
-
+figure_file = here("starter-analysis-exercise","results","figures","QQPlot.jpg")
+ggsave(filename = figure_file, plot=p5) 
 ```
 
 
