@@ -11,7 +11,7 @@ library(here) #for data loading/saving
 
 #path to data
 #note the use of the here() package and not absolute paths
-data_location <- here::here("starter-analysis-exercise","data","processed-data","processeddata.rds")
+data_location <- here::here("starter-analysis-exercise","data","processed-data","processeddata2.rds")
 
 #load data. 
 mydata <- readRDS(data_location)

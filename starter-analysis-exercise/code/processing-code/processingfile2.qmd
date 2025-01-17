@@ -105,8 +105,6 @@ Well proceed here by removing that individual with that NA entry. Since this kee
 ```{r}
 d4 <- d3 %>% dplyr::filter( !(Gender %in% c("NA","N")) ) %>% droplevels()
 skimr::skim(d4)
-
-
 ```
 
 Creating a new variable for age category 
@@ -118,8 +116,13 @@ d4 <- d4 %>%
                   ifelse (Age > 50, 3, NA_real_)))))
 ```
 
-
-
+Extra Note from natalie: Hair Color needs to be changed into a factor.
+```{r}
+class(d4$age_cat)
+class(d4$`Hair Color`)
+d4$`Hair Color` <- as.factor(d4$`Hair Color`)
+class(d4$`Hair Color`)
+```
 
 All done, data is clean now. 
 

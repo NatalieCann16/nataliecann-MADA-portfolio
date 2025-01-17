@@ -118,7 +118,8 @@ p5 <- ggplot(mydata, aes(sample = Height)) +
   stat_qq_line(color = "red") +
   labs(title = "Q-Q Plot for Height", x = "Theoretical Quantiles", y = "Sample Quantiles") +
   theme_minimal()
-figure_file = here("starter-analysis-exercise","results","figures","QQPlot.jpg")
+plot(p5)
+figure_file = here("starter-analysis-exercise","results","figures","QQ-Plot.jpg")
 ggsave(filename = figure_file, plot=p5) 
 ```
 
