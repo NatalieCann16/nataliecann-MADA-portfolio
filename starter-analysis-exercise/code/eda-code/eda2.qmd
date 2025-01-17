@@ -110,6 +110,32 @@ plot(p4)
 figure_file = here("starter-analysis-exercise","results","figures","height-weight-stratified.png")
 ggsave(filename = figure_file, plot=p4) 
 ```
+Scatter plot 
+
+```{r}
+plot_boxplot <- ggplot(data = mydata, aes(x = Gender, y = Height, fill = Gender)) + 
+  geom_boxplot() +
+  scale_fill_manual(values = c("blue", "pink", "green"))
+plot_boxplot
+
+
+```
+Scatter plot 
+
+```{r}
+plot_scatter <- ggplot(data = mydata, aes(x = Weight, y = Height)) +
+  geom_point() +
+  labs(
+    title = "Scatter Plot of Weight vs. Height",
+    x = "Weight",
+    y = "Height"
+  ) +
+  theme_minimal()  
+plot_scatter
+```
+
+
+
 I create QQ-Plot for height 
 ```{r}
 ggplot(d4, aes(sample = Height)) +
