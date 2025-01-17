@@ -153,14 +153,24 @@ Not provided.
 
 ## Muhammad's QQ-Plot
 
-![QQ-Plot](~/Desktop/MADA/nataliecann-MADA-portfolio/starter-analysis-exercise/results/figures/Ex2QQPlot.jpg)
+```{r}
+#| label: QQ-Plot
+#| fig-cap: "QQ-Plot created for Exercise 2."
+#| echo: FALSE
+knitr::include_graphics(here("starter-analysis-exercise","results","figures","Ex2QQPlot.jpg"))
+```
 
 Muhammad created a QQ-Plot to analyze the data. The red line in this QQ-Plot represents a normal distribution. As you can see the points follow relatively close to this red line, indicating that the data is normally distributed. There appear to be slight deviations from the red line, however these do not appear to be significant. Therefore, any skewness is minimal.
 
 ## Natalie's Table 3
 
-
-![Table 3](~/Desktop/MADA/nataliecann-MADA-portfolio/starter-analysis-exercise/results/tables-files/resulttable3.rds)
+```{r}
+#| label: Table 3
+#| tbl-cap: "Linear model fit table."
+#| echo: FALSE
+resulttable3 = readRDS(here("starter-analysis-exercise","results","tables-files","resulttable3.rds"))
+knitr::kable(resulttable3)
+```
 
 
 Table 3 displays a summary of a linear model modeling Hair Color and Age as predictors of height. Neither characteristic was significantly associated with height as the p-values are all very high.
