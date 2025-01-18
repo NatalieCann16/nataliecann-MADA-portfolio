@@ -143,13 +143,33 @@ Note that this cited reference will show up at the end of the document, the refe
 
 # Exercise 2
 
+Note: I apologize for the late upload of the work, I uploaded it as soon as I received it.
+
 ## Muhammad's Boxplot
 
-Not provided.
+```{r, echo=FALSE, message=FALSE}
+#| label: Boxplot
+#| fig-cap: "Boxplot created for Exercise 2."
+#| echo: FALSE
+knitr::include_graphics(here("starter-analysis-exercise","results","figures","boxplot-gender-height.png"))
+```
+
+The boxplot above shows the median height among the different genders within the dataset. As you can see, out of the three categories above, the median height of females within the dataset is the highest. The female category also contains the greatest amount of variation. The median heights of males and those selecting "other" are relatively similar. The male category contains the least amount of variation; it is also appears to contain an outlier.
+
+Note: The instructions specify for the boxplot to be between height and hair color. I will analyze the boxplot given above.
 
 ## Muhammad's Scatterplot
 
-Not provided.
+```{r, echo=FALSE, message=FALSE}
+#| label: Scatterplot
+#| fig-cap: "Scatterplot created for Exercise 2."
+#| echo: FALSE
+knitr::include_graphics(here("starter-analysis-exercise","results","figures","Scatterplot-Height-Weight.png"))
+```
+
+The scatterplot above depicts the relationship between weight and height. There appears to be little to no correlation between the two variables as the points are relatively scattered throughout the plot.
+
+Note: The instructions specify for the scatterplot to be between weight and age. I will analyze the scatterplot given above.
 
 ## Muhammad's QQ-Plot
 
@@ -171,7 +191,6 @@ Muhammad created a QQ-Plot to analyze the data. The red line in this QQ-Plot rep
 resulttable3 = readRDS(here("starter-analysis-exercise","results","tables-files","resulttable3.rds"))
 knitr::kable(resulttable3)
 ```
-
 
 Table 3 displays a summary of a linear model modeling Hair Color and Age as predictors of height. Neither characteristic was significantly associated with height as the p-values are all very high.
 

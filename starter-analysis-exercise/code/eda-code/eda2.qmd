@@ -110,6 +110,55 @@ plot(p4)
 figure_file = here("starter-analysis-exercise","results","figures","height-weight-stratified.png")
 ggsave(filename = figure_file, plot=p4) 
 ```
+Muhammad's Boxplot: 
+```{r}
+plot_boxplot <- ggplot(data = mydata, aes(x = Gender, y = Height, fill = Gender)) +
+
+  geom_boxplot() +
+
+  scale_fill_manual(values = c("blue", "pink", "green"))
+
+plot_boxplot
+
+ 
+
+figure_file = here("starter-analysis-exercise","results","figures","boxplot-gender-height.png")
+
+ggsave(filename = figure_file, plot=plot_boxplot)
+```
+
+Muhammad's Scatterplot: 
+```{r}
+plot_scatter <- ggplot(data = mydata, aes(x = Weight, y = Height)) +
+
+  geom_point() +
+
+  labs(
+
+    title = "Scatter Plot of Weight vs. Height",
+
+    x = "Weight",
+
+    y = "Height"
+
+  ) +
+
+  theme_minimal() 
+
+plot_scatter
+
+ 
+
+ 
+
+figure_file = here("starter-analysis-exercise","results","figures","Scatterplot-Height-Weight.png")
+
+ggsave(filename = figure_file, plot=plot_scatter)
+
+ 
+```
+
+Muhammad's QQ-Plot: 
 I create QQ-Plot for height 
 Note from Natalie: "d4" was not being recognized here, so I noticed you assigned d4 to "processeddata2". As you can see "processeddata2" was assigned to "mydata" previously in this document. So "mydata" needs to be used here.
 ```{r}
