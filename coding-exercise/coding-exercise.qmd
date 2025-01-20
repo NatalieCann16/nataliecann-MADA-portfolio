@@ -1,5 +1,181 @@
 ---
 title: "R Coding Exercise"
 ---
-
 Placeholder file for the future R coding exercise.
+
+## Loading and Checking Data
+ 
+I will now install the dslabs package. Then, I will load the package. 
+```{r}
+options(repos = c(CRAN = "https://cran.rstudio.com/")) # including this because I could not render the website without it
+install.packages("dslabs")
+library(dslabs)
+
+library(dplyr)
+library(tidyverse)
+```
+
+I will now use the "help()" function on the "gapminder" data. 
+```{r}
+help(gapminder)
+```
+From this, I learned that the gapminder data contains outcomes related to health and income for 184 countries between 1960 and 2016. 
+oecd = OECD countries from 2016
+opec = OPEC countries form 2016
+
+Now, I will use str() on the gapminder data. 
+```{r}
+str(gapminder)
+```
+Above, I can see that the gapminder data frame contains 9 variables and 10,545 observations. The variables are: country, year, infant_mortality, life_expectancy, fertility, population, gdp, continent, and region. Some of the variables are numerics or intergers, while others are factors (country, continent, and region).
+
+I will use summary() on the gapminder data. 
+```{r}
+summary(gapminder)
+```
+The summary above displays the countries, continents, and regions. It also shows the minimum, 1st quartile, median, mean, 3rd quartile and maximum values for the numeric/integer variables.
+
+Now, I will determine the type of object/class that gapminder is. 
+```{r}
+class(gapminder)
+```
+This output states that gapminder is a data frame. 
+
+## Processing Data
+
+Now, I will filter the gapminder data to obtain only the countries in Africa. I will assign this to a variable called "africadata". 
+```{r}
+africadata <- filter(gapminder, continent == "Africa")
+```
+
+I will run str() on "africadata". 
+```{r}
+str(africadata)
+```
+As you can see, there are still 9 variables (each of the same data class as before). However, there are fewer observations (2907) than before (10,545) - because we are only included the African countries here. 
+
+I will run summary() on "africadata". 
+```{r}
+summary(africadata)
+```
+This summary is similar to the one created for the entire gapminder data frame, however the values above are now different for the numeric/integer variables since we are only looking at the African countries. 
+
+Now, I will create a new object that contains only the infant_mortality AND life_expectancy from the "africadata" data frame. 
+```{r}
+infantmort_lifeexp <- select(africadata, infant_mortality, life_expectancy)
+```
+
+I will use str() and summary() to take a look at the infantmort_lifeexp data. 
+```{r}
+str(infantmort_lifeexp)
+summary(infantmort_lifeexp)
+```
+These outputs show that the only two variables are infant_mortality and life_expectancy. Then the minimum, 1st quartile, median, mean, 3rd quartile, and maximum are displayed for infant_mortality and life_expectancy. 
+
+Then, I will create a new object containing only population AND life-expectancy from the "africadata" data frame. 
+```{r}
+pop_lifeexp <- select(africadata, population, life_expectancy)
+```
+
+I will use str() and summary() to take a look at the pop_lifeexp data.
+```{r}
+str(pop_lifeexp)
+summary(pop_lifeexp)
+```
+These outputs show that the only two variables are population and life_expectancy. Then the minimum, 1st quartile, median, mean, 3rd quartile, and maximum are displayed for population and life_expectancy. 
+
+## Plotting
+
+I will now create a plot of life_expectancy as a function of infant_mortality. 
+```{r}
+ggplot(infantmort_lifeexp, aes(x = infant_mortality, y = life_expectancy)) +
+  geom_point(color = "#5fafdc") + # I will specify the points to be blue 
+  labs(title = "Life Expectancy as a Function of Infant \n Mortality in African Countries",
+       x = "Infant Mortality (per 1,000)",
+       y = "Life Expectancy (years)") + # I will specify the title and the names of the x and y axes 
+  theme(legend.position = "none", plot.title = element_text(size = 18, face = "bold", hjust = 0.5), axis.title.x = element_text(size = 12, face = "bold"), axis.title.y = element_text(size = 12, face = "bold")) # I will remove a legend (since it is unneeded here) and make the title and axis labels larger and bold 
+```
+As you can see from the plot above, there appears to be a negative relationship between infant mortality and life expectancy. This makes sense, because if there is higher infant mortality in a country, their overall life expectancy should be lower. 
+
+I will now create a plot of life_expectancy as a function of population (size). The population (x-axis) will be set to a log scale. 
+```{r}
+ggplot(pop_lifeexp, aes(x = population, y = life_expectancy)) +
+  geom_point(color = "#70dc5f") + # I will specify the points to be green  scale_x_log10() + 
+  scale_x_log10() + # I will set the x-axis to a log scale
+  labs(title = "Life Expectancy as a Function of Population Size \n (Log Scale) in African Countries",
+       x = "Population (Log Scale)",
+       y = "Life Expectancy (years)") + # I will specify the title and the names of the x and y axes
+  theme(legend.position = "none", plot.title = element_text(size = 18, face = "bold", hjust = 0.5), axis.title.x = element_text(size = 12, face = "bold"), axis.title.y = element_text(size = 12, face = "bold")) # I will remove a legend (since it is unneeded here) and make the title and axis labels larger and bold
+```
+The plot above appears to have individual streaks which have a positive relationship between population size and life expectancy. However, as a whole the data appears to be relatively scattered. 
+
+There appear to be "streaks" of data in both plots above. This is because we are measuring individual countries over several different years. 
+
+## More Data Processing 
+
+I will find out which years contain NAs. 
+```{r}
+years_with_na_infant_mortality <- unique(africadata$year[is.na(africadata$infant_mortality)])
+# use unique() and is.na() to find out which years contain NAs in infant_mortality
+
+print(years_with_na_infant_mortality)
+# Use print() to view the output
+```
+As you can see, the years 1960-1981 and 2016 contain NA values within the infant_mortality variable. 
+
+We will use the year 2000's infant mortality data since it contains no missing values. I will create a new object that contains only data for the year 2000 from the "africadata" data frame. 
+```{r}
+africadata_2000 <- filter(africadata, year == 2000)
+```
+
+I will check that this worked with str() and summary(). 
+```{r}
+str(africadata_2000)
+summary(africadata_2000)
+```
+This worked, as you can see all the years appear as "2000".
+
+## More Plotting
+
+I will make the same plots as before, but this time with the "africadata_2000" data. 
+
+I will create a plot of life_expectancy as a function of infant_mortality. 
+```{r}
+ggplot(africadata_2000, aes(x = infant_mortality, y = life_expectancy)) +
+  geom_point(color = "#f576c1") + # I will specify the points to be pink 
+  labs(title = "Life Expectancy as a Function of Infant Mortality \n in African Countries in Year 2000",
+       x = "Infant Mortality (per 1,000)",
+       y = "Life Expectancy (years)") + # I will specify the title and the names of the x and y axes 
+  theme(legend.position = "none", plot.title = element_text(size = 18, face = "bold", hjust = 0.5), axis.title.x = element_text(size = 12, face = "bold"), axis.title.y = element_text(size = 12, face = "bold")) # I will remove a legend (since it is unneeded here) and make the title and axis labels larger and bold 
+```
+You can see that the plot above has fewer data points that the previous plot because only data from the year 2000 for each country is included. 
+
+I will now create a plot of life_expectancy as a function of population (size). The population (x-axis) will be set to a log scale. 
+```{r}
+ggplot(africadata_2000, aes(x = population, y = life_expectancy)) +
+  geom_point(color = "#f7af32") + # I will specify the points to be orange  
+  scale_x_log10() + # I will set the x-axis to a log scale
+  labs(title = "Life Expectancy as a Function of Population Size \n (Log Scale) in African Countries in Year 2000",
+       x = "Population (Log Scale)",
+       y = "Life Expectancy (years)") + # I will specify the title and the names of the x and y axes
+  theme(legend.position = "none", plot.title = element_text(size = 18, face = "bold", hjust = 0.5), axis.title.x = element_text(size = 12, face = "bold"), axis.title.y = element_text(size = 12, face = "bold")) # I will remove a legend (since it is unneeded here) and make the title and axis labels larger and bold
+```
+The plot above also has fewer data points than the previous plot because it contain contains a data point from the year 2000 for each country. 
+
+## Simple Model Fits
+
+I will now use the lm() function to fit a linear model with life_expectancy as the outcome and infant_mortality as the predictor. Then, I will apply the summary() function. 
+```{r}
+fit1 <- lm(life_expectancy ~ infant_mortality, data = africadata_2000)
+summary(fit1)
+```
+The intercept (a) is 71.29331; this means that the average life expectancy is 71.29331 years when infant mortality is 0. The slope (b) is -0.18916; this means that for every 1 unit increase in infant mortality, life expectancy decreases by 0.18916 years.
+
+I will now use the lm() function to fit a linear model with life_expectancy as the outcome and population size as the predictor. Then, I will apply the summary() function. 
+```{r}
+fit2 <- lm(life_expectancy ~ population, data = africadata_2000)
+summary(fit2)
+```
+The intercept (a) is 5.593e+01; this means that the average life expectancy is 55.93 years when the population size is equal to 0. The slope (b) is 2.756e-08; this means that for every 1 unit increase in population size, life expectancy increases by 2.756e-08 years. This intrepretation does not make sense - because if the population size is 0, the average life expectancy should be non-existent. 
+
+The p-value for "fit1" is 2.826e-08, while the p-value for "fit2" is 0.6159. 2.825e-08 is less than 0.05, therefore, the null hypothesis that there is no relationship between infant mortality and life expectancy can be rejected. 0.6159 is greater than 0.05, the null hypothesis that there is no relationship between population size and life expectancy cannot be rejected (we fail to reject). With this information, it can be said that infant mortality is a better predictor of life expectancy than population size. Therefore, "fit1" should be used. 
