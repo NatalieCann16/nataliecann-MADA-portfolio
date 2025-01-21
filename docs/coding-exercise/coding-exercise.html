@@ -192,7 +192,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell-output cell-output-stdout">
 <pre><code>
 The downloaded binary packages are in
-    /var/folders/n7/2hn_592d3db_b95vx1v5wcjr0000gn/T//Rtmp6YLJSt/downloaded_packages</code></pre>
+    /var/folders/vx/z9m1r6vx4xsdv04sz7vj5g040000gn/T//RtmpFzizjC/downloaded_packages</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dslabs)</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -598,6 +598,220 @@ F-statistic: 0.2549 on 1 and 49 DF,  p-value: 0.6159</code></pre>
 </div>
 <p>The intercept (a) is 5.593e+01; this means that the average life expectancy is 55.93 years when the population size is equal to 0. The slope (b) is 2.756e-08; this means that for every 1 unit increase in population size, life expectancy increases by 2.756e-08 years. This intrepretation does not make sense - because if the population size is 0, the average life expectancy should be non-existent.</p>
 <p>The p-value for “fit1” is 2.826e-08, while the p-value for “fit2” is 0.6159. 2.825e-08 is less than 0.05, therefore, the null hypothesis that there is no relationship between infant mortality and life expectancy can be rejected. 0.6159 is greater than 0.05, the null hypothesis that there is no relationship between population size and life expectancy cannot be rejected (we fail to reject). With this information, it can be said that infant mortality is a better predictor of life expectancy than population size. Therefore, “fit1” should be used.</p>
+</section>
+<section id="part-2" class="level2">
+<h2 class="anchored" data-anchor-id="part-2">Part 2</h2>
+<p>This section is contributed by Yufei Wu.</p>
+</section>
+<section id="dataset-exploration" class="level2">
+<h2 class="anchored" data-anchor-id="dataset-exploration">Dataset exploration</h2>
+<p>I choose the dataset “mice_weights” which contains body weights, bone density, and percent fat for mice under two diets: chow and high fat.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load package</span></span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dslabs)</span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a><span class="co">#look at help file for mice_weights data</span></span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a><span class="fu">help</span>(mice_weights)</span>
+<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a><span class="co">#get an overview of data structure</span></span>
+<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(mice_weights)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>'data.frame':   780 obs. of  7 variables:
+ $ body_weight : num  27.6 23 28.7 32.6 28.6 ...
+ $ bone_density: num  0.616 0.769 0.684 0.644 0.53 ...
+ $ percent_fat : num  7.26 4.95 6.02 9.54 6.99 ...
+ $ sex         : Factor w/ 2 levels "F","M": 1 1 1 1 1 1 1 1 1 1 ...
+ $ diet        : Factor w/ 2 levels "chow","hf": 1 1 1 1 1 1 1 1 1 1 ...
+ $ gen         : Factor w/ 5 levels "4","7","8","9",..: 1 1 1 1 1 1 1 1 1 1 ...
+ $ litter      : Factor w/ 2 levels "1","2": 1 1 1 1 1 1 1 1 1 1 ...</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="co">#get a summary of data</span></span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mice_weights)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  body_weight     bone_density     percent_fat     sex       diet     gen     
+ Min.   :18.13   Min.   :0.2708   Min.   : 2.552   F:398   chow:394   4 : 97  
+ 1st Qu.:28.09   1st Qu.:0.4888   1st Qu.: 5.566   M:382   hf  :386   7 :195  
+ Median :32.98   Median :0.5643   Median : 8.276                      8 :193  
+ Mean   :34.08   Mean   :0.5697   Mean   : 8.594                      9 : 97  
+ 3rd Qu.:39.37   3rd Qu.:0.6373   3rd Qu.:10.926                      11:198  
+ Max.   :65.15   Max.   :0.9980   Max.   :22.154                              
+                 NA's   :4        NA's   :4                                   
+ litter 
+ 1:442  
+ 2:338  
+        
+        
+        
+        
+        </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="co">#determine the type of object mice_weights is</span></span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(mice_weights)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "data.frame"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="co">#get the overview of the data</span></span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(mice_weights)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  body_weight bone_density percent_fat sex diet gen litter
+1       27.60    0.6163850    7.255468   F chow   4      1
+2       23.03    0.7693496    4.951037   F chow   4      1
+3       28.72    0.6842564    6.020849   F chow   4      1
+4       32.57    0.6436947    9.536251   F chow   4      1
+5       28.61    0.5297713    6.987331   F chow   4      1
+6       28.16    0.5649217    6.767774   F chow   4      1</code></pre>
+</div>
+</div>
+</section>
+<section id="data-processing" class="level2">
+<h2 class="anchored" data-anchor-id="data-processing">Data processing</h2>
+<p>Creat a new data frame containing only famale rats.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="co">#assign only the female rat to a new object called femalerat</span></span>
+<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a>femalerat <span class="ot">&lt;-</span> mice_weights[mice_weights<span class="sc">$</span>sex <span class="sc">==</span> <span class="st">"F"</span>, ]</span>
+<span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-4"><a href="#cb58-4" aria-hidden="true" tabindex="-1"></a><span class="co">#check the structure</span></span>
+<span id="cb58-5"><a href="#cb58-5" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(femalerat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>'data.frame':   398 obs. of  7 variables:
+ $ body_weight : num  27.6 23 28.7 32.6 28.6 ...
+ $ bone_density: num  0.616 0.769 0.684 0.644 0.53 ...
+ $ percent_fat : num  7.26 4.95 6.02 9.54 6.99 ...
+ $ sex         : Factor w/ 2 levels "F","M": 1 1 1 1 1 1 1 1 1 1 ...
+ $ diet        : Factor w/ 2 levels "chow","hf": 1 1 1 1 1 1 1 1 1 1 ...
+ $ gen         : Factor w/ 5 levels "4","7","8","9",..: 1 1 1 1 1 1 1 1 1 1 ...
+ $ litter      : Factor w/ 2 levels "1","2": 1 1 1 1 1 1 1 1 1 1 ...</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="co">#check the summary</span></span>
+<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(femalerat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  body_weight     bone_density     percent_fat     sex       diet     gen     
+ Min.   :18.13   Min.   :0.2708   Min.   : 2.766   F:398   chow:200   4 : 50  
+ 1st Qu.:25.35   1st Qu.:0.4531   1st Qu.: 5.690   M:  0   hf  :198   7 : 98  
+ Median :28.71   Median :0.5090   Median : 8.181                      8 :100  
+ Mean   :29.76   Mean   :0.5186   Mean   : 8.683                      9 : 50  
+ 3rd Qu.:33.21   3rd Qu.:0.5793   3rd Qu.:11.017                      11:100  
+ Max.   :65.15   Max.   :0.8519   Max.   :22.154                              
+                 NA's   :1        NA's   :1                                   
+ litter 
+ 1:224  
+ 2:174  
+        
+        
+        
+        
+        </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="co">#get the overview of the data</span></span>
+<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(femalerat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  body_weight bone_density percent_fat sex diet gen litter
+1       27.60    0.6163850    7.255468   F chow   4      1
+2       23.03    0.7693496    4.951037   F chow   4      1
+3       28.72    0.6842564    6.020849   F chow   4      1
+4       32.57    0.6436947    9.536251   F chow   4      1
+5       28.61    0.5297713    6.987331   F chow   4      1
+6       28.16    0.5649217    6.767774   F chow   4      1</code></pre>
+</div>
+</div>
+</section>
+<section id="figures-and-tables" class="level2">
+<h2 class="anchored" data-anchor-id="figures-and-tables">Figures and tables</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="co">#load package</span></span>
+<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb64-3"><a href="#cb64-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb64-4"><a href="#cb64-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb64-5"><a href="#cb64-5" aria-hidden="true" tabindex="-1"></a><span class="co">#make plots of body weight vs body density, coloring by diet</span></span>
+<span id="cb64-6"><a href="#cb64-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(femalerat, <span class="fu">aes</span>(<span class="at">x =</span> body_weight, <span class="at">y =</span> bone_density, <span class="at">color =</span> diet)) <span class="sc">+</span></span>
+<span id="cb64-7"><a href="#cb64-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb64-8"><a href="#cb64-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb64-9"><a href="#cb64-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Relationship between body density and body weight"</span>,</span>
+<span id="cb64-10"><a href="#cb64-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Body weight"</span>,</span>
+<span id="cb64-11"><a href="#cb64-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Body density"</span>,</span>
+<span id="cb64-12"><a href="#cb64-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"Diet"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="coding-exercise_files/figure-html/unnamed-chunk-24-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="co">#make plots of body weight vs percent fat, coloring by diet</span></span>
+<span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(femalerat, <span class="fu">aes</span>(<span class="at">x =</span> body_weight, <span class="at">y =</span> percent_fat, <span class="at">color =</span> diet)) <span class="sc">+</span></span>
+<span id="cb65-3"><a href="#cb65-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb65-4"><a href="#cb65-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb65-5"><a href="#cb65-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Relationship between percent fat and body weight"</span>,</span>
+<span id="cb65-6"><a href="#cb65-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Body weight"</span>,</span>
+<span id="cb65-7"><a href="#cb65-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Percent fat"</span>,</span>
+<span id="cb65-8"><a href="#cb65-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"Diet"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="coding-exercise_files/figure-html/unnamed-chunk-24-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="co">#summarize the mean and standard deviation of body weight grouped by diet</span></span>
+<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a>summary_table <span class="ot">&lt;-</span> femalerat <span class="sc">%&gt;%</span></span>
+<span id="cb66-3"><a href="#cb66-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(diet) <span class="sc">%&gt;%</span></span>
+<span id="cb66-4"><a href="#cb66-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb66-5"><a href="#cb66-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_weight =</span> <span class="fu">mean</span>(body_weight, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb66-6"><a href="#cb66-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">sd_weight =</span> <span class="fu">sd</span>(body_weight, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb66-7"><a href="#cb66-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_percent_fat =</span> <span class="fu">mean</span>(percent_fat, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb66-8"><a href="#cb66-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">sd_percent_fat =</span> <span class="fu">sd</span>(percent_fat, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb66-9"><a href="#cb66-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">count =</span> <span class="fu">n</span>()</span>
+<span id="cb66-10"><a href="#cb66-10" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb66-11"><a href="#cb66-11" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(summary_table)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 6
+  diet  mean_weight sd_weight mean_percent_fat sd_percent_fat count
+  &lt;fct&gt;       &lt;dbl&gt;     &lt;dbl&gt;            &lt;dbl&gt;          &lt;dbl&gt; &lt;int&gt;
+1 chow         27.8      4.82             6.86           2.61   200
+2 hf           31.7      7.06            10.5            3.75   198</code></pre>
+</div>
+</div>
+<p>From the first figure, we cannot see a clear relationship between body density and body weight. From the second figure, we can see that there is a positive relationship between percent fat and body weight. Besides, there are more points from high fat group locating in higher percent fat. From the table, we can see that the body weight and percent fat are both higher in the high fat group than chow group, which can be further explored.</p>
+</section>
+<section id="statistical-model" class="level2">
+<h2 class="anchored" data-anchor-id="statistical-model">Statistical model</h2>
+<p>Since I noticed that body weight and percent fat are both higher in the high fat group than chow group, I will test if the differences are statistically significant.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="co">#run t-test for body weight comparison</span></span>
+<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a>t_test_weight <span class="ot">&lt;-</span> <span class="fu">t.test</span>(body_weight <span class="sc">~</span> diet, <span class="at">data =</span> femalerat)</span>
+<span id="cb68-3"><a href="#cb68-3" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(t_test_weight)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Welch Two Sample t-test
+
+data:  body_weight by diet
+t = -6.3936, df = 347.4, p-value = 5.224e-10
+alternative hypothesis: true difference in means between group chow and group hf is not equal to 0
+95 percent confidence interval:
+ -5.073552 -2.686420
+sample estimates:
+mean in group chow   mean in group hf 
+          27.82860           31.70859 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="co">#run t-test for percent fat comparison</span></span>
+<span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a>t_test_fat <span class="ot">&lt;-</span> <span class="fu">t.test</span>(percent_fat <span class="sc">~</span> diet, <span class="at">data =</span> femalerat)</span>
+<span id="cb70-3"><a href="#cb70-3" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(t_test_fat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Welch Two Sample t-test
+
+data:  percent_fat by diet
+t = -11.316, df = 349.56, p-value &lt; 2.2e-16
+alternative hypothesis: true difference in means between group chow and group hf is not equal to 0
+95 percent confidence interval:
+ -4.310618 -3.034073
+sample estimates:
+mean in group chow   mean in group hf 
+          6.860235          10.532581 </code></pre>
+</div>
+</div>
+</section>
+<section id="report-the-results" class="level2">
+<h2 class="anchored" data-anchor-id="report-the-results">Report the results</h2>
+<p>For the body weight comparison, the difference between high fat group and chow group is 3.88, p value is less than 0.05, so the mean body weight differs significantly between the high Fat and chow groups. For the percent fat comparison, the difference between high fat group and chow group is 3.67, p value is less than 0.05, so the mean percent fat differs significantly between the high Fat and chow groups.</p>
 
 
 </section>

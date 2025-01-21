@@ -179,3 +179,93 @@ summary(fit2)
 The intercept (a) is 5.593e+01; this means that the average life expectancy is 55.93 years when the population size is equal to 0. The slope (b) is 2.756e-08; this means that for every 1 unit increase in population size, life expectancy increases by 2.756e-08 years. This intrepretation does not make sense - because if the population size is 0, the average life expectancy should be non-existent. 
 
 The p-value for "fit1" is 2.826e-08, while the p-value for "fit2" is 0.6159. 2.825e-08 is less than 0.05, therefore, the null hypothesis that there is no relationship between infant mortality and life expectancy can be rejected. 0.6159 is greater than 0.05, the null hypothesis that there is no relationship between population size and life expectancy cannot be rejected (we fail to reject). With this information, it can be said that infant mortality is a better predictor of life expectancy than population size. Therefore, "fit1" should be used. 
+
+## Part 2
+This section is contributed by Yufei Wu.
+
+## Dataset exploration
+I choose the dataset "mice_weights" which contains body weights, bone density, and percent fat for mice under two diets: chow and high fat.
+```{r, warning=FALSE}
+# load package
+library(dslabs)
+#look at help file for mice_weights data
+help(mice_weights)
+#get an overview of data structure
+str(mice_weights)
+#get a summary of data
+summary(mice_weights)
+#determine the type of object mice_weights is
+class(mice_weights)
+#get the overview of the data
+head(mice_weights)
+```
+## Data processing
+Creat a new data frame containing only famale rats.
+```{r, warning=FALSE}
+#assign only the female rat to a new object called femalerat
+femalerat <- mice_weights[mice_weights$sex == "F", ]
+
+#check the structure
+str(femalerat)
+
+#check the summary
+summary(femalerat)
+
+#get the overview of the data
+head(femalerat)
+```
+## Figures and tables
+```{r, warning=FALSE}
+#load package
+library(ggplot2)
+library(dplyr)
+
+#make plots of body weight vs body density, coloring by diet
+ggplot(femalerat, aes(x = body_weight, y = bone_density, color = diet)) +
+  geom_point() +
+  labs(
+    title = "Relationship between body density and body weight",
+    x = "Body weight",
+    y = "Body density",
+    color = "Diet")
+
+#make plots of body weight vs percent fat, coloring by diet
+ggplot(femalerat, aes(x = body_weight, y = percent_fat, color = diet)) +
+  geom_point() +
+  labs(
+    title = "Relationship between percent fat and body weight",
+    x = "Body weight",
+    y = "Percent fat",
+    color = "Diet")
+
+#summarize the mean and standard deviation of body weight grouped by diet
+summary_table <- femalerat %>%
+  group_by(diet) %>%
+  summarise(
+    mean_weight = mean(body_weight, na.rm = TRUE),
+    sd_weight = sd(body_weight, na.rm = TRUE),
+    mean_percent_fat = mean(percent_fat, na.rm = TRUE),
+    sd_percent_fat = sd(percent_fat, na.rm = TRUE),
+    count = n()
+  )
+print(summary_table)
+```
+From the first figure, we cannot see a clear relationship between body density and body weight.
+From the second figure, we can see that there is a positive relationship between percent fat and body weight. Besides, there are more points from high fat group locating in higher percent fat.
+From the table, we can see that the body weight and percent fat are both higher in the high fat group than chow group, which can be further explored.
+
+## Statistical model
+Since I noticed that body weight and percent fat are both higher in the high fat group than chow group, I will test if the differences are statistically significant.
+```{r, warning=FALSE}
+#run t-test for body weight comparison
+t_test_weight <- t.test(body_weight ~ diet, data = femalerat)
+print(t_test_weight)
+
+#run t-test for percent fat comparison
+t_test_fat <- t.test(percent_fat ~ diet, data = femalerat)
+print(t_test_fat)
+```
+
+## Report the results
+For the body weight comparison, the difference between high fat group and chow group is 3.88, p value is less than 0.05, so the mean body weight differs significantly between the high Fat and chow groups.
+For the percent fat comparison, the difference between high fat group and chow group is 3.67, p value is less than 0.05, so the mean percent fat differs significantly between the high Fat and chow groups.
