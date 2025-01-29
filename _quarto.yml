@@ -14,6 +14,8 @@ website:
             file: starter-analysis-exercise/products/report/starter-analysis-report.qmd
           - text: "R Coding Exercise"
             file: coding-exercise/coding-exercise.qmd
+          - text: "Data Exercise"
+            file: data-exercise/data-exercise.qmd
     right:
       - icon: github 
         href: https://github.com/NatalieCann16/nataliecann-MADA-portfolio        

@@ -1,0 +1,207 @@
+---
+title: "Data Exercise"
+---
+
+I chose to complete option 2: generating a synthetic dataset. 
+Note: I will create data with a simple "rectangular structure."
+
+## Loading Packages
+```{r}
+library(dplyr)
+library(purrr)
+library(lubridate)
+library(ggplot2)
+library(here)
+library(corrplot)
+library(knitr)
+library(kableExtra)
+```
+
+## Setting Seed 
+I will set a seed so that the synthetic dataset will be reproducible with the code I create in this activity. 
+```{r}
+# Set seed 
+set.seed(116)
+# Assign how many patients/observations I want to generate
+n_patients <- 100 # I will generate only 100 patients for this exercise since this is the first time I am creating a synthetic dataset and I want to keep things simple!
+```
+
+## Generating Data
+Now, I will generate my synthetic data set. I will create a data frame with fake data with several measures and risk factors. I will add correlations between some of the variables. 
+```{r}
+# Create an empty data frame with placeholders for variables
+synthetic_data <- data.frame(
+  Patient_ID = numeric(n_patients),
+  Age = numeric(n_patients),
+  Gender = integer(n_patients),
+  Enrollment_Date = lubridate::as_date(character(n_patients)),
+  Height = numeric(n_patients),
+  Weight = numeric(n_patients),
+  Blood_Pressure = numeric(n_patients),
+  Cholesterol = numeric(n_patients),
+  Diabetes = integer(n_patients),
+  Smoking = integer(n_patients))
+
+# Variable 1: Patient ID
+synthetic_data$Patient_ID <- 1:n_patients
+
+# Variable 2: Age (numeric variable)
+synthetic_data$Age <- round(runif(n_patients, min = 18, max = 90), 1)
+
+# Variable 3: Gender (binary variable; 0 = Male, 1 = Female)
+synthetic_data$Gender <- as.numeric(sample(c(0, 1), n_patients, replace = TRUE))
+
+# Variable 4: Date of Enrollment (date variable)
+synthetic_data$Enrollment_Date <- lubridate::as_date(sample(seq(from = lubridate::as_date("2022-01-01"), to = lubridate::as_date("2022-12-31"), by = "days"), n_patients, replace = TRUE))
+
+# Variable 5: Height (numeric variable; in inches)
+synthetic_data$Height <- round(runif(n_patients, min = 57, max = 78), 1)
+
+# Variable 6: Weight (numeric variable; in lbs; dependent on Height) 
+synthetic_data$Weight <- ifelse(
+  synthetic_data$Height >= 57 & synthetic_data$Height <= 62, 
+  round(rnorm(sum(synthetic_data$Height >= 57 & synthetic_data$Height <= 62), mean = 120, sd = 10), 1),ifelse(synthetic_data$Height > 62 & synthetic_data$Height <= 70, round(rnorm(sum(synthetic_data$Height > 62 & synthetic_data$Height <= 70), mean = 160, sd = 15), 1),
+    round(rnorm(sum(synthetic_data$Height > 70 & synthetic_data$Height <= 78), mean = 190, sd = 20), 1)))
+
+# Variable 7: Blood Pressure (numeric variable)
+synthetic_data$Blood_Pressure <- round(runif(n_patients, min = 90, max = 160), 1)
+
+# Variable 8: Cholesterol Level (numeric variable; in mg/dL; dependent on Weight)
+synthetic_data$Cholesterol <- ifelse(synthetic_data$Weight >= 70 & synthetic_data$Weight <= 130, round(rnorm(sum(synthetic_data$Weight >= 70 & synthetic_data$Weight <= 130), mean = 160, sd = 10), 1), ifelse(synthetic_data$Weight >= 131 & synthetic_data$Weight <= 180, round(rnorm(sum(synthetic_data$Weight >= 131 & synthetic_data$Weight <= 180), mean = 185, sd = 10), 1), round(rnorm(sum(synthetic_data$Weight >= 181 & synthetic_data$Weight <= 200), mean = 210, sd = 10), 1)))
+
+# Variable 9: Diabetes (binary variable; 0 = Not Diabetic, 1 = Diabetic)
+synthetic_data$Diabetes <- as.numeric(sample(c(0, 1), n_patients, replace = TRUE))
+
+# Variable 10: Smoking (binary variable; 0 = Does Not Smoke, 1 = Smokes)
+synthetic_data$Smoking <- as.numeric(sample(c(0, 1), n_patients, replace = TRUE))
+
+# Print the first few rows of the generated data
+head(synthetic_data)
+```
+Luckily from the head() output, I can see that this worked!
+
+## Exploring Data Structure
+Now, I will explore the synthetic dataset I just created. I will do this with the summary(), str(), and glimpse. 
+```{r}
+summary(synthetic_data)
+str(synthetic_data)
+glimpse(synthetic_data)
+```
+The summary output shows the minimum, 1st quartile, median, mean, 3rd quartile, and maximum values for each variable. This data is more useful for the continuous variables, such as Height, Weight, and Cholesterol. The str output shows the class of each variable. The glimpse output shows the first few values of each variable. 
+
+## Plots, Tables, Correlations
+
+### Scatterplot and Correlation of Height and Weight
+Since I created the weight variable to be depenent on height, I will create a scatterplot to examine the reationship between these two. 
+```{r}
+ggplot(synthetic_data, aes(x = Weight, y = Height)) +
+  geom_point(color = "#3067c2") +
+  labs(title = "Scatterplot of Weight and Height",
+       x = "Weight (lbs)",
+       y = "Height (inches)") + 
+  theme(legend.position = "none", plot.title = element_text(size = 18, face = "bold", hjust = 0.5), axis.title.x = element_text(size = 12, face = "bold"), axis.title.y = element_text(size = 12, face = "bold"))
+```
+The scaterplot above depicts a positive relationship between weight and height. This means that we see an increase in weight as height increases. 
+
+Now, I will create code to assess the strength of the correlation between weight and height using the cor() function.
+```{r}
+cor(synthetic_data$Weight, synthetic_data$Height)
+```
+The correlation between weight and height is 0.750217, which is pretty high. This indicates that there is a relatively strong relationship between weight and height. 
+
+
+### Scatterplot and Correlation of Weight and Cholesterol Level
+Since I created the cholesterol variable to be depenent on weight, I will create a scatterplot to examine the reationship between these two. 
+```{r}
+ggplot(synthetic_data, aes(x = Weight, y = Cholesterol)) +
+  geom_point(color = "#63c230") +
+  labs(title = "Scatterplot of Weight and Cholesterol Level",
+       x = "Weight (lbs)",
+       y = "Cholesterol Level (mg/dL)") + 
+  theme(legend.position = "none", plot.title = element_text(size = 18, face = "bold", hjust = 0.5), axis.title.x = element_text(size = 12, face = "bold"), axis.title.y = element_text(size = 12, face = "bold"))
+```
+The scaterplot above reveals that there is a positive relationship between weight and cholesterol level. This means that as weight increases, cholesterol level also increases.
+
+Now, I will create code to assess the strength of the correlation between weight and cholesterol level by using the cor() function.
+```{r}
+cor(synthetic_data$Weight, synthetic_data$Cholesterol)
+```
+The correlation between weight and cholesterol level is 0.7709426, which is pretty high. This indicates that there is a relatively strong relationship between weight and cholesterol level. 
+
+### Scatterplot and Correlation of Height and Cholesterol Level
+Since I created a relationship between weight and cholesterol as well as a relationship between height and weight, I am checking to see if height and cholesterol level have a relationship as a result. I will do this by creating a scatterplot. 
+```{r}
+ggplot(synthetic_data, aes(x = Height, y = Cholesterol)) +
+  geom_point(color = "#e83d3d") +
+  labs(title = "Scatterplot of Weight and Height",
+       x = "Height (inches)",
+       y = "Cholesterol Level (mg/dL)") + 
+  theme(legend.position = "none", plot.title = element_text(size = 18, face = "bold", hjust = 0.5), axis.title.x = element_text(size = 12, face = "bold"), axis.title.y = element_text(size = 12, face = "bold"))
+```
+From the scatterplot above, it appears as though there is a relationship between cholesterol level and height due to the relationship I created between weight and cholesterol level. The points of the scatterplot appear to be a bit more spaced out than those of the previous scatterplots. 
+
+Next, I will assess the strength of the correlation between height and cholesterol level by using the cor() function.
+```{r}
+cor(synthetic_data$Height, synthetic_data$Cholesterol)
+```
+The correlation between height and cholesterol level is 0.5984226, which is moderate. This indicates there is a moderate relationship between height and cholesterol level. However, this relationship is not as strong as the relationship between weight and cholesterol level. 
+
+### Correlation Matrix of All Variables
+I will create a correlation matrix to display the correlations between all of the variables within this synthetic dataset. 
+```{r}
+# I will select only numeric variables (date wouldn't make sense to include here)
+cor_matrix <- cor(synthetic_data %>% select(where(is.numeric)))
+
+# Print out so we can see the correlation matrix!
+print(cor_matrix)
+```
+I will now put this correlation matrix into a table and use the KalbeExtra package. 
+```{r}
+kable(cor_matrix, caption = "Correlation Matrix of Numeric Variables") %>%
+  kable_styling("striped", full_width = F) %>%
+  row_spec(0, background = "#00509e", color = "white") %>%  # Blue header with white text
+  row_spec(1:nrow(cor_matrix), background = "#d6eaf8")  # Light blue for rows
+```
+I will now create a graphical version of the correlation matrix that aids with visualization of the relationships between variables of this synthetic dataset. I will do this using the corrplot() function.
+```{r}
+# Define custom colors
+corrplot_colors <- colorRampPalette(c("#e83d3d", "white", "#63c230"))(200)
+
+# Create the correlation plot with variable names on both sides
+corrplot(cor_matrix, 
+         method = "circle",       # Circle method
+         type = "lower",          # Lower half of the correlation matrix (since including the upper half would be repetitive)
+         order = "hclust",        # Order variables by hierarchical clustering
+         col = corrplot_colors,   # Custom color palette above!
+         tl.col = "black",        # Variable names in black
+         addCoef.col = "black",   # Correlation coefficients in black
+         number.cex = 0.5,        # Adjust coefficient size 
+         number.digits = 2,       # Display two decimal places for coefficients
+         tl.srt = 45,             # Rotate labels on x-axis
+         mar = c(0, 0, 1, 0))     # Margins to adjust spacing
+title("Correlations from Synethic Dataset", line = 2, cex.main = 1.5) # Adding a title!
+```
+The correlation matrix and plot above show the relationships between all of the variables in the synthetic dataset. The correlation matrix shows the correlation coefficients between each pair of variables. The correlation plot shows the same information in a visual format.
+
+## Simple Linear Models
+I will now use the lm() function to fit a linear model with cholesterol as the outcome and weight as the predictor. Then, I will apply the summary() function. 
+```{r}
+Cholesterol_Weight <- lm(Cholesterol ~ Weight, data = synthetic_data)
+summary(Cholesterol_Weight)
+```
+The intercept (a) is 100.39517; this means that the average cholesterol level (in mg/dL) is 100.39517 when weight is 0 lbs. The slope (b) is 0.55317; this means that for every 1 unit increase in weight (in lbs), cholesterol level (in mg/dL) increases by 0.55317 mg/dL. The p-value is < 2.2e-16.
+
+I will now use the lm() function to fit a linear model with cholesterol as the outcome and height as the predictor. Then, I will apply the summary() function. 
+```{r}
+Cholesterol_Height <- lm(Cholesterol ~ Height, data = synthetic_data)
+summary(Cholesterol_Height)
+```
+The intercept (a) is 40.8193; this means that the average cholesterol level (in mg/dL) is 40.8193 when height is 0 inches. The slope (b) is 2.1923; this means that for every 1 unit increase in height (in inches), cholesterol level (in mg/dL) increases by 2.1923 mg/dL. The p-value is 4.856e-11.
+
+At an alpha (significance level) of 0.05, the p-values indicated above are both significant. Meaning, we can reject the null hypothesis that is no relationship between height and cholesterol as well as between weight and cholesterol. However, p-value for weight and cholesterol (< 2.2e-16) is lower than that for height and cholesterol (4.856e-11). This indicates that while both height and weight are significant predictors of cholesterol level, weight is a stronger predictor of cholesterol level than height.
+
+
+
+```{r}
+
+```
