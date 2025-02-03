@@ -155,7 +155,7 @@ cor_matrix <- cor(synthetic_data %>% select(where(is.numeric)))
 # Print out so we can see the correlation matrix!
 print(cor_matrix)
 ```
-I will now put this correlation matrix into a table and use the KalbeExtra package. 
+I will now put this correlation matrix into a table and use the KableExtra package. 
 ```{r}
 kable(cor_matrix, caption = "Correlation Matrix of Numeric Variables") %>%
   kable_styling("striped", full_width = F) %>%

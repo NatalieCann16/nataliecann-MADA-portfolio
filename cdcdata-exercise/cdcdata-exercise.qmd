@@ -1,0 +1,131 @@
+---
+title: "CDC Data Exercise"
+---
+## Description of Data
+
+The data used in this exercise will be using in this exercise is called "NCHS - Drug Poisoning Mortality by State: United States." I downloaded this dataset from the CDC website linked here: https://data.cdc.gov/NCHS/NCHS-Drug-Poisoning-Mortality-by-State-United-Stat/jx6g-fdh6/about_data. This dataset contains entries on drug poisoning deaths in the U.S. and at the state-level. The data set's time range is from 1999 to 2015.  
+
+## Loading in the Data
+
+First, I will load any packages that may be of help in this exercise. 
+```{r}
+library(dplyr)
+library(tidyverse)
+library(ggplot2)
+```
+
+Now I will load in the CDC data for this exercise that was described in the section above. I will call it "data".
+```{r}
+data <- read.csv("drug-data.csv")
+```
+
+I will use the summary(), dim(), and head() functions to get a better look at the data. 
+```{r}
+summary(data)
+dim(data)
+head(data)
+```
+As seen by the output, this dataset contains 18 variables with 2,703 observations. 
+
+## Processing the Data
+
+Below, I will select the variables that I will work with in this exercise. I will reassign this to a new dataset called "processed_data". 
+```{r}
+processed_data <- data %>% select(Year, Sex, Age, Race.and.Hispanic.Origin, State, Deaths, Population, Crude.Death.Rate)
+```
+
+I will rename the variables to be easier to understand. I will use head() to ensure this worked.
+```{r}
+processed_data <- processed_data %>%
+  rename(Race_and_Hispanic_Origin = Race.and.Hispanic.Origin,
+         Crude_Death_Rate = Crude.Death.Rate)
+head(processed_data)
+```
+## Exploratory/Descriptive Analysis and Frequency Table
+
+I will create a scatterplot to assess the relationship between deaths and population. Then, I will use the cor() function to obtain the correlation coefficient to determine the strength of this relationship. 
+```{r}
+ggplot(processed_data, aes(x = Deaths, y = Population)) +
+  geom_point(color = "#429bf9") + # giving the points of the scatterplot a blue color
+  labs(title = "Scatterplot of Relationship between Number of Deaths \n From Drug Poisoning and Population Size",
+       x = "Number of Deaths",
+       y = "Size of Population") + # labeling axes and titles!
+  theme(legend.position = "none", plot.title = element_text(size = 18, face = "bold", hjust = 0.5), axis.title.x = element_text(size = 12, face = "bold"), axis.title.y = element_text(size = 12, face = "bold")) # removing legend; making title and axes bold and giving them a larger font size
+
+cor(processed_data$Deaths, processed_data$Population) # correlation coefficient
+```
+The scatterplot above, shows a positive linear relationship between the number of deaths from drug poisoning and the size of the population. The correlation coefficient is 0.8997261, which indicates a strong positive linear relationship.
+
+Now, I will assess the relationship between year and death. Then, I will use the cor() function to obtain the correlation coefficient to determine the strength of this relationship. 
+```{r}
+ggplot(processed_data, aes(x = Year, y = Deaths)) +
+  geom_point(color = "#33d11a") + # giving the points of the scatterplot a green color
+  labs(title = "Scatterplot of Relationship between Number of Deaths \n From Drug Poisoning and Year",
+       x = "Year",
+       y = "Number of Deaths") + # labeling axes and titles!
+  theme(legend.position = "none", plot.title = element_text(size = 18, face = "bold", hjust = 0.5), axis.title.x = element_text(size = 12, face = "bold"), axis.title.y = element_text(size = 12, face = "bold")) # removing legend; making title and axes bold and giving them a larger font size
+
+cor(processed_data$Deaths, processed_data$Year) # correlation coefficient
+```
+The scatterplot above shows that there may be a slight relationship between year and number deaths due to drug poisoning. The correlation coefficient is 0.1246065; this indicates a VERY weak relationship (possibly no realtionship at all). 
+
+I will create a correlation matrix. I did this in the "data-exercise" and found it to be helpful. 
+```{r}
+# use only numberic variables!
+cor_matrix <- cor(processed_data %>% select(where(is.numeric)))
+
+# print out!
+print(cor_matrix)
+```
+I will create a frequency table to display the total number of deaths from drug poisoning by year. 
+```{r}
+# Create frequency table for the total number of deaths by year
+death_by_year <- processed_data %>%
+  group_by(Year) %>%
+  summarise(Total_Deaths = sum(Deaths, na.rm = TRUE)) %>%
+  arrange(Year)
+
+# View the frequency table
+death_by_year
+```
+
+## Assessing Distribution 
+
+I will assess the distribution of both the number of deaths due to drug poisoning and the population size. 
+```{r}
+# Deaths
+ggplot(processed_data, aes(x = Deaths)) +
+  geom_histogram(bins = 30, fill = "#ee5050", color = "#c41616", alpha = 0.7) +
+  labs(title = "Histogram of Deaths from Drug Poisoning",
+       x = "Number of Deaths",
+       y = "Frequency") +
+  theme(plot.title = element_text(size = 18, face = "bold", hjust = 0.5),
+        axis.title.x = element_text(size = 12, face = "bold"),
+        axis.title.y = element_text(size = 12, face = "bold"))
+# Population Size
+ggplot(processed_data, aes(x = Population)) +
+  geom_histogram(bins = 30, fill = "#f9c363", color = "#ffa303", alpha = 0.7) +
+  labs(title = "Histogram of Population Size",
+       x = "Population Size",
+       y = "Frequency") +
+  theme(plot.title = element_text(size = 18, face = "bold", hjust = 0.5),
+        axis.title.x = element_text(size = 12, face = "bold"),
+        axis.title.y = element_text(size = 12, face = "bold"))
+
+```
+Both histograms for number of deaths due to drug poisoning and population size appeared to be skewed to the right. 
+
+I will create a table to display the mean and standard deviations of the number of deaths due to drug poisoning from 1999 to 2015 as well as the population size from 1999 to 2015. 
+```{r}
+distribution_table <- processed_data %>%
+  group_by(Year) %>%
+  summarise(
+    Mean_Deaths = mean(Deaths, na.rm = TRUE),
+    SD_Deaths = sd(Deaths, na.rm = TRUE),
+    Mean_Population = mean(Population, na.rm = TRUE),
+    SD_Population = sd(Population, na.rm = TRUE)
+  )
+
+print(distribution_table) # print table to see it!
+```
+
