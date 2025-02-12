@@ -147,6 +147,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <a class="dropdown-item" href="../cdcdata-exercise/cdcdata-exercise.html">
  <span class="dropdown-text">Data Analysis Exercise</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="../presentation-exercise/presentation-exercise.html">
+ <span class="dropdown-text">Presentation Exercise</span></a>
+  </li>  
     </ul>
   </li>
 </ul>
@@ -549,8 +553,343 @@ Crude_Death_Rate 0.32354160 0.3192310 0.06736837       1.00000000</code></pre>
 17  2015       2929.     6683.       17644933.     36306209.</code></pre>
 </div>
 </div>
+</section>
+<section id="this-section-is-contributed-by-yufei-wu" class="level2">
+<h2 class="anchored" data-anchor-id="this-section-is-contributed-by-yufei-wu">This section is contributed by Yufei Wu</h2>
+<section id="summarize-the-distributioncomposition-of-each-variable" class="level3">
+<h3 class="anchored" data-anchor-id="summarize-the-distributioncomposition-of-each-variable">Summarize the distribution/composition of each variable</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load package</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gtsummary)</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>summary_table <span class="ot">&lt;-</span> processed_data <span class="sc">%&gt;%</span> </span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tbl_summary</span>(<span class="at">statistic =</span> <span class="fu">list</span>(</span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">all_continuous</span>() <span class="sc">~</span> <span class="st">"{mean} {median} {min} {max} {sd}"</span>,</span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">all_categorical</span>() <span class="sc">~</span> <span class="st">"{n} {N} {p}%"</span></span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>  )) <span class="sc">%&gt;%</span> </span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>()</span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a><span class="co">#print(summary_table)</span></span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(summary_table, <span class="at">n =</span> <span class="cn">Inf</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 76 × 2
+   `**Characteristic**`     `**N = 2,703**`                                    
+   &lt;chr&gt;                    &lt;chr&gt;                                              
+ 1 Year                     2,007 2,007 1,999 2,015 5                          
+ 2 Sex                      &lt;NA&gt;                                               
+ 3 Both Sexes               1,479 2,703 55%                                    
+ 4 Female                   612 2,703 23%                                      
+ 5 Male                     612 2,703 23%                                      
+ 6 Age                      &lt;NA&gt;                                               
+ 7 15-24 years              204 2,703 7.5%                                     
+ 8 25-34 years              204 2,703 7.5%                                     
+ 9 35-44 years              204 2,703 7.5%                                     
+10 45-54 years              204 2,703 7.5%                                     
+11 55-64 years              204 2,703 7.5%                                     
+12 65-74 years              204 2,703 7.5%                                     
+13 75+ years                204 2,703 7.5%                                     
+14 All Ages                 1,071 2,703 40%                                    
+15 Less than 15 years       204 2,703 7.5%                                     
+16 Race_and_Hispanic_Origin &lt;NA&gt;                                               
+17 All Races-All Origins    1,326 2,703 49%                                    
+18 Hispanic                 459 2,703 17%                                      
+19 Non-Hispanic Black       459 2,703 17%                                      
+20 Non-Hispanic White       459 2,703 17%                                      
+21 State                    &lt;NA&gt;                                               
+22 Alabama                  17 2,703 0.6%                                      
+23 Alaska                   17 2,703 0.6%                                      
+24 Arizona                  17 2,703 0.6%                                      
+25 Arkansas                 17 2,703 0.6%                                      
+26 California               17 2,703 0.6%                                      
+27 Colorado                 17 2,703 0.6%                                      
+28 Connecticut              17 2,703 0.6%                                      
+29 Delaware                 17 2,703 0.6%                                      
+30 District of Columbia     17 2,703 0.6%                                      
+31 Florida                  17 2,703 0.6%                                      
+32 Georgia                  17 2,703 0.6%                                      
+33 Hawaii                   17 2,703 0.6%                                      
+34 Idaho                    17 2,703 0.6%                                      
+35 Illinois                 17 2,703 0.6%                                      
+36 Indiana                  17 2,703 0.6%                                      
+37 Iowa                     17 2,703 0.6%                                      
+38 Kansas                   17 2,703 0.6%                                      
+39 Kentucky                 17 2,703 0.6%                                      
+40 Louisiana                17 2,703 0.6%                                      
+41 Maine                    17 2,703 0.6%                                      
+42 Maryland                 17 2,703 0.6%                                      
+43 Massachusetts            17 2,703 0.6%                                      
+44 Michigan                 17 2,703 0.6%                                      
+45 Minnesota                17 2,703 0.6%                                      
+46 Mississippi              17 2,703 0.6%                                      
+47 Missouri                 17 2,703 0.6%                                      
+48 Montana                  17 2,703 0.6%                                      
+49 Nebraska                 17 2,703 0.6%                                      
+50 Nevada                   17 2,703 0.6%                                      
+51 New Hampshire            17 2,703 0.6%                                      
+52 New Jersey               17 2,703 0.6%                                      
+53 New Mexico               17 2,703 0.6%                                      
+54 New York                 17 2,703 0.6%                                      
+55 North Carolina           17 2,703 0.6%                                      
+56 North Dakota             17 2,703 0.6%                                      
+57 Ohio                     17 2,703 0.6%                                      
+58 Oklahoma                 17 2,703 0.6%                                      
+59 Oregon                   17 2,703 0.6%                                      
+60 Pennsylvania             17 2,703 0.6%                                      
+61 Rhode Island             17 2,703 0.6%                                      
+62 South Carolina           17 2,703 0.6%                                      
+63 South Dakota             17 2,703 0.6%                                      
+64 Tennessee                17 2,703 0.6%                                      
+65 Texas                    17 2,703 0.6%                                      
+66 United States            1,836 2,703 68%                                    
+67 Utah                     17 2,703 0.6%                                      
+68 Vermont                  17 2,703 0.6%                                      
+69 Virginia                 17 2,703 0.6%                                      
+70 Washington               17 2,703 0.6%                                      
+71 West Virginia            17 2,703 0.6%                                      
+72 Wisconsin                17 2,703 0.6%                                      
+73 Wyoming                  17 2,703 0.6%                                      
+74 Deaths                   1,873 478 1 52,404 4,525                           
+75 Population               16,586,603 6,403,290 238,163 321,418,820 34,492,886
+76 Crude_Death_Rate         10 9 0 54 8                                        </code></pre>
+</div>
+</div>
+</section>
+<section id="generate-the-synthetic-data" class="level3">
+<h3 class="anchored" data-anchor-id="generate-the-synthetic-data">Generate the synthetic data</h3>
+<p>I would like to generate the synthetic data according to the composition of categorical variable and the distribution of continuous variable. I tried to use ChatGPT to generate the data for me, and here is my initial prompt: “Generate synthetic data: there are 8 variables and 2073 observations. For the continuous variable Year, it is from 1,999 to 2015, mean 2,007, median 2,007. For Sex, Age, Race_and_Hispanic_Origin, and State, refer to the gtsummary tibble. For Population, it is from 238,163 to 321,418,820, mean 16,586,603, median 6,403,290, sd 34,492,886, the distribution is skewed to the right. For Deaths, it is from 1 to 52,404, mean 1,873, median 478, sd 4,525, the distribution is skewed to the right. Crude_Death_Rate is from Deaths divided by Population. There is a positive linear relationship between Deaths and Population. The correlation coefficient is 0.8997. Give me the code to generate such data.” Then I manually add the specific content in the code to generate categorical data. At first, I tired to add correlation between Deaths and Population, but I found things get more and more complicated and could not work. I suspect that the correlation in the original data was due to some outliers, so I eventually generate the deaths data without considering the correlation.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)  <span class="co"># Set seed for reproducibility</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Number of observations</span></span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">2073</span></span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Generate 'Year' (Continuous Variable)</span></span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>year_min <span class="ot">&lt;-</span> <span class="dv">1999</span></span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>year_max <span class="ot">&lt;-</span> <span class="dv">2015</span></span>
+<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a>year_mean <span class="ot">&lt;-</span> <span class="dv">2007</span></span>
+<span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a>year_median <span class="ot">&lt;-</span> <span class="dv">2007</span></span>
+<span id="cb35-11"><a href="#cb35-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-12"><a href="#cb35-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Generating Year as uniformly distributed between min and max</span></span>
+<span id="cb35-13"><a href="#cb35-13" aria-hidden="true" tabindex="-1"></a>year <span class="ot">&lt;-</span> <span class="fu">sample</span>(year_min<span class="sc">:</span>year_max, n, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb35-14"><a href="#cb35-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-15"><a href="#cb35-15" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Generate 'Sex' (Categorical Variable)</span></span>
+<span id="cb35-16"><a href="#cb35-16" aria-hidden="true" tabindex="-1"></a>sex_levels <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Both Sexes"</span>, <span class="st">"Female"</span>, <span class="st">"Male"</span>)</span>
+<span id="cb35-17"><a href="#cb35-17" aria-hidden="true" tabindex="-1"></a>sex_probs <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">0.55</span>, <span class="fl">0.225</span>, <span class="fl">0.225</span>) </span>
+<span id="cb35-18"><a href="#cb35-18" aria-hidden="true" tabindex="-1"></a>sex <span class="ot">&lt;-</span> <span class="fu">sample</span>(sex_levels, n, <span class="at">replace =</span> <span class="cn">TRUE</span>, <span class="at">prob =</span> sex_probs)</span>
+<span id="cb35-19"><a href="#cb35-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-20"><a href="#cb35-20" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. Generate 'Age' (Categorical Variable)</span></span>
+<span id="cb35-21"><a href="#cb35-21" aria-hidden="true" tabindex="-1"></a>age_levels <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"15-24 years"</span>, <span class="st">"25-34 years"</span>, <span class="st">"35-44 years"</span>, <span class="st">"45-54 years"</span>, <span class="st">"55-64 years"</span>, <span class="st">"65-74 years"</span>, <span class="st">"75+ years"</span>, <span class="st">"All Ages"</span>, <span class="st">"Less than 15 years"</span>)</span>
+<span id="cb35-22"><a href="#cb35-22" aria-hidden="true" tabindex="-1"></a>age_probs <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">0.075</span>, <span class="fl">0.075</span>, <span class="fl">0.075</span>, <span class="fl">0.075</span>, <span class="fl">0.075</span>, <span class="fl">0.075</span>, <span class="fl">0.075</span>, <span class="fl">0.4</span>, <span class="fl">0.075</span>) </span>
+<span id="cb35-23"><a href="#cb35-23" aria-hidden="true" tabindex="-1"></a>age <span class="ot">&lt;-</span> <span class="fu">sample</span>(age_levels, n, <span class="at">replace =</span> <span class="cn">TRUE</span>, <span class="at">prob =</span> age_probs)</span>
+<span id="cb35-24"><a href="#cb35-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-25"><a href="#cb35-25" aria-hidden="true" tabindex="-1"></a><span class="co"># 4. Generate 'Race_and_Hispanic_Origin' (Categorical Variable)</span></span>
+<span id="cb35-26"><a href="#cb35-26" aria-hidden="true" tabindex="-1"></a>race_levels <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"All Races-All Origins"</span>, <span class="st">"Hispanic"</span>, <span class="st">"Non-Hispanic Black"</span>, <span class="st">"Non-Hispanic White"</span>)</span>
+<span id="cb35-27"><a href="#cb35-27" aria-hidden="true" tabindex="-1"></a>race_probs <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">0.49</span>, <span class="fl">0.17</span>, <span class="fl">0.17</span>, <span class="fl">0.17</span>) </span>
+<span id="cb35-28"><a href="#cb35-28" aria-hidden="true" tabindex="-1"></a>race_and_hispanic_origin <span class="ot">&lt;-</span> <span class="fu">sample</span>(race_levels, n, <span class="at">replace =</span> <span class="cn">TRUE</span>, <span class="at">prob =</span> race_probs)</span>
+<span id="cb35-29"><a href="#cb35-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-30"><a href="#cb35-30" aria-hidden="true" tabindex="-1"></a><span class="co"># 5. Generate 'State' (Categorical Variable)</span></span>
+<span id="cb35-31"><a href="#cb35-31" aria-hidden="true" tabindex="-1"></a>state_levels <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Alabama"</span>, <span class="st">"Alaska"</span>, <span class="st">"Arizona"</span>, <span class="st">"Arkansas"</span>, <span class="st">"California"</span>, <span class="st">"Colorado"</span>, <span class="st">"Connecticut"</span>, <span class="st">"Delaware"</span>, </span>
+<span id="cb35-32"><a href="#cb35-32" aria-hidden="true" tabindex="-1"></a><span class="st">"District of Columbia"</span>, <span class="st">"Florida"</span>, <span class="st">"Georgia"</span>, <span class="st">"Hawaii"</span>, <span class="st">"Idaho"</span>, <span class="st">"Illinois"</span>, <span class="st">"Indiana"</span>, <span class="st">"Iowa"</span>, </span>
+<span id="cb35-33"><a href="#cb35-33" aria-hidden="true" tabindex="-1"></a><span class="st">"Kansas"</span>, <span class="st">"Kentucky"</span>, <span class="st">"Louisiana"</span>, <span class="st">"Maine"</span>, <span class="st">"Maryland"</span>, <span class="st">"Massachusetts"</span>, <span class="st">"Michigan"</span>, <span class="st">"Minnesota"</span>, </span>
+<span id="cb35-34"><a href="#cb35-34" aria-hidden="true" tabindex="-1"></a><span class="st">"Mississippi"</span>, <span class="st">"Missouri"</span>, <span class="st">"Montana"</span>, <span class="st">"Nebraska"</span>, <span class="st">"Nevada"</span>, <span class="st">"New Hampshire"</span>, <span class="st">"New Jersey"</span>, </span>
+<span id="cb35-35"><a href="#cb35-35" aria-hidden="true" tabindex="-1"></a><span class="st">"New Mexico"</span>, <span class="st">"New York"</span>, <span class="st">"North Carolina"</span>, <span class="st">"North Dakota"</span>, <span class="st">"Ohio"</span>, <span class="st">"Oklahoma"</span>, <span class="st">"Oregon"</span>, </span>
+<span id="cb35-36"><a href="#cb35-36" aria-hidden="true" tabindex="-1"></a><span class="st">"Pennsylvania"</span>, <span class="st">"Rhode Island"</span>, <span class="st">"South Carolina"</span>, <span class="st">"South Dakota"</span>, <span class="st">"Tennessee"</span>, <span class="st">"Texas"</span>, </span>
+<span id="cb35-37"><a href="#cb35-37" aria-hidden="true" tabindex="-1"></a><span class="st">"United States"</span>, <span class="st">"Utah"</span>, <span class="st">"Vermont"</span>, <span class="st">"Virginia"</span>, <span class="st">"Washington"</span>, <span class="st">"West Virginia"</span>, <span class="st">"Wisconsin"</span>, <span class="st">"Wyoming"</span>) </span>
+<span id="cb35-38"><a href="#cb35-38" aria-hidden="true" tabindex="-1"></a>state_probs <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">0.0063</span>, <span class="fl">0.0063</span>, <span class="fl">0.0063</span>, <span class="fl">0.0063</span>, <span class="fl">0.0063</span>, <span class="fl">0.0063</span>, <span class="fl">0.0063</span>, <span class="fl">0.0063</span>, <span class="fl">0.0063</span>, <span class="fl">0.0063</span>, </span>
+<span id="cb35-39"><a href="#cb35-39" aria-hidden="true" tabindex="-1"></a><span class="fl">0.0063</span>, <span class="fl">0.0063</span>, <span class="fl">0.0063</span>, <span class="fl">0.0063</span>, <span class="fl">0.0063</span>, <span class="fl">0.0063</span>, <span class="fl">0.0063</span>, <span class="fl">0.0063</span>, <span class="fl">0.0063</span>, <span class="fl">0.0063</span>, </span>
+<span id="cb35-40"><a href="#cb35-40" aria-hidden="true" tabindex="-1"></a><span class="fl">0.0063</span>, <span class="fl">0.0063</span>, <span class="fl">0.0063</span>, <span class="fl">0.0063</span>, <span class="fl">0.0063</span>, <span class="fl">0.0063</span>, <span class="fl">0.0063</span>, <span class="fl">0.0063</span>, <span class="fl">0.0063</span>, <span class="fl">0.0063</span>, </span>
+<span id="cb35-41"><a href="#cb35-41" aria-hidden="true" tabindex="-1"></a><span class="fl">0.0063</span>, <span class="fl">0.0063</span>, <span class="fl">0.0063</span>, <span class="fl">0.0063</span>, <span class="fl">0.0063</span>, <span class="fl">0.0063</span>, <span class="fl">0.0063</span>, <span class="fl">0.0063</span>, <span class="fl">0.0063</span>, <span class="fl">0.0063</span>, </span>
+<span id="cb35-42"><a href="#cb35-42" aria-hidden="true" tabindex="-1"></a><span class="fl">0.0063</span>, <span class="fl">0.0063</span>, <span class="fl">0.0063</span>, <span class="fl">0.0063</span>, <span class="fl">0.6787</span>, <span class="fl">0.0063</span>, <span class="fl">0.0063</span>, <span class="fl">0.0063</span>, <span class="fl">0.0063</span>, <span class="fl">0.0063</span>,</span>
+<span id="cb35-43"><a href="#cb35-43" aria-hidden="true" tabindex="-1"></a><span class="fl">0.0063</span>, <span class="fl">0.0063</span>) </span>
+<span id="cb35-44"><a href="#cb35-44" aria-hidden="true" tabindex="-1"></a>state <span class="ot">&lt;-</span> <span class="fu">sample</span>(state_levels, n, <span class="at">replace =</span> <span class="cn">TRUE</span>, <span class="at">prob =</span> state_probs)</span>
+<span id="cb35-45"><a href="#cb35-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-46"><a href="#cb35-46" aria-hidden="true" tabindex="-1"></a><span class="co"># 6. Generate 'Population' (Continuous Variable) - skewed to the right</span></span>
+<span id="cb35-47"><a href="#cb35-47" aria-hidden="true" tabindex="-1"></a>population_min <span class="ot">&lt;-</span> <span class="dv">238163</span></span>
+<span id="cb35-48"><a href="#cb35-48" aria-hidden="true" tabindex="-1"></a>population_max <span class="ot">&lt;-</span> <span class="dv">321418820</span></span>
+<span id="cb35-49"><a href="#cb35-49" aria-hidden="true" tabindex="-1"></a>population_mean <span class="ot">&lt;-</span> <span class="dv">16586603</span></span>
+<span id="cb35-50"><a href="#cb35-50" aria-hidden="true" tabindex="-1"></a>population_median <span class="ot">&lt;-</span> <span class="dv">6403290</span></span>
+<span id="cb35-51"><a href="#cb35-51" aria-hidden="true" tabindex="-1"></a>population_sd <span class="ot">&lt;-</span> <span class="dv">34492886</span></span>
+<span id="cb35-52"><a href="#cb35-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-53"><a href="#cb35-53" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate skewed population data using a log-normal distribution</span></span>
+<span id="cb35-54"><a href="#cb35-54" aria-hidden="true" tabindex="-1"></a>population <span class="ot">&lt;-</span> <span class="fu">rlnorm</span>(n, <span class="at">meanlog =</span> <span class="fu">log</span>(population_mean), <span class="at">sdlog =</span> <span class="fu">log</span>(population_sd <span class="sc">/</span> population_mean))</span>
+<span id="cb35-55"><a href="#cb35-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-56"><a href="#cb35-56" aria-hidden="true" tabindex="-1"></a><span class="co"># Ensure values are within range</span></span>
+<span id="cb35-57"><a href="#cb35-57" aria-hidden="true" tabindex="-1"></a>population <span class="ot">&lt;-</span> <span class="fu">pmin</span>(<span class="fu">pmax</span>(population, population_min), population_max)</span>
+<span id="cb35-58"><a href="#cb35-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-59"><a href="#cb35-59" aria-hidden="true" tabindex="-1"></a><span class="co"># 7. Generate 'Deaths' (Continuous Variable) - skewed to the right</span></span>
+<span id="cb35-60"><a href="#cb35-60" aria-hidden="true" tabindex="-1"></a>deaths_min <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb35-61"><a href="#cb35-61" aria-hidden="true" tabindex="-1"></a>deaths_max <span class="ot">&lt;-</span> <span class="dv">52404</span></span>
+<span id="cb35-62"><a href="#cb35-62" aria-hidden="true" tabindex="-1"></a>deaths_mean <span class="ot">&lt;-</span> <span class="dv">1873</span></span>
+<span id="cb35-63"><a href="#cb35-63" aria-hidden="true" tabindex="-1"></a>deaths_median <span class="ot">&lt;-</span> <span class="dv">478</span></span>
+<span id="cb35-64"><a href="#cb35-64" aria-hidden="true" tabindex="-1"></a>deaths_sd <span class="ot">&lt;-</span> <span class="dv">4525</span></span>
+<span id="cb35-65"><a href="#cb35-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-66"><a href="#cb35-66" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute meanlog correctly</span></span>
+<span id="cb35-67"><a href="#cb35-67" aria-hidden="true" tabindex="-1"></a>meanlog <span class="ot">&lt;-</span> <span class="fu">log</span>(deaths_mean) <span class="sc">-</span> <span class="fl">0.5</span> <span class="sc">*</span> <span class="fu">log</span>(<span class="dv">1</span> <span class="sc">+</span> (deaths_sd <span class="sc">/</span> deaths_mean)<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb35-68"><a href="#cb35-68" aria-hidden="true" tabindex="-1"></a>sdlog <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">log</span>(<span class="dv">1</span> <span class="sc">+</span> (deaths_sd <span class="sc">/</span> deaths_mean)<span class="sc">^</span><span class="dv">2</span>))</span>
+<span id="cb35-69"><a href="#cb35-69" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-70"><a href="#cb35-70" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate right-skewed death counts</span></span>
+<span id="cb35-71"><a href="#cb35-71" aria-hidden="true" tabindex="-1"></a>deaths <span class="ot">&lt;-</span> <span class="fu">rlnorm</span>(n, <span class="at">meanlog =</span> meanlog, <span class="at">sdlog =</span> sdlog)</span>
+<span id="cb35-72"><a href="#cb35-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-73"><a href="#cb35-73" aria-hidden="true" tabindex="-1"></a><span class="co"># Ensure values are within range</span></span>
+<span id="cb35-74"><a href="#cb35-74" aria-hidden="true" tabindex="-1"></a>deaths <span class="ot">&lt;-</span> <span class="fu">pmin</span>(<span class="fu">pmax</span>(deaths, deaths_min), deaths_max)</span>
+<span id="cb35-75"><a href="#cb35-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-76"><a href="#cb35-76" aria-hidden="true" tabindex="-1"></a><span class="co"># 8. Generate 'Crude_Death_Rate' (Calculated as Deaths / Population)</span></span>
+<span id="cb35-77"><a href="#cb35-77" aria-hidden="true" tabindex="-1"></a>crude_death_rate <span class="ot">&lt;-</span> deaths <span class="sc">/</span> population <span class="sc">*</span> <span class="dv">1000</span>  <span class="co"># Crude Death Rate per 1000 people</span></span>
+<span id="cb35-78"><a href="#cb35-78" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-79"><a href="#cb35-79" aria-hidden="true" tabindex="-1"></a><span class="co"># Combine all the variables into a data frame</span></span>
+<span id="cb35-80"><a href="#cb35-80" aria-hidden="true" tabindex="-1"></a>synthetic_data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb35-81"><a href="#cb35-81" aria-hidden="true" tabindex="-1"></a>  <span class="at">year =</span> year,</span>
+<span id="cb35-82"><a href="#cb35-82" aria-hidden="true" tabindex="-1"></a>  <span class="at">sex =</span> sex,</span>
+<span id="cb35-83"><a href="#cb35-83" aria-hidden="true" tabindex="-1"></a>  <span class="at">age =</span> age,</span>
+<span id="cb35-84"><a href="#cb35-84" aria-hidden="true" tabindex="-1"></a>  <span class="at">race_and_hispanic_origin =</span> race_and_hispanic_origin,</span>
+<span id="cb35-85"><a href="#cb35-85" aria-hidden="true" tabindex="-1"></a>  <span class="at">state =</span> state,</span>
+<span id="cb35-86"><a href="#cb35-86" aria-hidden="true" tabindex="-1"></a>  <span class="at">population =</span> population,</span>
+<span id="cb35-87"><a href="#cb35-87" aria-hidden="true" tabindex="-1"></a>  <span class="at">deaths =</span> deaths,</span>
+<span id="cb35-88"><a href="#cb35-88" aria-hidden="true" tabindex="-1"></a>  <span class="at">crude_death_rate =</span> crude_death_rate</span>
+<span id="cb35-89"><a href="#cb35-89" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="explore-the-synthetic-data" class="level3">
+<h3 class="anchored" data-anchor-id="explore-the-synthetic-data">Explore the synthetic data</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get an overview of the data</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(synthetic_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      year          sex                age            race_and_hispanic_origin
+ Min.   :1999   Length:2073        Length:2073        Length:2073             
+ 1st Qu.:2003   Class :character   Class :character   Class :character        
+ Median :2007   Mode  :character   Mode  :character   Mode  :character        
+ Mean   :2007                                                                 
+ 3rd Qu.:2011                                                                 
+ Max.   :2015                                                                 
+    state             population            deaths         crude_death_rate 
+ Length:2073        Min.   :  1170322   Min.   :    2.59   Min.   :0.00009  
+ Class :character   1st Qu.:  9855446   1st Qu.:  261.33   1st Qu.:0.01399  
+ Mode  :character   Median : 15827533   Median :  704.64   Median :0.04387  
+                    Mean   : 20958124   Mean   : 1750.65   Mean   :0.13607  
+                    3rd Qu.: 27226765   3rd Qu.: 1694.76   3rd Qu.:0.12293  
+                    Max.   :153425514   Max.   :52404.00   Max.   :4.15957  </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(synthetic_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2073    8</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(synthetic_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  year        sex         age race_and_hispanic_origin         state population
+1 2013       Male    All Ages       Non-Hispanic White       Vermont   18232163
+2 2012 Both Sexes    All Ages    All Races-All Origins United States   16474079
+3 2001 Both Sexes 25-34 years    All Races-All Origins  Pennsylvania   21448794
+4 2008     Female 15-24 years    All Races-All Origins United States   31220194
+5 2009       Male 35-44 years       Non-Hispanic Black United States   17713506
+6 2003       Male    All Ages                 Hispanic United States    9014091
+      deaths crude_death_rate
+1 4294.85196      0.235564594
+2   52.01475      0.003157369
+3  204.27761      0.009523967
+4  523.45079      0.016766417
+5 1111.77805      0.062764425
+6  455.80316      0.050565627</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Assess the distribution of deaths and population</span></span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Deaths</span></span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(synthetic_data, <span class="fu">aes</span>(<span class="at">x =</span> deaths)) <span class="sc">+</span></span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">30</span>, <span class="at">fill =</span> <span class="st">"#ee5050"</span>, <span class="at">color =</span> <span class="st">"#c41616"</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Histogram of Deaths from Drug Poisoning"</span>,</span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Number of Deaths"</span>,</span>
+<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Frequency"</span>) <span class="sc">+</span></span>
+<span id="cb42-8"><a href="#cb42-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">18</span>, <span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">hjust =</span> <span class="fl">0.5</span>),</span>
+<span id="cb42-9"><a href="#cb42-9" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">12</span>, <span class="at">face =</span> <span class="st">"bold"</span>),</span>
+<span id="cb42-10"><a href="#cb42-10" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">12</span>, <span class="at">face =</span> <span class="st">"bold"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="cdcdata-exercise_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Population Size</span></span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(synthetic_data, <span class="fu">aes</span>(<span class="at">x =</span> population)) <span class="sc">+</span></span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">30</span>, <span class="at">fill =</span> <span class="st">"#f9c363"</span>, <span class="at">color =</span> <span class="st">"#ffa303"</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Histogram of Population Size"</span>,</span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Population Size"</span>,</span>
+<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Frequency"</span>) <span class="sc">+</span></span>
+<span id="cb43-7"><a href="#cb43-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">18</span>, <span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">hjust =</span> <span class="fl">0.5</span>),</span>
+<span id="cb43-8"><a href="#cb43-8" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">12</span>, <span class="at">face =</span> <span class="st">"bold"</span>),</span>
+<span id="cb43-9"><a href="#cb43-9" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">12</span>, <span class="at">face =</span> <span class="st">"bold"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="cdcdata-exercise_files/figure-html/unnamed-chunk-14-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create frequency table for the total number of deaths by year</span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>death_by_year1 <span class="ot">&lt;-</span> synthetic_data <span class="sc">%&gt;%</span></span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(year) <span class="sc">%&gt;%</span></span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">total_deaths =</span> <span class="fu">sum</span>(deaths, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(year)</span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a><span class="co"># View the frequency table</span></span>
+<span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a>death_by_year1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 17 × 2
+    year total_deaths
+   &lt;int&gt;        &lt;dbl&gt;
+ 1  1999      205108.
+ 2  2000      118721.
+ 3  2001      211118.
+ 4  2002      174512.
+ 5  2003      222735.
+ 6  2004      178661.
+ 7  2005      227624.
+ 8  2006      255111.
+ 9  2007      208903.
+10  2008      316677.
+11  2009      204403.
+12  2010      229018.
+13  2011      239380.
+14  2012      164513.
+15  2013      223135.
+16  2014      209644.
+17  2015      239843.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create table to display the mean and standard deviations of the number of deaths from 1999 to 2015 as well as populationfrom 1999 to 2015</span></span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>distribution_table1 <span class="ot">&lt;-</span> synthetic_data <span class="sc">%&gt;%</span></span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(year) <span class="sc">%&gt;%</span></span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_deaths =</span> <span class="fu">mean</span>(deaths, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">sd_deaths =</span> <span class="fu">sd</span>(deaths, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb46-7"><a href="#cb46-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_population =</span> <span class="fu">mean</span>(population, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb46-8"><a href="#cb46-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">sd_population =</span> <span class="fu">sd</span>(population, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb46-9"><a href="#cb46-9" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb46-10"><a href="#cb46-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-11"><a href="#cb46-11" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(distribution_table1) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 17 × 5
+    year mean_deaths sd_deaths mean_population sd_population
+   &lt;int&gt;       &lt;dbl&gt;     &lt;dbl&gt;           &lt;dbl&gt;         &lt;dbl&gt;
+ 1  1999       1991.     5333.       21005538.     15573960.
+ 2  2000       1079.     1378.       21995782.     19791550.
+ 3  2001       1804.     3718.       21937667.     16420190.
+ 4  2002       1616.     3868.       21514401.     17040413.
+ 5  2003       1727.     2471.       21073481.     18234934.
+ 6  2004       1527.     2765.       19285640.     12489584.
+ 7  2005       1765.     3191.       22046780.     17595844.
+ 8  2006       1701.     3838.       20955534.     16268054.
+ 9  2007       1685.     2600.       21269368.     17500794.
+10  2008       2246.     4657.       20562263.     17268516.
+11  2009       1585.     2819.       20466302.     13805349.
+12  2010       1818.     3550.       21414766.     18671639.
+13  2011       2216.     3630.       22605281.     18920198.
+14  2012       1348.     1649.       20251460.     17593593.
+15  2013       1771.     3742.       19885278.     11432565.
+16  2014       1906.     3649.       19016220.     17742970.
+17  2015       1934.     5178.       21178114.     16480345.</code></pre>
+</div>
+</div>
+<p>The overall distribution of variables in the synthetic data is very similar to the original data. The trends of total deaths and population by the year are also similar to the original ones, while the trend of mean deaths is not very similar to the original one. Generally speaking, the synthetic data is good while with some imperfection.</p>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
