@@ -1,7 +1,7 @@
 ---
 title: "CDC Data Exercise"
 ---
-## Description of Data
+## Description of Data 
 
 The data used in this exercise will be using in this exercise is called "NCHS - Drug Poisoning Mortality by State: United States." I downloaded this dataset from the CDC website linked here: https://data.cdc.gov/NCHS/NCHS-Drug-Poisoning-Mortality-by-State-United-Stat/jx6g-fdh6/about_data. This dataset contains entries on drug poisoning deaths in the U.S. and at the state-level. The data set's time range is from 1999 to 2015.  
 

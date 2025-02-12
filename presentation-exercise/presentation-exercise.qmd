@@ -460,6 +460,6 @@ Fandango
 
 ```
 
-I tried many different times to get the distributions to appear in the "density plot" column. I couldn't get this to work. So, I took screenshots of the individual graphs created above and edited them into a screenshot of the table.
+I tried many different times to get the distributions to appear in the "density plot" column. I couldn't get this to work. So, I took screenshots of the individual graphs created above and edited them into a screenshot of the table. 
 
 ![Edited Version of Table](edited_presentation_table.png)
