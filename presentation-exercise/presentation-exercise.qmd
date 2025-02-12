@@ -463,3 +463,193 @@ Fandango
 I tried many different times to get the distributions to appear in the "density plot" column. I couldn't get this to work. So, I took screenshots of the individual graphs created above and edited them into a screenshot of the table. The screenshot can be seen below: 
 
 ![Edited Version of Table](edited_presentation_table.png)
+
+# Redoing Presentation Table
+
+I will redo the presentation table after looking over my classmate's methods so that I can save the images properly and add them to the table.
+
+```{r}
+# Library loading of packages
+library(dplyr)
+library(kableExtra)
+library(gt)
+library(ggplot2)
+
+# Vector of movie rating source names
+source_names <- c(
+  "Fandango_Stars_norm" = "Fandango",
+  "RottenTomatoes_norm" = "Rotten Tomatoes",
+  "RottenTomatoes_User_norm" = "Rotten Tomatoes users",
+  "Metacritic_norm" = "Metacritic",
+  "Metacritic_User_norm" = "Metacritic users",
+  "IMDB_norm" = "IMDb users"
+)
+
+# Vector of variables to plot
+variables <- c("Fandango_Stars_norm", "RottenTomatoes_norm", "RottenTomatoes_User_norm", 
+               "Metacritic_norm", "Metacritic_User_norm", "IMDB_norm")
+
+# Function to generate and save distribution plots
+generate_distribution_plots <- function(variable) {
+  # Create the plot (density plot in this case)
+  p <- ggplot(df, aes_string(x = variable)) + 
+    geom_density(fill = "#d8c8fb", alpha = 0.5) + 
+    theme_minimal()
+  
+  # Save the plot as PNG
+  file_name <- paste0(variable, "_distribution.png")
+  ggsave(file_name, plot = p, width = 8, height = 6)
+  
+  # Return the file path
+  return(file_name)
+}
+
+# Generate and save the distribution plots for each variable
+plot_paths <- sapply(variables, generate_distribution_plots)
+
+# Function to generate image file paths (replace with real image paths)
+generate_image_path <- function(source_name) {
+  image_urls <- c(
+    "Fandango" = "Fandango_Stars_norm_distribution.png",
+    "Rotten Tomatoes" = "RottenTomatoes_norm_distribution.png",
+    "Rotten Tomatoes users" = "RottenTomatoes_User_norm_distribution.png",
+    "Metacritic" = "Metacritic_norm_distribution.png",
+    "Metacritic users" = "Metacritic_User_norm_distribution.png",
+    "IMDb users" = "IMDB_norm_distribution.png"
+  )
+  
+  return(image_urls[source_name])
+}
+
+# Sources for which summary statistics are needed
+sources <- c("Fandango_Stars_norm", "RottenTomatoes_norm", "RottenTomatoes_User_norm", 
+             "Metacritic_norm", "Metacritic_User_norm", "IMDB_norm")
+
+# Initialize an empty dataframe to store the summary stats
+summary_stats <- data.frame()
+
+# Compute summary statistics for each platform and append them
+for (source in sources) {
+  stats <- df %>%
+    summarise(
+      `Source` = source_names[source],
+      `Mean (SD)` = paste0(round(mean(get(source)), 2), " (", round(sd(get(source)), 2), ")"),
+      `Median (Q1, Q3)` = paste0(round(median(get(source)), 2), " (", 
+                                 round(quantile(get(source), 0.25), 2), ", ", 
+                                 round(quantile(get(source), 0.75), 2), ")"),
+      Min = round(min(get(source)), 2),
+      Max = round(max(get(source)), 2),
+      Distribution = generate_image_path(source_names[source])  # Correct reference to 'source_names'
+    )
+  
+  # Append the stats to summary_stats
+  summary_stats <- bind_rows(summary_stats, stats)
+}
+
+# Create the presentation table
+presentation_table_redo <- summary_stats %>%
+  gt() %>%
+  # Adding header that spans multiple columns
+  tab_header(
+    title = md("**Summary Statistics for Movie Review Sources**")  # Bold the title
+  ) %>%
+  tab_spanner(
+    label = md("**Summary Statistics**"),
+    columns = c(`Mean (SD)`, `Median (Q1, Q3)`, Min, Max)
+  ) %>%
+  # Adding a source note with explanation
+  tab_source_note(
+    source_note = md("This table compares summary statistics mean, median, min, and max for ratings across various movie rating sources. The highest value within the mean column is highlighted blue, the highest value within the median value is highlighted green, the highest value within the min column is highlighted yellow, and the highest value within the max column is highlighted pink.")
+  ) %>%
+  # Bold specific column labels: Mean (SD), Median (Q1, Q3), Min, Max
+  tab_style(
+    style = cell_text(weight = "bold"),
+    locations = cells_column_labels(columns = c("Mean (SD)", "Median (Q1, Q3)", "Min", "Max"))
+  ) %>%
+  # Bold the "Source" column label and all its body cells
+  tab_style(
+    style = cell_text(weight = "bold"),
+    locations = cells_column_labels(columns = "Source")
+  ) %>%
+  tab_style(
+    style = cell_text(weight = "bold"),
+    locations = cells_body(columns = "Source")
+  ) %>%
+  # Bold the "Distribution" column label and all its body cells
+  tab_style(
+    style = cell_text(weight = "bold"),
+    locations = cells_column_labels(columns = "Distribution")
+  ) %>%
+  tab_style(
+    style = cell_text(weight = "bold"),
+    locations = cells_body(columns = "Distribution")
+  ) %>%
+  # Alternating row colors for readability (white for odd rows and light gray for even rows)
+  tab_style(
+    style = cell_fill(color = "white"),
+    locations = cells_body(rows = seq(1, nrow(summary_stats), by = 2))
+  ) %>%
+  tab_style(
+    style = cell_fill(color = "#ececec"),
+    locations = cells_body(rows = seq(2, nrow(summary_stats), by = 2))
+  ) %>%
+  # Displaying images in the new 'Distribution' column
+  fmt_image(
+    columns = "Distribution",
+    rows = everything(),
+    path = NULL,  # Path is not required if you're using URLs
+    file_pattern = "{x}",
+    encode = TRUE
+  ) %>%
+  # Add alternating color for each row based on index
+  tab_style(
+    style = cell_fill(color = "#f9f9f9"),
+    locations = cells_body(rows = seq(1, nrow(summary_stats), by = 2))
+  ) %>%
+  tab_style(
+    style = cell_fill(color = "#f2f2f2"),
+    locations = cells_body(rows = seq(2, nrow(summary_stats), by = 2))
+  ) %>%
+  # Conditional formatting for the highest "Mean" value (highlight in blue)
+  tab_style(
+    style = cell_fill(color = "#d1e9fc"),
+    locations = cells_body(
+      columns = "Mean (SD)",
+      rows = which(summary_stats$`Mean (SD)` == max(summary_stats$`Mean (SD)`))
+    )
+  ) %>%
+  # Conditional formatting for the highest "Median" value (highlight in green)
+  tab_style(
+    style = cell_fill(color = "#cff2d0"),
+    locations = cells_body(
+      columns = "Median (Q1, Q3)",
+      rows = which(summary_stats$`Median (Q1, Q3)` == max(summary_stats$`Median (Q1, Q3)`))
+    )
+  ) %>%
+  # Conditional formatting for the highest "Min" value (highlight in yellow)
+  tab_style(
+    style = cell_fill(color = "#fafabf"),
+    locations = cells_body(
+      columns = "Min",
+      rows = which(summary_stats$Min == max(summary_stats$Min))
+    )
+  ) %>%
+  # Conditional formatting for the highest "Max" value (highlight in pink)
+  tab_style(
+    style = cell_fill(color = "#fae1eb"),
+    locations = cells_body(
+      columns = "Max",
+      rows = which(summary_stats$Max == max(summary_stats$Max))
+    )
+  )
+
+# Display the table
+presentation_table_redo
+
+# Save the table as a PNG image
+gtsave(presentation_table_redo, "presentation_table_redo.png")
+
+```
+As one can see from analyzing the table above, the source "Fandango" appears to have the highest ratings according to the summary statistics. 
+
+
