@@ -20,6 +20,8 @@ website:
             file: cdcdata-exercise/cdcdata-exercise.qmd
           - text: "Presentation Exercise"
             file: presentation-exercise/presentation-exercise.qmd
+          - text: "Fitting Exercise"
+            file: fitting-exercise/fitting-exercise.qmd
 
     right:
       - icon: github 

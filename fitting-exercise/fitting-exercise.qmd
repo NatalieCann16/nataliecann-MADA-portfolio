@@ -1,0 +1,626 @@
+---
+title: "Fitting Exercise"
+---
+# Loading Packages
+
+```{r}
+library(tidyverse)
+library(dplyr)
+library(ggplot2)
+library(gt)
+library(kableExtra)
+library(readr)
+library(here)
+library(naniar)
+library(GGally)
+options(repos = c(CRAN = "https://cran.rstudio.com/")) # including this because I could not render the website without it
+```
+
+# Data
+
+The data used in this exercise can be found in the `nlmixr2data` package. I will download this package and then load it. 
+
+```{r}
+install.packages("nlmixr2data") # install package
+library(nlmixr2data) # load package
+```
+
+However, the data can also be found on the github repository linked here: https://github.com/metrumresearchgroup/BayesPBPK-tutorial. Instructions on the class website state to download the "Mavoglurant_A2121_nmpk.csv" file. I will use this method to obtain the data. 
+
+I will load in the data in the code chunk below. 
+
+```{r}
+data <- read_csv(here("fitting-exercise", "Mavoglurant_A2121_nmpk.csv"))
+```
+
+I will perform several functions to get a quick view of the data. 
+
+```{r}
+dim(data)
+head(data)
+summary(data)
+```
+
+# Data Processing and Exploration 
+
+The data does not come with a codebook so I will now use the methods on the class website to try to understand what each variable means. 
+
+Variables: 
+
+ID: Subject ID
+CMT: Compartment number
+EVID: Event ID
+MDV: Missing DV
+DV: Dependent Variable, Mavoglurant --> outcome variable
+AMT: Dose Amount Keyword
+TIME: Time (hr)
+DOSE: Dose 
+OCC: Occasion 
+RATE: Rate
+AGE: Age
+SEX: Sex
+WT: Weight
+HT: Height
+
+This is time-series data of drug-concentrations. 
+
+I will check for missingness of the dataset. 
+
+```{r}
+gg_miss_var(data)
+```
+
+There is no missing data. 
+
+In the code chunk below, I will plot DV (outcome variable, Mavoglurant - the drug) as a function of time and stratified by DOSE with ID as a grouping factor. 
+
+```{r}
+# Plotting DV (Mavoglurant concentration) over time, stratified by DOSE, grouped by ID
+ggplot(data, aes(x = TIME, y = DV, group = ID, color = as.factor(DOSE))) +
+  geom_line(alpha = 0.6) +  # add lines for each subject
+  geom_point(alpha = 0.6) + # add points for visibility
+  labs(
+    title = "Mavoglurant Concentration Over Time Stratified by Dose", # giving graph a title
+    x = "Time (hours)", # naming x-axis
+    y = "Mavoglurant Concentration (DV)", # naming y-axis
+    color = "Dose" 
+  ) +
+  theme_minimal() + 
+  facet_wrap(~DOSE, scales = "free_y") +  # stratify by DOSE
+   scale_color_manual(values = c("#85c1e9", "#f1948a", "#82e0aa"))  # adding custom colors!
+```
+
+Now, I will write code that makes a plot with a line for each individual. DV will be on the y-axis while time will be on the x-axis. I will stratify by dose. 
+
+```{r}
+# Plot with a line for each individual, stratified by dose
+ggplot(data, aes(x = TIME, y = DV, group = ID, color = as.factor(ID))) +
+  geom_line(alpha = 0.6) +  # add lines for each individual
+  geom_point(alpha = 0.6) + # add points for visibility
+  labs(
+    title = "Mavoglurant Concentration Over Time for Each Individual", # giving graph a title
+    x = "Time (hours)", # naming x-axis
+    y = "Mavoglurant Concentration (DV)", # naming y-axis
+    color = "Individual ID" 
+  ) +
+  theme_minimal() + 
+  facet_wrap(~DOSE, scales = "free_y") +  # stratify by DOSE
+  scale_color_manual(values = rainbow(length(unique(data$ID)))) + # rainbow colors for subjects
+  theme(legend.position = "none")
+```
+
+The legend for the plot is so large, so I have included it below: 
+
+```{r}
+legend_plot <- ggplot(data, aes(x = 1, y = 1, color = as.factor(ID))) +
+  geom_point(size = 2.5) +  # Use points to show colors
+  scale_color_manual(values = rainbow(length(unique(data$ID)))) +
+  labs(color = "Individual ID") +
+  theme_void() +  # Remove background and axis
+  theme(
+    legend.position = "bottom",  # Position legend at the bottom
+    legend.key.size = unit(0.3, "cm"),  # Reduce legend key size
+    legend.text = element_text(size = 8),  # Reduce text size
+    legend.title = element_text(size = 9)
+  )
+legend_plot
+```
+
+It appears that some individuals have received the drug more than once. (OCC=1 and OCC=2)
+
+I will only keep one dataset for each individual and remove all entries with OCC=2 and keep only those with OCC=1. 
+
+```{r}
+data_filtered <- data %>% filter(OCC == 1)
+```
+
+Here are a few quick functions to get a look at this new datatset with only OCC=1.
+
+```{r}
+dim(data_filtered)
+head(data_filtered)
+summary(data_filtered)
+```
+
+Note: each individual with time = 0 and DV = 0 also has a non-zero value for AMT. 
+
+I will compute the total amount of drug for each individual by adding up all the DV values for each individual. As stated in the instructions, this is not the best approach - it is simply being used for this practice exercise. 
+
+I will create code that excludes observations where TIME = 0 and THEN sum the DV varaible for each individual (this will be called "Y").
+
+```{r}
+data_filtered_2 <- data_filtered %>% 
+  filter(TIME != 0) %>%  # excluding observations w/ TIME = 0
+  group_by(ID) %>%  # grouping by ID
+  dplyr::summarize(Y = sum(DV, na.rm = TRUE))  # instructions state to use dplyr::summarize
+
+dim(data_filtered_2)
+```
+
+Fortunately, the dimensions are 120 observations and 2 variables. 
+
+Now, I will create a data frame containing only observations with TIME = 0. 
+
+```{r}
+data_filtered_3 <- data_filtered %>% 
+  filter(TIME == 0)  # including only rows where TIME = 0
+
+dim(data_filtered_3)
+```
+
+The dimensions of the tible are 120 observations and 17 variables. 
+
+Now I will join together these two data frames using the left_join() function.
+
+```{r}
+data_joined <- data_filtered_3 %>% 
+  left_join(data_filtered_2, by = "ID")  # join on ID
+
+dim(data_joined)
+```
+
+This worked as I see that the dimensions are: 120 observations and 18 variables. 
+
+I will now write code that converts RACE and SEX to factors. 
+
+```{r}
+data_joined <- data_joined %>% 
+  mutate(
+    RACE = factor(RACE),  # convert RACE to a factor
+    SEX = factor(SEX)     # convert SEX to a factor
+  )
+
+class(data_joined$RACE) # check if RACE is a factor
+class(data_joined$SEX) # check if SEX is a factor
+```
+
+This worked as I see that both RACE and SEX are now presenting as factors. 
+
+I will now write code that only keeps Y, DOSE, AGE, SEX, RACE, WT, and HT as variables. 
+
+```{r}
+data_joined_filtered <- data_joined %>% 
+  select(Y, DOSE, AGE, SEX, RACE, WT, HT)
+
+head(data_joined_filtered)
+```
+
+# EDA Revisited (with Clean Data)
+
+Here is a summary table of the data (data_joined_filtered). 
+
+```{r}
+# Summary Table
+data_joined_filtered %>%
+  summary() %>%
+  kable(caption = "<div style='text-align: center; font-size: 16px; color: black;'><b>Summary of Cleaned Data</b></div>") %>%  # adding a centered, bolded title with black font
+  kableExtra::kable_styling(
+    bootstrap_options = c("striped", "hover"),  # alternating row colors
+    full_width = F
+  ) %>%
+  row_spec(0, background = "#85c1e9")  # variable name row specified to be blue
+```
+
+Now I will make summary tables for each dose. 
+
+```{r}
+# Filter for DOSE == 25.00 and create the summary table
+data_joined_filtered %>%
+  filter(DOSE == 25.00) %>%
+  summary() %>%
+  kable(caption = "<div style='text-align: center; font-size: 16px; color: black;'><b>Summary of Cleaned Data for DOSE = 25.00</b></div>") %>%  # adding a centered, bolded title with black font
+  kableExtra::kable_styling(
+    bootstrap_options = c("striped", "hover"),  # alternating row colors
+    full_width = F
+  ) %>%
+  row_spec(0, background = "#f1948a")  # variable name row specified to be red
+```
+
+```{r}
+# Filter for DOSE == 37.50 and create the summary table
+data_joined_filtered %>%
+  filter(DOSE == 37.50) %>%
+  summary() %>%
+  kable(caption = "<div style='text-align: center; font-size: 16px; color: black;'><b>Summary of Cleaned Data for DOSE = 37.50</b></div>") %>%  # adding a centered, bolded title with black font
+  kableExtra::kable_styling(
+    bootstrap_options = c("striped", "hover"),  # alternating row colors
+    full_width = F
+  ) %>%
+  row_spec(0, background = "#82e0aa")  # variable name row specified to be green
+```
+
+```{r}
+# Filter for DOSE == 50.00 and create the summary table
+data_joined_filtered %>%
+  filter(DOSE == 50.00) %>%
+  summary() %>%
+  kable(caption = "<div style='text-align: center; font-size: 16px; color: black;'><b>Summary of Cleaned Data for DOSE = 50.00</b></div>") %>%  # adding a centered, bolded title with black font
+  kableExtra::kable_styling(
+    bootstrap_options = c("striped", "hover"),  # alternating row colors
+    full_width = F
+  ) %>%
+  row_spec(0, background = "#f8c471")  # variable name row specified to be orange
+```
+
+From the tables above, I can compare the summary statistics for each dose. The mean Y (total dv) for those with a dose of 25.0 units (likely mg, but I cannot assume this) is 1782.7; the mean Y for those with a dose of 37.5 units is 2464 units; lastly, the mean Y for those with a dose of 50.0 units is 3239 units. The overall mean Y from the first table is 2445.4 units. The age is relatively similar across dose categories. For dose = 25 units, the mean age is 32.07 years; for dose = 37.5 units, the mean age is 36.08 years; and for dose = 50.0 units, the mean age is 33.37 years old. 
+
+Now, I will create a few scatterplots between total drug (Y), which is the outcome, and continuous predictors (such as: AGE, WT, and HT). 
+
+Below, I will create a scatterplot for Y and AGE. I will also calculate the correlation coefficient for their relationship.
+
+```{r}
+# Scatterplot of Y and AGE
+ggplot(data_joined_filtered, aes(x = AGE, y = Y)) +
+  geom_point(alpha = 0.6, color = "#d7bde2") +  # add points and give them a color 
+  labs(
+    title = "Total Drug (Y) vs. Age", # title
+    x = "Age (years)", # naming x-axis
+    y = "Total Drug (Y)" # naming y-axis
+  ) +
+  theme_minimal() + 
+   theme(
+    plot.title = element_text(hjust = 0.5,  # center the title
+                              face = "bold",  # make title bold
+                              size = 16)      # make title bigger
+  )
+
+# Correlation coefficient
+cor(data_joined_filtered$AGE, data_joined_filtered$Y)
+```
+
+I will create a scatterplot for Y and HT and calculate the correlation coefficient.
+
+```{r}
+# Scatterplot of Y and AGE
+ggplot(data_joined_filtered, aes(x = HT, y = Y)) +
+  geom_point(alpha = 0.6, color = "#ffcdea") +  # add points and give them a color 
+  labs(
+    title = "Total Drug (Y) vs. HT", # title
+    x = "Height (unit unspecified)", # naming x-axis
+    y = "Total Drug (Y)" # naming y-axis
+  ) +
+  theme_minimal() + 
+   theme(
+    plot.title = element_text(hjust = 0.5,  # center the title
+                              face = "bold",  # make title bold
+                              size = 16)      # make title bigger
+  )
+
+# Correlation coefficient
+cor(data_joined_filtered$HT, data_joined_filtered$Y)
+```
+
+I will create a scatterplot for Y and WT and calculate the correlation coefficient.
+
+```{r}
+# Scatterplot of Y and AGE
+ggplot(data_joined_filtered, aes(x = WT, y = Y)) +
+  geom_point(alpha = 0.6, color = "#f7dc6f") +  # add points and give them a color 
+  labs(
+    title = "Total Drug (Y) vs. WT", # title
+    x = "Weight (unit unspecified)", # naming x-axis
+    y = "Total Drug (Y)" # naming y-axis
+  ) +
+  theme_minimal() + 
+   theme(
+    plot.title = element_text(hjust = 0.5,  # center the title
+                              face = "bold",  # make title bold
+                              size = 16)      # make title bigger
+  )
+
+# Correlation coefficient
+cor(data_joined_filtered$WT, data_joined_filtered$Y)
+```
+
+The correlation coefficient between Y and AGE is 0.01256372, between Y and HT is -0.1583297, and between Y and WT is -0.2128719. These are pretty weak relationships. 
+
+Now, I will plot the distributions of the continuous variables: Y, AGE, WT, and HT. I will do this by creating histograms. 
+
+First, I will create a histogram for Y. 
+
+```{r}
+# Histogram of Y
+ggplot(data_joined_filtered, aes(x = Y)) +
+  geom_histogram(fill = "#76d7c4", color = "#1abc9c", bins = 30) +  # add histogram with custom colors
+  labs(
+    title = "Distribution of Total Drug (Y)", # title
+    x = "Total Drug (Y)", # naming x-axis
+    y = "Frequency" # naming y-axis
+  ) +
+  theme_minimal() + 
+   theme(
+    plot.title = element_text(hjust = 0.5,  # center the title
+                              face = "bold",  # make title bold
+                              size = 16)      # make title bigger
+  )
+```
+This histogram of Y above appears to be right-skewed. 
+
+Next, I will create a histogram for AGE.
+
+```{r}
+# Histogram of AGE
+ggplot(data_joined_filtered, aes(x = AGE)) +
+  geom_histogram(fill = "#ceceff", color = "#a4a4ff", bins = 30) +  # add histogram with custom colors
+  labs(
+    title = "Distribution of AGE (years)", # title
+    x = "Age (years)", # naming x-axis
+    y = "Frequency" # naming y-axis
+  ) +
+  theme_minimal() + 
+   theme(
+    plot.title = element_text(hjust = 0.5,  # center the title
+                              face = "bold",  # make title bold
+                              size = 16)      # make title bigger
+  )
+```
+The histogram of AGE appears to be bimodal; one peak is around 27 years while the other is around 37 years old. 
+
+Now, I will create a histogram for WT. 
+
+```{r}
+# Histogram of WT
+ggplot(data_joined_filtered, aes(x = WT)) +
+  geom_histogram(fill = "#c0f1ff", color = "#74dfff", bins = 30) +  # add histogram with custom colors
+  labs(
+    title = "Distribution of Weight (unit unspecified)", # title
+    x = "Weight (unit unspecified)", # naming x-axis
+    y = "Frequency" # naming y-axis
+  ) +
+  theme_minimal() + 
+   theme(
+    plot.title = element_text(hjust = 0.5,  # center the title
+                              face = "bold",  # make title bold
+                              size = 16)      # make title bigger
+  )
+```
+The histogram of weight above appears to be approximately normally distributed for the most part. 
+
+Lastly, I will create a histogram for HT.
+
+```{r}
+# Histogram of HT
+ggplot(data_joined_filtered, aes(x = HT)) +
+  geom_histogram(fill = "#f69090", color = "#f15e5e", bins = 30) +  # add histogram with custom colors
+  labs(
+    title = "Distribution of Height (unit unspecified)", # title
+    x = "Height (unit unspecified)", # naming x-axis
+    y = "Frequency" # naming y-axis
+  ) +
+  theme_minimal() + 
+   theme(
+    plot.title = element_text(hjust = 0.5,  # center the title
+                              face = "bold",  # make title bold
+                              size = 16)      # make title bigger
+  )
+```
+The histogram above for height appears to be slightly skewed to the right. 
+
+I will now create a pairs plot using the GGally package and function ggpairs(). 
+
+```{r}
+data_joined_filtered %>%
+  select(Y, DOSE, AGE, WT, HT) %>%
+  mutate(DOSE = factor(DOSE, levels = c(25, 37.5, 50))) %>%  # Convert DOSE to a factor
+  ggpairs(
+    aes(color = DOSE, alpha = 0.5),  # Set color to be specified by DOSE
+    upper = list(continuous = "points"),  # Set the upper plot to show points
+    lower = list(continuous = "points"),  # Set the lower plot to show points
+    diag = list(continuous = "barDiag")   # Optionally, use a bar plot for the diagonal
+  ) 
+```
+
+You can see some of the correlation and histograms that I created in EDA steps above within this ggpairs plot. It is good to see the same patterns as above!
+
+# Model Fitting
+
+I will now fit a linear model to the outcome (Y) using the main predictor (DOSE). 
+
+```{r}
+# Fit a linear model to the outcome (Y) using the main predictor (DOSE)
+model_dose <- lm(Y ~ DOSE, data = data_joined_filtered)
+
+# Summary of the model
+summary(model_dose)
+```
+The intercept value from the output above is 323.062. This means that when DOSE is 0, the estimated value of Y is 323.062. 
+
+The slope for DOSE from the output above is 58.213. This means that for every 1-unit increase in DOSE, Y is expected to increase by 58.213 units. The p-value si smaller than 2e-16, which suggests DOSE is a significant predictor of Y (and has a statistically significant relationship).
+
+Now, I will fit a linear model to the continuous outcome (Y) using all predictors (DOSE, AGE, WT, and HT).
+
+```{r}
+# Fit a linear model to the continuous outcome (Y) using all predictors (DOSE, AGE, WT, and HT)
+model_all <- lm(Y ~ DOSE + AGE + WT + HT, data = data_joined_filtered)
+
+# Summary of the model
+summary(model_all)
+```
+The intercept value above is 2166.9821. This means that when all independent variables/predictors (DOSE, AGE, WT, HT) are 0, the estimated value of Y is 2166.9821. 
+
+The slope for DOSE is 60.6078; meaning that for every 1-unit increase in DOSE, Y is expected to increase by 60.6078 units, assuming the other variables remain constant. The p-value is less than 2e-16, which indicates that DOSE is a significant predictor of Y. 
+
+The slope for AGE is -0.9549; meaning that for every 1-unit increase in AGE, Y is expected to decrease by 0.9549 units, assuming the other variables remain constant. The p-value is 0.8995, suggesting AGE is not a statistically significant predictor of Y when accounting for other variables.
+
+The slope for WT is -21.8574; meaning that for every 1-unit increase in WT, Y is expected to decrease by 21.8574 units, assuming the other variables remain constant. The p-value is 0.0008, suggesting WT is a statistically significant predictor of Y when controlling for other variables.
+
+The slope for HT is -54.1797; meaning that for every 1-unit increase in HT, Y is expected to decrease by 54.1797 units, assuming the other variables remain constant. The p-value is 0.9561, suggesting HT is not a statistically significant predictor of Y when controlling for other variables.
+
+For both models above, compute Root Mean Squared Error (RMSE) and R-squared. 
+
+```{r}
+# RMSE and R-squared for the model with DOSE as the main predictor
+rmse_dose <- sqrt(mean(model_dose$residuals^2))
+rmse_dose
+r_squared_dose <- summary(model_dose)$r.squared
+r_squared_dose
+
+# RMSE and R-squared for the model with all predictors
+rmse_all <- sqrt(mean(model_all$residuals^2))
+rmse_all
+r_squared_all <- summary(model_all)$r.squared
+r_squared_all
+```
+The RMSE for the first model, using DOSE as the main predictor, is 666.4618. This suggests that the model's predictions deviate from the actual values by approximately 666.46 units on average. 
+The R-squared value for the first model is 0.5156, meaning that approximately 51.56% of the variance in the dependent variable (Y) can be explained by the DOSE variable alone.
+
+The RMSE for the second model, using DOSE, AGE, WT, and HT as predictors is 607.09. This suggests that the model's predictions deviate from the actual values by approximately 607.09 units on average.
+
+The R-squared value for the second model is 0.5981, meaning that approximately 59.81% of the variance in the dependent variable (Y) can be explained by the combination of DOSE, AGE, WT, and HT.
+
+From the above RMSE and R-squared values, we can state that the model's performance is improved when we include more predictors. The RMSE for the second model is lower (lower RMSE values are better). Additionally, the R-squared for the second model is higher (higher R-squared values are better). 
+
+Now, I will fit a linear model to continuous outcome (Y) using a categorical predictor (SEX). 
+
+```{r}
+# Fit a linear model to the continuous outcome (Y) using categorical predictor (SEX)
+model_sex <- lm(Y ~ SEX, data = data_joined_filtered)
+
+# Summary of the model
+summary(model_sex)
+```
+The intercept value above is 2477.64. This is the prediced value of Y when SEX = 1 (we do not know if 1 represents male or female). 
+
+The slope for SEX is -241.77. This represents the change in the outcome variable Y when SEX switches from 1 to 2. 
+
+The p-value above is 0.351, which is very high and does not indicate that SEX is a strong predictor of Y. 
+
+I will now compute RMSE and R-squared. 
+
+```{r}
+rmse_sex <- sqrt(mean(model_sex$residuals^2))
+rmse_sex
+r_squared_sex <- summary(model_sex)$r.squared
+r_squared_sex
+```
+
+The RMSE for this model is 954. 0867. This indicates that the model's predictions deviate from the actual values by approximately 954.09 units on average. 
+
+The R-squared value for this model is 0.007365547, meaning that approximately 0.7365547% of the variance in the dependent variable (Y) can be explained by
+
+The RMSE is pretty high and the R-squared value is very low. This suggests that this is not a good model. 
+
+Now, I will fit a logistic model to a categorical outcome (SEX) using the main predictor of interest (DOSE).
+
+```{r}
+# Fit a logistic model to SEX using DOSE
+logistic_model_SEX <- glm(SEX ~ DOSE, data = data_joined_filtered, family = binomial)
+
+# Summary of the model
+summary(logistic_model_SEX)
+```
+The intercept from the output above is -0.76482. This indicates that the log-odds of the outcome SEX is -0.76482 when DOSE is zero.
+
+The slope for DOSE is -0.03175. This suggests that for each additional unit of DOSE, the log-odds of the outcome decrease by 0.03175. 
+
+The p-value is 0.192, indicating that DOSE is not statistically significant in predicting SEX when the significance level is equal to 0.05. 
+
+Now, I will fit a logistic model to a categorical outcome (SEX) using all predictors (DOSE, AGE, WT, and HT). 
+
+```{r}
+# Fit a logistic model to SEX using all predictors (DOSE, AGE, WT, HT)
+logistic_model_all <- glm(SEX ~ DOSE + AGE + WT + HT, data = data_joined_filtered, family = binomial)
+
+# Summary of the model
+summary(logistic_model_all)
+```
+The intercept is shown to be 51.18213. This represents the log-odds of SEX when all predictors in the model are equal to 0.
+
+The slope for DOSE is -0.08433. This suggests that for each one-unit increase in DOSE, the log-odds of being in the reference category of SEX (SEX = 1), decrease by 0.08433. The p-value is 0.06514, which indicates that DOSE is not a statistically strong predictor of SEX.
+
+The slope for AGE is 0.10493. This suggests that for each one-unit increase in AGE, the log-odds of having SEX = 1, increase by 0.10493. The p-value is 0.06659, which indicates that AGE is not a strong predictor of SEX. 
+
+The slope for WT is -0.01979. This suggests that for each one-unit increase in WT, the log-odds of having SEX = 1, decrease by 0.01979. The p-value is 0.72991, which indicates that WT is not a strong predictor of SEX. This is the largest p-value out of all the predictors. 
+
+The slope for HT is -0.03091. This suggests that for each one-unit increase in HT, the log-odds of having SEX = 1, decrease by 0.03091. The p-value is 0.00207, which indicates that HT is a strong predictor of SEX. 
+
+For both models above, I will compute accuracy and Receiver Operating Characteristic Area Under the Curve (ROC-AUC). I have never calculated accuracy and ROC-AUC before, so I consulted AI for help on getting started. 
+
+```{r}
+# predictions for both models
+pred_SEX <- predict(logistic_model_SEX, type = "response")
+pred_all <- predict(logistic_model_all, type = "response")
+
+# convert predictions to binary (0/1) based on a 0.5 threshold
+pred_SEX_binary <- ifelse(pred_SEX > 0.5, 1, 0)
+pred_all_binary <- ifelse(pred_all > 0.5, 1, 0)
+
+# cctual values for SEX (binary 0/1)
+actual <- data_joined_filtered$SEX
+
+# accuracy calculation
+accuracy_SEX <- mean(pred_SEX_binary == actual)
+accuracy_all <- mean(pred_all_binary == actual)
+
+accuracy_SEX # print accuracy for first model
+accuracy_all # print accuracy for second model
+
+# ROC and AUC for both models
+library(pROC)
+
+roc_SEX <- roc(actual, pred_SEX)
+roc_all <- roc(actual, pred_all)
+
+# AUC for both models
+auc_SEX <- auc(roc_SEX)
+auc_all <- auc(roc_all)
+
+auc_SEX # print AUC for first model
+auc_all # print AUC for second model
+```
+The first model, simply using DOSE as a predictor, has an accuracy of 0. The second model, using all predictors (DOSE, AGE, WT, HT), has an accuracy of 0.0083. This indicates that both models aren't performing well. 
+
+THe first model has an AUC of 0.5919, which suggests that the model is not that great, as an AUC of 0.5 is indicative of "random guessing." The second model has an AUC of 0.9621, which is very close to 1.0, which is the best value for AUC. This suggests that including more predictors improves the model's performance significantly.
+
+I will attempt a k-nearest neighbors model to fit the continuous outcome Y. I have not done this, so I will consult AI for help (for the code and interpretation).  
+
+```{r}
+library(caret)
+
+# Prepare the data (assuming data is already loaded and clean)
+# For simplicity, let's use all predictors
+train_data_continuous <- data_joined_filtered %>% 
+  select(Y, DOSE, AGE, WT, HT)  # Assuming these columns are predictors
+
+# Train a KNN model for continuous Y
+knn_model_continuous <- train(Y ~ ., data = train_data_continuous, method = "knn", tuneLength = 10)
+
+# Print the model results
+knn_model_continuous
+```
+k = 23 has the lowest RMSE, 698.5967. Therefore, on average, the model's predictions are approximately 698.5967 units off from the actual values. k = 23 also has the highest R-squared value, of 0.5056991 (which is truly not that high at all). This means that roughly 50.5056991% of the variance in Y can be explained by the model. k = 23 has a Mean Absolute Error (MAE) of 527.1237; indicating that the model's predictions deviate by roughly 527.1237 units from the actual values.
+
+I will attempt a k-nearest neighbors model to fit the categorical outcome SEX. 
+
+```{r}
+# Prepare the data (categorical outcome SEX)
+train_data_categorical <- data_joined_filtered %>% 
+  select(SEX, DOSE, AGE, WT, HT)
+
+# Train a KNN model for categorical SEX
+knn_model_categorical <- train(SEX ~ ., data = train_data_categorical, method = "knn", tuneLength = 10)
+
+# Print the model results
+knn_model_categorical
+```
+The highest accuracy, 0.8557523, is for k = 21. This means the model accurately predicted SEX roughly 85.57523% of the time. The kappa value measures the agreement betwen the actual and predicted classes (in this case, SEX). The kappa for k = 21 is 0.022910974; this indicates low agreement between actual and predicted SEX beyond chance. It appears as though this model is not performing well.
