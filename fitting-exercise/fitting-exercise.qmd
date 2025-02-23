@@ -13,6 +13,7 @@ library(readr)
 library(here)
 library(naniar)
 library(GGally)
+library(yardstick)
 options(repos = c(CRAN = "https://cran.rstudio.com/")) # including this because I could not render the website without it
 ```
 
@@ -469,22 +470,32 @@ The slope for HT is -54.1797; meaning that for every 1-unit increase in HT, Y is
 For both models above, compute Root Mean Squared Error (RMSE) and R-squared. 
 
 ```{r}
+# Create a dataframe with actual and predicted values for the model with DOSE as the main predictor
+data_dose <- data_joined_filtered %>%
+  mutate(predicted_dose = predict(model_dose, newdata = data_joined_filtered))
+
 # RMSE and R-squared for the model with DOSE as the main predictor
-rmse_dose <- sqrt(mean(model_dose$residuals^2))
+rmse_dose <- rmse(data_dose, truth = Y, estimate = predicted_dose)
+r_squared_dose <- rsq(data_dose, truth = Y, estimate = predicted_dose)
+
 rmse_dose
-r_squared_dose <- summary(model_dose)$r.squared
 r_squared_dose
 
+# Create a dataframe with actual and predicted values for the model with all predictors
+data_all <- data_joined_filtered %>%
+  mutate(predicted_all = predict(model_all, newdata = data_joined_filtered))
+
 # RMSE and R-squared for the model with all predictors
-rmse_all <- sqrt(mean(model_all$residuals^2))
+rmse_all <- rmse(data_all, truth = Y, estimate = predicted_all)
+r_squared_all <- rsq(data_all, truth = Y, estimate = predicted_all)
+
 rmse_all
-r_squared_all <- summary(model_all)$r.squared
 r_squared_all
 ```
-The RMSE for the first model, using DOSE as the main predictor, is 666.4618. This suggests that the model's predictions deviate from the actual values by approximately 666.46 units on average. 
+The RMSE for the first model, using DOSE as the main predictor, is 666.4618. This suggests that the model's predictions deviate from the actual values by approximately 666.4618 units on average. 
 The R-squared value for the first model is 0.5156, meaning that approximately 51.56% of the variance in the dependent variable (Y) can be explained by the DOSE variable alone.
 
-The RMSE for the second model, using DOSE, AGE, WT, and HT as predictors is 607.09. This suggests that the model's predictions deviate from the actual values by approximately 607.09 units on average.
+The RMSE for the second model, using DOSE, AGE, WT, and HT as predictors is 607.0941. This suggests that the model's predictions deviate from the actual values by approximately 607.0941 units on average.
 
 The R-squared value for the second model is 0.5981, meaning that approximately 59.81% of the variance in the dependent variable (Y) can be explained by the combination of DOSE, AGE, WT, and HT.
 
@@ -557,6 +568,33 @@ The slope for HT is -0.03091. This suggests that for each one-unit increase in H
 For both models above, I will compute accuracy and Receiver Operating Characteristic Area Under the Curve (ROC-AUC). I have never calculated accuracy and ROC-AUC before, so I consulted AI for help on getting started. 
 
 ```{r}
+# Convert actual and predicted values to factors
+data_results <- data_joined_filtered %>%
+  mutate(
+    pred_SEX = predict(logistic_model_SEX, type = "response"),
+    pred_all = predict(logistic_model_all, type = "response"),
+    pred_SEX_binary = factor(ifelse(pred_SEX > 0.5, "1", "0"), levels = c("0", "1")),
+    pred_all_binary = factor(ifelse(pred_all > 0.5, "1", "0"), levels = c("0", "1")),
+    SEX = factor(SEX, levels = c("0", "1"))  # Ensure SEX is a factor
+  )
+
+# Accuracy calculation using yardstick
+accuracy_SEX <- accuracy(data_results, truth = SEX, estimate = pred_SEX_binary)
+accuracy_all <- accuracy(data_results, truth = SEX, estimate = pred_all_binary)
+
+accuracy_SEX # Print accuracy for first model
+accuracy_all # Print accuracy for second model
+
+# ROC AUC calculation using yardstick (pass predictor column directly, no "estimate =")
+auc_SEX <- roc_auc(data_results, truth = SEX, pred_SEX, event_level = "second")
+auc_all <- roc_auc(data_results, truth = SEX, pred_all, event_level = "second")
+
+auc_SEX # Print AUC for first model
+auc_all # Print AUC for second model
+
+# I couldn't get the yardstick ROC AUC function to work, so I will use the method below: 
+library(pROC)
+
 # predictions for both models
 pred_SEX <- predict(logistic_model_SEX, type = "response")
 pred_all <- predict(logistic_model_all, type = "response")
@@ -568,16 +606,6 @@ pred_all_binary <- ifelse(pred_all > 0.5, 1, 0)
 # cctual values for SEX (binary 0/1)
 actual <- data_joined_filtered$SEX
 
-# accuracy calculation
-accuracy_SEX <- mean(pred_SEX_binary == actual)
-accuracy_all <- mean(pred_all_binary == actual)
-
-accuracy_SEX # print accuracy for first model
-accuracy_all # print accuracy for second model
-
-# ROC and AUC for both models
-library(pROC)
-
 roc_SEX <- roc(actual, pred_SEX)
 roc_all <- roc(actual, pred_all)
 
@@ -588,7 +616,7 @@ auc_all <- auc(roc_all)
 auc_SEX # print AUC for first model
 auc_all # print AUC for second model
 ```
-The first model, simply using DOSE as a predictor, has an accuracy of 0. The second model, using all predictors (DOSE, AGE, WT, HT), has an accuracy of 0.0083. This indicates that both models aren't performing well. 
+The first model, simply using DOSE as a predictor, has an accuracy of 0. The second model, using all predictors (DOSE, AGE, WT, HT), has an accuracy of 0.009615385. 
 
 THe first model has an AUC of 0.5919, which suggests that the model is not that great, as an AUC of 0.5 is indicative of "random guessing." The second model has an AUC of 0.9621, which is very close to 1.0, which is the best value for AUC. This suggests that including more predictors improves the model's performance significantly.
 
