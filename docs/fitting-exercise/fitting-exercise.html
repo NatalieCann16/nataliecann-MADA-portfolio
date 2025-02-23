@@ -251,7 +251,7 @@ The following object is masked from 'package:dplyr':
 <div class="cell-output cell-output-stdout">
 <pre><code>
 The downloaded binary packages are in
-    /var/folders/n7/2hn_592d3db_b95vx1v5wcjr0000gn/T//RtmpgncBRS/downloaded_packages</code></pre>
+    /var/folders/n7/2hn_592d3db_b95vx1v5wcjr0000gn/T//RtmplTKPLq/downloaded_packages</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(nlmixr2data) <span class="co"># load package</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -1455,16 +1455,16 @@ Summary of sample sizes: 120, 120, 120, 120, 120, 120, ...
 Resampling results across tuning parameters:
 
   k   RMSE      Rsquared   MAE     
-   5  756.1304  0.4154736  579.2481
-   7  729.8930  0.4470395  559.8762
-   9  706.1929  0.4743794  543.8449
-  11  693.2529  0.4907207  537.5564
-  13  680.8749  0.5086660  524.1780
-  15  675.3404  0.5159048  521.2823
-  17  669.0992  0.5247251  515.0488
-  19  667.5191  0.5278185  511.7246
-  21  666.1587  0.5293517  509.2230
-  23  663.3888  0.5350366  508.4928
+   5  779.0255  0.3969643  588.9569
+   7  742.5364  0.4371722  556.5778
+   9  719.4006  0.4636291  536.8616
+  11  704.5132  0.4802891  528.1879
+  13  693.6480  0.4950907  518.6745
+  15  689.6715  0.5012252  513.4953
+  17  685.7827  0.5074908  513.0699
+  19  680.7053  0.5151392  509.8101
+  21  675.9822  0.5230437  502.7449
+  23  675.8933  0.5250569  504.1691
 
 RMSE was used to select the optimal model using the smallest value.
 The final value used for the model was k = 23.</code></pre>
@@ -1495,19 +1495,19 @@ Summary of sample sizes: 120, 120, 120, 120, 120, 120, ...
 Resampling results across tuning parameters:
 
   k   Accuracy   Kappa     
-   5  0.8610144  0.21750717
-   7  0.8489440  0.16993344
-   9  0.8613243  0.21280443
-  11  0.8616190  0.17247616
-  13  0.8569236  0.09852326
-  15  0.8652150  0.09316154
-  17  0.8650115  0.08699018
-  19  0.8677376  0.07472904
-  21  0.8655043  0.02544949
-  23  0.8672960  0.02604333
+   5  0.8745364  0.27989655
+   7  0.8694091  0.23343559
+   9  0.8729302  0.17218323
+  11  0.8702733  0.09413369
+  13  0.8709598  0.05879753
+  15  0.8810731  0.08229756
+  17  0.8798454  0.07886393
+  19  0.8800271  0.03571444
+  21  0.8780758  0.02766107
+  23  0.8791306  0.02143496
 
 Accuracy was used to select the optimal model using the largest value.
-The final value used for the model was k = 19.</code></pre>
+The final value used for the model was k = 15.</code></pre>
 </div>
 </div>
 <p>The highest accuracy, 0.8557523, is for k = 21. This means the model accurately predicted SEX roughly 85.57523% of the time. The kappa value measures the agreement betwen the actual and predicted classes (in this case, SEX). The kappa for k = 21 is 0.022910974; this indicates low agreement between actual and predicted SEX beyond chance. It appears as though this model is not performing well.</p>
