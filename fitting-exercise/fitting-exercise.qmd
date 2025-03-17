@@ -14,6 +14,10 @@ library(here)
 library(naniar)
 library(GGally)
 library(yardstick)
+library(caret)
+library(tidymodels)
+library(workflows)
+library(parsnip)
 options(repos = c(CRAN = "https://cran.rstudio.com/")) # including this because I could not render the website without it
 ```
 
@@ -43,6 +47,12 @@ summary(data)
 ```
 
 # Data Processing and Exploration 
+
+Setting Seed for Module 10 exercise: 
+
+```{r}
+rngseed = 1234
+```
 
 The data does not come with a codebook so I will now use the methods on the class website to try to understand what each variable means. 
 
@@ -652,3 +662,333 @@ knn_model_categorical <- train(SEX ~ ., data = train_data_categorical, method = 
 knn_model_categorical
 ```
 The highest accuracy, 0.8557523, is for k = 21. This means the model accurately predicted SEX roughly 85.57523% of the time. The kappa value measures the agreement betwen the actual and predicted classes (in this case, SEX). The kappa for k = 21 is 0.022910974; this indicates low agreement between actual and predicted SEX beyond chance. It appears as though this model is not performing well.
+
+# Module 10 Part One
+
+Setting seed for reproducibility: rngseed = 1234
+
+```{r}
+rngseed = 1234
+```
+
+I will now remove RACE from the dataset since it has oddly coded values. 
+
+```{r}
+data_10 <- data_joined_filtered %>% 
+  select(-RACE)
+
+colnames(data_10) # checking to make sure that RACE was dropped
+
+dim(data_10)
+```
+The dimensions appear to be correct since we have 120 columns and 6 variables. 
+
+Setting seed specified above:
+
+```{r}
+set.seed(rngseed)
+```
+
+Now, I will split the data randomly into a 75% train (3/4) and 25% test set (1/4). I will use https://www.tidymodels.org/start/recipes/ as a reference for how to do this. 
+
+```{r}
+# putting 3/4 of data into the training set
+data_split <- initial_split(data_10, prop = 3/4)
+
+# creating train and test data frames
+train_data <- training(data_split)
+test_data <- testing(data_split)
+```
+
+## Modeling Fitting
+
+Setting seed specified above:
+
+```{r}
+set.seed(rngseed)
+```
+
+I will now fit two linear models to Y (the continuous outcome of interest). I will use only the training data for this. 
+
+First model: Y ~ DOSE (only DOSE as predictor)
+
+```{r}
+model_dose_10 <- lm(Y ~ DOSE, data = train_data)
+summary(model_dose_10)
+```
+The intercept is 535.455. This means that when DOSE is 0, the estimated value of Y is 535.455. (P = 0.0308) --> statistically significant
+
+The slope for DOSE is 53.424. This means that for every 1-unit increase in DOSE, Y is expected to increase by 53.424 units. The p-value is less than 4.41e-13, which indicates that DOSE is a significant predictor of Y.
+
+RMSE = 710.7
+
+Second model: Y ~ DOSE + AGE + WT + HT (all predictors)
+
+```{r}
+model_all_10 <- lm(Y ~ DOSE + AGE + WT + HT, data = train_data)
+summary(model_all_10)
+```
+The intercept is 2192.480. This means that when DOSE, AGE, WT, and HT are 0, the estimated value of Y is 2192.480 (P = 0.25153) --> not statistically significant
+
+The slope for DOSE is 56.493. This means that for every 1-unit increase in DOSE, Y is expected to increase by 56.493 units. The p-value is 3.79e-15, which indicates that DOSE is a significant predictor of Y.
+
+The slope for AGE is -5.621. This means that for every 1-unit increase in AGE, Y is expected to decrease by 5.621 units. The p-value is 0.54698, which indicates that AGE is not significant predictor of Y.\
+
+The slope for WT is -23.204. This means that for every 1-unit increase in WT, Y is expected to decrease by 23.204 units. The p-value is 0.000372, which indicates that WT is a significant predictor of Y.
+
+The slope for HT is 185.838. This means that for every 1-unit increase in HT, Y is expected to increase by 185.838 units. The p-value is 0.87809, which indicates that HT is not a significant predictor of Y. 
+
+RMSE = 660.7
+
+From the RMSEs above, we can see that the second model's is smaller (660.7) than the first model's (710.7). This suggests that the second model's predictions deviate less from the actual values on average -- indicating that the second model may be better. 
+
+## Model Performance Assessment 1
+
+Setting seed specified above:
+
+```{r}
+set.seed(rngseed)
+```
+
+Now, as per class instructions, I will run predictions for both models. 
+
+```{r}
+set.seed(rngseed)
+
+# DOSE model
+lm_dose <- linear_reg() %>% 
+  set_engine("lm") %>% 
+  set_mode("regression")
+
+lm_dose_workflow <- workflow() %>% 
+  add_model(lm_dose) %>% 
+  add_formula(Y ~ DOSE)
+
+# ALL model
+lm_all <- linear_reg() %>% 
+  set_engine("lm") %>% 
+  set_mode("regression")
+
+lm_all_workflow <- workflow() %>% 
+  add_model(lm_all) %>% 
+  add_formula(Y ~ .) # period includes all predictors
+
+# fit models to train data
+lm_dose_fit <- lm_dose_workflow %>% fit(train_data)
+lm_all_fit <- lm_all_workflow %>% fit(train_data)
+
+# predictions with train data
+preds_dose <- predict(lm_dose_fit, train_data) %>% bind_cols(train_data)
+preds_all <- predict(lm_all_fit, train_data) %>% bind_cols(train_data)
+
+# RMSE for both models
+rmse_dose <- rmse(preds_dose, truth = Y, estimate = .pred)
+rmse_dose
+rmse_all <- rmse(preds_all, truth = Y, estimate = .pred)
+rmse_all
+```
+The mean RMSE value for the prediction model containing simply DOSE is 702.8078. The mean RMSE value for the prediction model containing all predictors (DOSE, AGE, WT, HT) is 627.4408.
+
+Next, I will compute RMSE for a null model (with no predictors). 
+
+```{r}
+# compute the mean of Y (null model prediction)
+mean_Y <- mean(train_data$Y)
+
+# null model predictions (just the mean for all observations)
+pred_null <- rep(mean_Y, length(train_data$Y))
+
+# RMSE
+rmse_null <- sqrt(mean((train_data$Y - pred_null)^2))
+rmse_null
+```
+The null model mean RMSE is 948.3526. 
+
+The ALL predictors prediction model had a mean RMSE of 627.4408, which is the lowest RMSE value. This indicates that it performs the best out of the three models. The DOSE predictor prediction model had an mean RMSE of 702.8078. The null predictor prediction model had a mean RMSE of 948.3526, which suggests it performs the worst. 
+
+## Model Performance Assessment 2
+
+I will perform a 10-fold cross-validation using https://www.tidymodels.org/start/resampling/ as a reference. 
+
+```{r}
+set.seed(rngseed) # set seed for reproducibility 
+
+cv_folds <- vfold_cv(train_data, v = 10) # specify 10 folds for cross-validation
+```
+
+Below, I will set-up the modeling process for the DOSE model. 
+
+```{r}
+# set up linear regression model for the DOSE predictor model
+lm_dose <- linear_reg() %>% 
+  set_engine("lm") %>% 
+  set_mode("regression")
+
+# set up workflow for the DOSE predictor model
+dose_workflow <- 
+  workflow() %>%
+  add_model(lm_dose) %>%
+  add_formula(Y ~ DOSE)
+
+set.seed(rngseed) # set seed for reproducibility
+
+dose_fit_rs <- 
+  dose_workflow %>% 
+  fit_resamples(cv_folds)
+
+dose_metrics <- collect_metrics(dose_fit_rs) # mean RMSE of 10 folds
+dose_metrics
+```
+The mean RMSE is 690.5397 and the rsq is 0.5117. 
+
+Now, I will do so for the ALL predictors model. 
+
+```{r}
+# set up linear regression model for the ALL predictors model
+lm_all <- linear_reg() %>% 
+  set_engine("lm") %>% 
+  set_mode("regression")
+
+# set up workflow for the ALL predictors model
+all_workflow <- 
+  workflow() %>%
+  add_model(lm_all) %>%
+  add_formula(Y ~ DOSE + AGE + WT + HT)
+
+set.seed(rngseed) # set seed for reproducibility
+
+all_fit_rs <- 
+  all_workflow %>% 
+  fit_resamples(cv_folds)
+
+all_metrics <- collect_metrics(all_fit_rs) # mean RMSE of 10 folds
+all_metrics
+```
+The mean RMSE is 663.0291 and the rsq is 0.5775.
+
+We see that the ALL predictors model has the lower mean RMSE (663.0291) and the higher r-squared value (0.5775). This suggests that this model is better at predicting Y. The DOSE model has a higher mean RMSE (690.5397) and a lower r-squared value (0.5117).
+
+Now, I will do this for the null model.  
+
+```{r}
+# null model within cross-validation
+null_model_rmse <- function(split, data) {
+  # Get the training data for this fold
+  train_fold <- training(split)
+  
+  # Compute the mean of Y in the training data for this fold
+  mean_Y_fold <- mean(train_fold$Y)
+  
+  # Create predictions for the fold (just the mean of Y)
+  pred_null_fold <- rep(mean_Y_fold, nrow(training(split)))
+  
+  # Calculate RMSE for this fold
+  rmse_null_fold <- sqrt(mean((train_fold$Y - pred_null_fold)^2))
+  
+  return(rmse_null_fold)
+}
+
+# apply the null model RMSE function to the 10 folds
+cv_null_rmse <- vfold_cv(train_data, v = 10) %>%
+  mutate(rmse = map_dbl(splits, null_model_rmse, data = train_data))
+
+# mean RMSE for the null model across folds
+mean(cv_null_rmse$rmse)
+
+# standard error for RMSE for null model
+null_rmse_se <- sd(cv_null_rmse$rmse) / sqrt(length(cv_null_rmse$rmse))
+null_rmse_se
+```
+The mean RMSE for the ALL predictors model for assessment 1 was 627.4408, while it 663.0291 for assessment 2. This means that the mean RMSE for the ALL predictors model increased by 663.0291-627.4408=35.5883 units (or poitns). The mean RMSE for the DOSE predictor model for assessment 1 was 702.8078, while it was 690.5397 for assessment 2. The means that the mean RMSE for the DOSE predictor model decreased by 702.8078-690.5397=12.2681 units (or points).The mean RMSE for the null model was 948.3526 for assessment 1 and was 947.302 for assessment 2. Therefore, there was not a significant change here. 
+
+The mean standard error of RMSE for the DOSE model is 67.49509. The mean standard error of RMSE for the ALL predictors model is 58.22321. The mean standard error of RMSE for the null model is 7.085889.
+
+Now, I will run this code again however, I will choose a different value for the random seed. 
+
+```{r}
+# different random seed for reproducibility
+set.seed(54321)  # Use a different seed value for this run
+
+cv_folds_new <- vfold_cv(train_data, v = 10) # specify 10 folds for cross-validation
+
+# DOSE
+set.seed(54321)
+# set up linear regression model for the DOSE predictor model
+lm_dose_new <- linear_reg() %>% 
+  set_engine("lm") %>% 
+  set_mode("regression")
+
+# set up workflow for the DOSE predictor model
+dose_workflow_new <- 
+  workflow() %>%
+  add_model(lm_dose_new) %>%
+  add_formula(Y ~ DOSE)
+
+set.seed(54321)
+
+dose_fit_rs_new <- 
+  dose_workflow_new %>% 
+  fit_resamples(cv_folds_new)
+
+dose_metrics_new <- collect_metrics(dose_fit_rs_new) # mean RMSE of 10 folds
+dose_metrics_new
+
+# ALL
+set.seed(54321)
+# set up linear regression model for the ALL predictors model
+lm_all_new <- linear_reg() %>% 
+  set_engine("lm") %>% 
+  set_mode("regression")
+
+# set up workflow for the ALL predictors model
+all_workflow_new <- 
+  workflow() %>%
+  add_model(lm_all_new) %>%
+  add_formula(Y ~ DOSE + AGE + WT + HT)
+
+set.seed(54321)
+
+all_fit_rs_new <- 
+  all_workflow_new %>% 
+  fit_resamples(cv_folds_new)
+
+all_metrics_new <- collect_metrics(all_fit_rs_new) # mean RMSE of 10 folds
+all_metrics_new
+
+# null
+set.seed(54321)
+# null model within cross-validation
+null_model_rmse_new <- function(split, data) {
+  # Get the training data for this fold
+  train_fold <- training(split)
+  
+  # Compute the mean of Y in the training data for this fold
+  mean_Y_fold <- mean(train_fold$Y)
+  
+  # Create predictions for the fold (just the mean of Y)
+  pred_null_fold <- rep(mean_Y_fold, nrow(training(split)))
+  
+  # Calculate RMSE for this fold
+  rmse_null_fold <- sqrt(mean((train_fold$Y - pred_null_fold)^2))
+  
+  return(rmse_null_fold)
+}
+
+# apply the null model RMSE function to the 10 folds
+cv_null_rmse_new <- vfold_cv(train_data, v = 10) %>%
+  mutate(rmse = map_dbl(splits, null_model_rmse_new, data = train_data))
+
+# mean RMSE for the null model across folds
+mean_RMSE_null <-mean(cv_null_rmse_new$rmse)
+mean_RMSE_null
+
+# standard error for RMSE for null model
+null_rmse_se_new <- sd(cv_null_rmse_new$rmse) / sqrt(length(cv_null_rmse$rmse))
+null_rmse_se_new
+```
+After changing the seed to 54321, the mean RMSE for the DOSE model is 695.9589, and its R-squared value is 0.4589. The mean SE(RMSE) is 57.77. The mean RMSE for the ALL predictors model is 650.2721, and its R-squared value is 0.5417. The mean SE(RMSE) is 57.05. The mean RMSE for the null model is 947.0423, while the mean SE(RMSE) is 8.094641. 
+
+
+```{r}
+
+```
