@@ -24,8 +24,8 @@ library(readr)
 ```{r}
 here::here()
 
-#getwd()
-#setwd("~/Desktop/MADA/nataliecann-MADA-portfolio/presentation-exercise")
+getwd()
+setwd("~/Desktop/MADA/nataliecann-MADA-portfolio/presentation-exercise")
 df <- read_csv(here::here("presentation-exercise", "fandango", "fandango_score_comparison.csv"))
 ```
 
