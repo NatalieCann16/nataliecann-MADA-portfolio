@@ -988,7 +988,134 @@ null_rmse_se_new
 ```
 After changing the seed to 54321, the mean RMSE for the DOSE model is 695.9589, and its R-squared value is 0.4589. The mean SE(RMSE) is 57.77. The mean RMSE for the ALL predictors model is 650.2721, and its R-squared value is 0.5417. The mean SE(RMSE) is 57.05. The mean RMSE for the null model is 947.0423, while the mean SE(RMSE) is 8.094641. 
 
+# Module 10 Part 2: This section added by Rayleen Lewis
 
+First, I will combine all predicted values from the 3 models (null, dose only, and all predictors).
 ```{r}
+#I'm appending the observed values to the vector with the null values and adding a column to indicate model
+pred_null_rl <- as_tibble(cbind(pred_null,preds_dose$Y)) %>% mutate(model = "Null") %>% rename(.pred = pred_null, Y = V2)
+
+#Restricting dose model results to predictions and observed Y, adding column for model
+pred_dose_rl <- preds_dose %>%
+  select(.pred, Y) %>%
+  mutate(model = "Dose only")
+
+#Restricting dose model results to predictions and observed Y, adding column for model
+pred_all_rl <- preds_all %>%
+  select(.pred, Y) %>%
+  mutate(model = "All predictors")
+
+#Combining all predictions into one dataset
+combined_preds <- rbind(pred_null_rl, pred_dose_rl, pred_all_rl)
 
 ```
+
+Now that all predicted values for the 3 models are combined into one dataset. Below are figures graphing the predicted values by the observed values. This is done in two ways, first with all models on the same graph and second with each model in its own facet. It is easier to see model differences in the figure using facets.
+
+```{r}
+# Create the plot
+ggplot(combined_preds, aes(x = Y, y = .pred, color = model, shape = model)) +
+  geom_point(alpha = 0.7, size = 2) +  # Scatter plot with transparency
+  geom_abline(slope = 1, intercept = 0, linetype = "dashed", color = "black") +  # 45-degree line
+  scale_x_continuous(limits = c(0, 5000)) +  # Set x-axis limits
+  scale_y_continuous(limits = c(0, 5000)) +  # Set y-axis limits
+  theme_minimal() +  # Use a minimal theme
+  labs(title = "Observed vs. Predicted Values",
+       x = "Observed Values",
+       y = "Predicted Values",
+       color = "Model",
+       shape = "Model")
+
+# Create the plot with facets
+ggplot(combined_preds, aes(x = Y, y = .pred, color = model)) +
+  geom_point(alpha = 0.7, size = 2) +  # Scatter plot with transparency
+  geom_abline(slope = 1, intercept = 0, linetype = "dashed", color = "black") +  # 45-degree line
+  scale_x_continuous(limits = c(0, 5000)) +  # Set x-axis limits
+  scale_y_continuous(limits = c(0, 5000)) +  # Set y-axis limits
+  theme_minimal() +  # Use a minimal theme
+  labs(title = "Observed vs. Predicted Values",
+       x = "Observed Values",
+       y = "Predicted Values") +
+  facet_wrap(~model)  # Create facets for each model
+```
+Why are the 3 horizontal lines for the dose only model? The mean predicted value will be the same for all observations with the same dose value when dose is the only predictor in the model. Because there are only 3 values for dose, we see 3 lines of predicted values as expected.
+
+Next, I will look at the residuals for model 2, which is the best fitting model of the 3.
+```{r}
+#Calculating the residual
+preds_all_res <- preds_all %>%
+  mutate(all_resid = .pred - Y)
+
+
+# Create the plot of predicted and residuals
+ggplot(preds_all_res, aes(x = .pred, y = all_resid)) +
+  geom_point() +  # Scatter plot 
+  geom_abline(slope = 0, intercept = 0, linetype = "solid", color = "black") +  # line at 0
+  scale_y_continuous(limits = c(-3000, 3000)) +  # Set y-axis limits
+  theme_minimal() +  # Use a minimal theme
+  labs(title = "Predicted vs. residuals",
+       x = "Predicted Values",
+       y = "Residuals")
+```
+
+As noted in the course materials, negative residuals are larger than positive residuals.
+
+Next, I'll take 100 bootstrap samples from the training data. For each sample, I'll run a linear regression model using all variables as predictors and extract the predicted value. I'll get the median and 89% CI of the predictions from the bootstrap samples for each point. 
+```{r}
+
+set.seed(rngseed) # set seed for reproducibility
+
+# Create 100 bootstraps from train_data
+bootstraps_data <- bootstraps(train_data, times = 100)
+
+# Define a linear model
+lm_model_bs <- linear_reg() %>% 
+  set_engine("lm") %>% 
+  set_mode("regression")
+
+# Fit the model to each bootstrap sample and make predictions
+bootstrap_predictions <- map(bootstraps_data$splits, function(split) {
+  model_bs_fit <- lm_model_bs %>% fit(Y ~ ., data = analysis(split))
+  predictions_bs <- predict(model_bs_fit, new_data = train_data) %>% 
+    mutate(bootstrap_id = as.character(split$id))
+  return(predictions_bs)
+})
+
+# Convert bootstrap predictions into a matrix with 100 columns and 90 rows (each data point has its own row)
+pred_bs <- do.call(cbind, lapply(bootstrap_predictions, function(df) df$.pred)) %>% t()
+
+# Compute median and 89% confidence intervals
+preds <- pred_bs |> apply(2, quantile,  c(0.055, 0.5, 0.945)) |>  t()
+
+# Combine all predictions into a single dataframe
+bootstrap_predictions_df <- bind_rows(bootstrap_predictions, .id = "bootstrap")
+
+# Combine original predictions with bootstrap results
+pred_summary <- tibble(
+  Y = preds_all$Y,
+  point_estimate = preds_all$.pred,
+  lower_bound = preds[, 1],
+  median = preds[, 2],
+  upper_bound = preds[, 3]
+)
+
+
+# Create plot for original predictions with confidence intervals
+ggplot(pred_summary, aes(x = Y)) +
+  geom_point(aes(y = median, color = "Median"), size = 3,) + #Median predicted value
+  geom_point(aes(y = point_estimate, color = "Mean"), size = 2, shape = 18) + #Mean predicted value from model without bootstrap
+  geom_errorbar(aes(ymin = lower_bound, ymax = upper_bound, color = "89% CI"), width = 0.1) +
+  geom_abline(slope = 1, intercept = 0, linetype = "dashed", color = "black") +
+  scale_x_continuous(limits = c(0, 5000)) +  # Set x-axis limits
+  scale_y_continuous(limits = c(0, 5000)) +  # Set y-axis limits
+  theme_minimal() +  # Use a minimal theme
+  labs(title = "Observed vs. Predicted with Confidence Intervals",
+       x = "Observed Values",
+       y = "Predicted Values",
+       color = "Legend") +
+  scale_color_manual(values = c("Mean" = "orange", "Median" = "blue", "89% CI" = "red"))
+
+
+```
+
+Based on the figure above, for most observed values, the mean predicted (from original model) and median predicted values (from bootstrap samples) are very similar as noted with the orange diamonds nearly always falling within the blue circles. There is variability in the uncertainly of the predictions (89% CIs vary in width). Another important point to note is that for a lot of the points, the 89% CI does not cross the dashed black line. All CIs crossing this line, especially if the CIs are narrow, would indicate better fit. The model also appears to be systematically underestimating Y at higher levels of observed Y (i.e., estimates fall below the dashed line for high observed values of Y).
