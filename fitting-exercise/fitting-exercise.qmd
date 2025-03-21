@@ -1119,3 +1119,61 @@ ggplot(pred_summary, aes(x = Y)) +
 ```
 
 Based on the figure above, for most observed values, the mean predicted (from original model) and median predicted values (from bootstrap samples) are very similar as noted with the orange diamonds nearly always falling within the blue circles. There is variability in the uncertainly of the predictions (89% CIs vary in width). Another important point to note is that for a lot of the points, the 89% CI does not cross the dashed black line. All CIs crossing this line, especially if the CIs are narrow, would indicate better fit. The model also appears to be systematically underestimating Y at higher levels of observed Y (i.e., estimates fall below the dashed line for high observed values of Y).
+
+# Module 10 Part Three 
+
+I will now use the fit of model 2 (all predictors) using the training data to make predictions for the test data. This will provide an indication of how well the model generalizes to data that wasn't used to train the model. 
+
+```{r}
+# assigning to object called "model2" for simplicity
+model2 <- lm(Y ~ ., data = train_data)
+# use the fitted model (model 2) to make predictions on the test data
+test_preds <- predict(model2, newdata = test_data)
+```
+
+Now, I will make a plot to showcase predicted vs. observed values for the training data. In this same plot, I will also showcase the predicted vs. observed values for the test data. 
+
+```{r}
+# create dataframes (test and train) for plotting
+train_plot <- data.frame(
+  observed = train_data$Y,
+  predicted = predict(model2, newdata = train_data),
+  type = "Training"
+)
+
+test_plot <- data.frame(
+  observed = test_data$Y,
+  predicted = test_preds,
+  type = "Test"
+)
+
+# combine training and test data into a single dataframe
+plot_data <- rbind(train_plot, test_plot)
+
+# obtain plot!
+ggplot(plot_data, aes(x = observed, y = predicted, color = type)) +
+  geom_point(alpha = 0.7) +
+  geom_abline(slope = 1, intercept = 0, linetype = "dashed", color = "gray") + 
+  labs(title = "Predicted vs. Observed Values for Y",
+       x = "Predicted",
+       y = "Observed") +
+  scale_color_manual(values = c("Training" = "lightgreen", "Test" = "pink")) +  # Custom colors for Training and Test
+  theme_minimal() +  # Minimal theme
+  theme(
+    plot.title = element_text(size = 16, face = "bold", hjust = 0.5),  # Bold, larger, and centered title
+    axis.title = element_text(face = "bold"),  # Bold axis titles
+    axis.text = element_text(size = 12)  # Adjust size of axis labels
+  )
+```
+The points from the test and training data both appear to be relatively close to the gray dashed 45 degree line. This indicates a pretty good fit and also suggests that the model generalizes well to the new data (the test data).
+
+## Conclusions on Overall Model Assessment: 
+
+Model 1 = Only DOSE as a Predictor of Y (Y ~ DOSE)
+Model 2 = ALL predictors of Y (Y ~ .)
+
+1. Both of our models, perform better than the null model. Model 1 (~690) and 2 (~627) have lower RMSE's as compared to the null model (~947) (Note: RMSE's taken from assessment 2). 
+
+2. Model 1 (only DOSE as a predictor) does improve results compared to the null model. As described above, model 1's RMSE from assessment 2 was 690, as compared to ~947 from the null model. However, I do not believe it to be "usable" for any real purpose, as it is too simple. We see that model 2 (with all predictors) is much better, and basically renders model 1 to be obsolete.
+
+3. Model 2 (which includes all of the predictors) appears to be the best model and improves results as compared to both the null model AND model 1. Out of all three models, model 2 had the lowest RMSE value of ~627. It appears that from the scatterplot above, the test data points are relatively close to the 45-degree line, indicating a good fit and generalization to new data for model 2. I would say that since model 2 accounts for more than simply just dose, this would be a much more usable model. 
