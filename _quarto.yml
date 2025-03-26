@@ -22,6 +22,8 @@ website:
             file: presentation-exercise/presentation-exercise.qmd
           - text: "Fitting Exercise"
             file: fitting-exercise/fitting-exercise.qmd
+          - text: "Machine Learning"
+            file: ml-models-exercise/ml-models-exercise.qmd
 
     right:
       - icon: github 

@@ -214,6 +214,8 @@ data_joined_filtered <- data_joined %>%
   select(Y, DOSE, AGE, SEX, RACE, WT, HT)
 
 head(data_joined_filtered)
+
+saveRDS(data_joined_filtered, file = here("fitting-exercise", "data_joined_filtered.rds"))
 ```
 
 # EDA Revisited (with Clean Data)
