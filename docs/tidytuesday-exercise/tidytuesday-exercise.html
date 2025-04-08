@@ -1,0 +1,1879 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.40">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Tidy Tuesday Exercise – Natalie Cann Data Analysis Portfolio</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-8b20df304ae43519df5d458fcc8598a6.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Natalie Cann Data Analysis Portfolio</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../aboutme.html"> 
+<span class="menu-text">About Me</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-projects" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Projects</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-projects">    
+        <li>
+    <a class="dropdown-item" href="../starter-analysis-exercise/products/report/starter-analysis-report.html">
+ <span class="dropdown-text">Starter Analysis Exercise</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../coding-exercise/coding-exercise.html">
+ <span class="dropdown-text">R Coding Exercise</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../data-exercise/data-exercise.html">
+ <span class="dropdown-text">Data Exercise</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../cdcdata-exercise/cdcdata-exercise.html">
+ <span class="dropdown-text">Data Analysis Exercise</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../presentation-exercise/presentation-exercise.html">
+ <span class="dropdown-text">Presentation Exercise</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../fitting-exercise/fitting-exercise.html">
+ <span class="dropdown-text">Fitting Exercise</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../ml-models-exercise/ml-models-exercise.html">
+ <span class="dropdown-text">Machine Learning</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../tidytuesday-exercise/tidytuesday-exercise.html">
+ <span class="dropdown-text">Tidy Tuesday</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../course-project/Project-Manuscript.html">
+ <span class="dropdown-text">Course Project</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/NatalieCann16/nataliecann-MADA-portfolio"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Tidy Tuesday Exercise</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="loading-packages" class="level1">
+<h1>Loading Packages:</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+✔ dplyr     1.1.4     ✔ readr     2.1.5
+✔ forcats   1.0.0     ✔ stringr   1.5.1
+✔ ggplot2   3.5.1     ✔ tibble    3.2.1
+✔ lubridate 1.9.3     ✔ tidyr     1.3.1
+✔ purrr     1.0.2     
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gt)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(kableExtra)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'kableExtra'
+
+The following object is masked from 'package:dplyr':
+
+    group_rows</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(here)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>here() starts at /Users/nataliecann/Desktop/MADA/nataliecann-MADA-portfolio</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(naniar)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(GGally)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Registered S3 method overwritten by 'GGally':
+  method from   
+  +.gg   ggplot2</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(yardstick)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'yardstick'
+
+The following object is masked from 'package:readr':
+
+    spec</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(caret)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: lattice
+
+Attaching package: 'caret'
+
+The following objects are masked from 'package:yardstick':
+
+    precision, recall, sensitivity, specificity
+
+The following object is masked from 'package:purrr':
+
+    lift</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidymodels)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Attaching packages ────────────────────────────────────── tidymodels 1.2.0 ──
+✔ broom        1.0.6     ✔ recipes      1.1.0
+✔ dials        1.3.0     ✔ rsample      1.2.1
+✔ infer        1.0.7     ✔ tune         1.2.1
+✔ modeldata    1.4.0     ✔ workflows    1.1.4
+✔ parsnip      1.2.1     ✔ workflowsets 1.1.0
+── Conflicts ───────────────────────────────────────── tidymodels_conflicts() ──
+✖ scales::discard()        masks purrr::discard()
+✖ dplyr::filter()          masks stats::filter()
+✖ recipes::fixed()         masks stringr::fixed()
+✖ kableExtra::group_rows() masks dplyr::group_rows()
+✖ dplyr::lag()             masks stats::lag()
+✖ caret::lift()            masks purrr::lift()
+✖ caret::precision()       masks yardstick::precision()
+✖ caret::recall()          masks yardstick::recall()
+✖ caret::sensitivity()     masks yardstick::sensitivity()
+✖ yardstick::spec()        masks readr::spec()
+✖ caret::specificity()     masks yardstick::specificity()
+✖ recipes::step()          masks stats::step()
+• Use tidymodels_prefer() to resolve common conflicts.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(workflows)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(parsnip)</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ranger)</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(glmnet)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: Matrix
+
+Attaching package: 'Matrix'
+
+The following objects are masked from 'package:tidyr':
+
+    expand, pack, unpack
+
+Loaded glmnet 4.1-8</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidytuesdayR)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(janitor)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'janitor'
+
+The following objects are masked from 'package:stats':
+
+    chisq.test, fisher.test</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(kknn)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'kknn'
+
+The following object is masked from 'package:caret':
+
+    contr.dummy</code></pre>
+</div>
+</div>
+</section>
+<section id="about-the-data" class="level1">
+<h1>About the Data:</h1>
+<p>This exercise will use the tidy tuesday data uploaded April 8th, 2025 (https://github.com/rfordatascience/tidytuesday/tree/main/data/2025/2025-04-08).</p>
+<p>This data is from the Center for Medicare and Medicaid Services (CMS) and pertains to emergency room wait time variation between states.</p>
+</section>
+<section id="loading-in-the-data" class="level1">
+<h1>Loading in the Data:</h1>
+<p>The readme.md file specified several ways by which the data for this week could be brought in. Since I was able to download the data (from the link specified above), I will use the <code>read_csv</code> function from the <code>readr</code> package to load in the data.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="fu">here</span>(<span class="st">"tidytuesday-exercise"</span>, <span class="st">"care_state.csv"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 1232 Columns: 8
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr  (5): state, condition, measure_id, measure_name, footnote
+dbl  (1): score
+date (2): start_date, end_date
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+</div>
+</section>
+<section id="preliminary-data-exploration" class="level1">
+<h1>Preliminary Data Exploration:</h1>
+<p>First, I will perform a few simple functions to get a basic sense of the data.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 8
+  state condition   measure_id measure_name score footnote start_date end_date  
+  &lt;chr&gt; &lt;chr&gt;       &lt;chr&gt;      &lt;chr&gt;        &lt;dbl&gt; &lt;chr&gt;    &lt;date&gt;     &lt;date&gt;    
+1 AK    Healthcare… HCP_COVID… Percentage …   7.3 &lt;NA&gt;     2024-01-01 2024-03-31
+2 AK    Healthcare… IMM_3      Healthcare …  80   &lt;NA&gt;     2023-10-01 2024-03-31
+3 AK    Emergency … OP_18b     Average (me… 140   25, 26   2023-04-01 2024-03-31
+4 AK    Emergency … OP_18b_HI… Average tim… 157   25, 26   2023-04-01 2024-03-31
+5 AK    Emergency … OP_18b_LO… Average tim… 136   25, 26   2023-04-01 2024-03-31
+6 AK    Emergency … OP_18b_ME… Average tim… 136   25, 26   2023-04-01 2024-03-31</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1232    8</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    state            condition          measure_id        measure_name      
+ Length:1232        Length:1232        Length:1232        Length:1232       
+ Class :character   Class :character   Class :character   Class :character  
+ Mode  :character   Mode  :character   Mode  :character   Mode  :character  
+                                                                            
+                                                                            
+                                                                            
+                                                                            
+     score       footnote           start_date            end_date         
+ Min.   :  1   Length:1232        Min.   :2023-01-01   Min.   :2023-12-31  
+ 1st Qu.: 70   Class :character   1st Qu.:2023-04-01   1st Qu.:2024-03-31  
+ Median : 93   Mode  :character   Median :2023-04-01   Median :2024-03-31  
+ Mean   :134                      Mean   :2023-04-05   Mean   :2024-03-14  
+ 3rd Qu.:193                      3rd Qu.:2023-04-01   3rd Qu.:2024-03-31  
+ Max.   :730                      Max.   :2024-01-01   Max.   :2024-03-31  
+ NA's   :155                                                               </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "state"        "condition"    "measure_id"   "measure_name" "score"       
+[6] "footnote"     "start_date"   "end_date"    </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gg_miss_var</span>(data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="tidytuesday-exercise_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>There are 8 variables and 1232 observations. The variable names are: state, condition, measure_id, measure_name, score, footnote, start_date, and end_date. The variables that are characters are: state, condition, measure_id, measure_name, and footnote. The variables that are numeric are: score, start_date, and end_date. It looks like there are several scores for variables (under the measure_name variable) for each state (under several conditions). It appears as though score and footnote have some missing values.</p>
+<p>I have placed the data dictionary below for ease: |variable |class |description | |:————|:———|:————————————-| |state |character |The two-letter code for the state (or territory, etc) where the hospital is located. | |condition |character |The condition for which the patient was admitted. Six categories of conditions are included in the data. | |measure_id |character |The ID of the thing being measured. Note that there are 22 unique IDs but only 21 unique names. | |measure_name |character |The name of the thing being measured. Note that there are 22 unique IDs but only 21 unique names. | |score |double |The score of the measure. | |footnote |character |Footnotes that apply to this measure: 5 = “Results are not available for this reporting period.”, 25 = “State and national averages include Veterans Health Administration (VHA) hospital data.”, 26 = “State and national averages include Department of Defense (DoD) hospital data.”. | |start_date |date |The date on which measurement began for this measure. | |end_date |date |The date on which measurement ended for this measure. |</p>
+</section>
+<section id="formulation-of-question-and-hypothesis" class="level1">
+<h1>Formulation of Question and Hypothesis:</h1>
+<p>Here are the two questions from within the readme.md script: - Is there a connection between state populations and wait times? - Which conditions have the longest wait times? The shortest?</p>
+<p>I would like to go more specific and assess if there is a connection between state populations and wait times in the Emergency Department.</p>
+</section>
+<section id="data-cleaning" class="level1">
+<h1>Data Cleaning:</h1>
+<p>First, I will only obtain the data that is relevant to answering my question (measurement_name = Average (median) time patients spent in the emergency department before leaving from the visit A lower number of minutes is better AND condition = Emergency Department FOR EACH STATE). I will call this data set er_data.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a> data <span class="sc">%&gt;%</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(condition <span class="sc">==</span> <span class="st">"Emergency Department"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>(measure_name) <span class="sc">%&gt;%</span></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(measure_name)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "Average (median) time patients spent in the emergency department before leaving from the visit A lower number of minutes is better"                                          
+ [2] "Average time patients spent in the emergency department before being sent home A lower number of minutes is better (high)"                                                   
+ [3] "Average time patients spent in the emergency department before being sent home A lower number of minutes is better (low)"                                                    
+ [4] "Average time patients spent in the emergency department before being sent home A lower number of minutes is better (moderate)"                                               
+ [5] "Average (median) time patients spent in the emergency department before leaving from the visit- Psychiatric/Mental Health Patients.  A lower number of minutes is better"    
+ [6] "Average time patients spent in the emergency department before leaving from the visit - Psychiatric/Mental Health Patients.  A lower number of minutes is better (high)"     
+ [7] "Average time patients spent in the emergency department before leaving from the visit - Psychiatric/Mental Health Patients.  A lower number of minutes is better (low)"      
+ [8] "Average time patients spent in the emergency department before leaving from the visit - Psychiatric/Mental Health Patients.  A lower number of minutes is better (moderate)" 
+ [9] "Average time patients spent in the emergency department before leaving from the visit - Psychiatric/Mental Health Patients.  A lower number of minutes is better (very high)"
+[10] "Percentage of patients who left the emergency department before being seen Lower percentages are better"                                                                     
+[11] "Percentage of patients who came to the emergency department with stroke symptoms who received brain scan results within 45 minutes of arrival Higher percentages are better" </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>er_data <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>    condition <span class="sc">==</span> <span class="st">"Emergency Department"</span>,</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>    measure_name <span class="sc">==</span> <span class="st">"Average (median) time patients spent in the emergency department before leaving from the visit A lower number of minutes is better"</span></span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> <span class="co"># obtain data of interest</span></span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(state, condition, measure_id, measure_name, score) <span class="sc">%&gt;%</span> <span class="co"># select my columns</span></span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">er_wait_score =</span> score) <span class="sc">%&gt;%</span> <span class="co"># rename so that it relfects emergency depts</span></span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(er_wait_score)) <span class="co"># drop missing values if there are any</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now, I need to add a column that shows the population size for each state. First, I will read in this states population dataset (from: https://www.britannica.com/topic/largest-U-S-state-by-population).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>states_pop <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="fu">here</span>(<span class="st">"tidytuesday-exercise"</span>, <span class="st">"states.xlsx"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>New names:
+• `` -&gt; `...4`
+• `` -&gt; `...5`</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(states_pop)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "U.S. state"                       "population: estimate (2024 est.)"
+[3] "population: census (2020)"        "...4"                            
+[5] "...5"                            </code></pre>
+</div>
+</div>
+<p>Now, I want to add the state population data to the er_data dataset. I will do this with left join.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>er_data_with_pop <span class="ot">&lt;-</span> er_data <span class="sc">%&gt;%</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(states_pop, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"state"</span> <span class="ot">=</span> <span class="st">"U.S. state"</span>))</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(er_data_with_pop)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 9
+  state condition   measure_id measure_name er_wait_score population: estimate…¹
+  &lt;chr&gt; &lt;chr&gt;       &lt;chr&gt;      &lt;chr&gt;                &lt;dbl&gt;                  &lt;dbl&gt;
+1 AK    Emergency … OP_18b     Average (me…           140                 740133
+2 AL    Emergency … OP_18b     Average (me…           145                5157699
+3 AR    Emergency … OP_18b     Average (me…           133                3088354
+4 AZ    Emergency … OP_18b     Average (me…           168                7582384
+5 CA    Emergency … OP_18b     Average (me…           184               39431263
+6 CO    Emergency … OP_18b     Average (me…           133                5957493
+# ℹ abbreviated name: ¹​`population: estimate (2024 est.)`
+# ℹ 3 more variables: `population: census (2020)` &lt;dbl&gt;, ...4 &lt;lgl&gt;, ...5 &lt;lgl&gt;</code></pre>
+</div>
+</div>
+<p>From viewing the data, I can see that PR and DC weren’t included in the population dataset. So, I will exclude them for this assignment.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>er_data_with_pop <span class="ot">&lt;-</span> er_data_with_pop <span class="sc">%&gt;%</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(state <span class="sc">!=</span> <span class="st">"PR"</span> <span class="sc">&amp;</span> state <span class="sc">!=</span> <span class="st">"DC"</span>)</span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(er_data_with_pop)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 50  9</code></pre>
+</div>
+</div>
+<p>I can see that this worked as we now only have 50 (instead of 52) observations.</p>
+<p>Now, I will remove the condition, measure_id, and measure_name columns as they are no longer needed since I have confirmed that only the correct data is present. I will also remove the two random columsn R added (…4 and …5).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>er_data_with_pop <span class="ot">&lt;-</span> er_data_with_pop <span class="sc">%&gt;%</span></span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>condition, <span class="sc">-</span>measure_id, <span class="sc">-</span>measure_name, <span class="sc">-</span>...<span class="dv">4</span>, <span class="sc">-</span>...<span class="dv">5</span>)</span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(er_data_with_pop)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 4
+  state er_wait_score `population: estimate (2024 est.)` population: census (2…¹
+  &lt;chr&gt;         &lt;dbl&gt;                              &lt;dbl&gt;                   &lt;dbl&gt;
+1 AK              140                             740133                  733391
+2 AL              145                            5157699                 5024279
+3 AR              133                            3088354                 3011524
+4 AZ              168                            7582384                 7151502
+5 CA              184                           39431263                39538223
+6 CO              133                            5957493                 5773714
+# ℹ abbreviated name: ¹​`population: census (2020)`</code></pre>
+</div>
+</div>
+<p>This worked since we have the state, score, 2024 population, and 2020 population.</p>
+<p>Lastly, I will rename the population columns to be shorter.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>er_data_with_pop <span class="ot">&lt;-</span> er_data_with_pop <span class="sc">%&gt;%</span></span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(</span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">population_2024 =</span> <span class="st">`</span><span class="at">population: estimate (2024 est.)</span><span class="st">`</span>,</span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">population_2020 =</span> <span class="st">`</span><span class="at">population: census (2020)</span><span class="st">`</span></span>
+<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Note that I will use the 2024 population since this is more recent.</p>
+</section>
+<section id="exploratory-data-analysis" class="level1">
+<h1>Exploratory Data Analysis:</h1>
+<p>I will first obtain a summary of the wait time scores and the populations among the states.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(er_data_with_pop<span class="sc">$</span>er_wait_score)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+  110.0   133.0   153.5   155.4   171.8   251.0 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(er_data_with_pop<span class="sc">$</span>population_2024)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+  587618  2002580  4593056  6788175  7864231 39431263 </code></pre>
+</div>
+</div>
+<p>The average median wait time for the ER in US states (exluding DC and PR) is 155.4 minutes. The range is 251-110 = 141 minutes. The average population in US states (excluding DC and PR) is 6,788,175. The range is 39431263-587618 = 38843645. This is a much larger range than the wait time scores.</p>
+<p>Next, I will obtain a histogram for ER wait times in US staets.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(er_data_with_pop, <span class="fu">aes</span>(<span class="at">x =</span> er_wait_score)) <span class="sc">+</span></span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="dv">5</span>, <span class="at">fill =</span> <span class="st">"skyblue"</span>, <span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Distribution of Emergency Room Wait Times"</span>, <span class="at">x =</span> <span class="st">"Wait Time (minutes)"</span>, <span class="at">y =</span> <span class="st">"Frequency"</span>) <span class="sc">+</span> </span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>,  <span class="co"># center the title</span></span>
+<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a>                              <span class="at">face =</span> <span class="st">"bold"</span>,  <span class="co"># make title bold</span></span>
+<span id="cb50-7"><a href="#cb50-7" aria-hidden="true" tabindex="-1"></a>                              <span class="at">size =</span> <span class="dv">16</span>)      <span class="co"># make title bigger</span></span>
+<span id="cb50-8"><a href="#cb50-8" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="tidytuesday-exercise_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>As you can tell, it looks like this histogram is slightly skewed to the right.</p>
+<p>Now, I will obtain a histogram for the populations of US states.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(er_data_with_pop, <span class="fu">aes</span>(<span class="at">x =</span> population_2024)) <span class="sc">+</span></span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="dv">500000</span>, <span class="at">fill =</span> <span class="st">"lightgreen"</span>, <span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Distribution of State Populations"</span>, <span class="at">x =</span> <span class="st">"Population"</span>, <span class="at">y =</span> <span class="st">"Frequency"</span>) <span class="sc">+</span> </span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>,  <span class="co"># center the title</span></span>
+<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a>                              <span class="at">face =</span> <span class="st">"bold"</span>,  <span class="co"># make title bold</span></span>
+<span id="cb51-7"><a href="#cb51-7" aria-hidden="true" tabindex="-1"></a>                              <span class="at">size =</span> <span class="dv">16</span>)      <span class="co"># make title bigger</span></span>
+<span id="cb51-8"><a href="#cb51-8" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="tidytuesday-exercise_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>It looks like this histogram is skewed to the right.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(er_data_with_pop<span class="sc">$</span>er_wait_score, er_data_with_pop<span class="sc">$</span>population_2024, <span class="at">use =</span> <span class="st">"complete.obs"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.2517527</code></pre>
+</div>
+</div>
+<p>It looks like there is a weak positive correlation between the ER wait times and the population size of the states (0.2517527).</p>
+<p>I will now create a scatterplot to visualize this correlation.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(er_data_with_pop, <span class="fu">aes</span>(<span class="at">x =</span> population_2024, <span class="at">y =</span> er_wait_score)) <span class="sc">+</span></span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">color =</span> <span class="st">"lightpink"</span>) <span class="sc">+</span></span>
+<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Scatterplot of ER Wait Times vs. State Population"</span>, <span class="at">x =</span> <span class="st">"State Population"</span>, <span class="at">y =</span> <span class="st">"ER Wait Time (minutes)"</span>) <span class="sc">+</span></span>
+<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">color =</span> <span class="st">"gray"</span>) <span class="sc">+</span> </span>
+<span id="cb54-5"><a href="#cb54-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb54-6"><a href="#cb54-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>,  <span class="co"># center the title</span></span>
+<span id="cb54-7"><a href="#cb54-7" aria-hidden="true" tabindex="-1"></a>                              <span class="at">face =</span> <span class="st">"bold"</span>,  <span class="co"># make title bold</span></span>
+<span id="cb54-8"><a href="#cb54-8" aria-hidden="true" tabindex="-1"></a>                              <span class="at">size =</span> <span class="dv">16</span>)      <span class="co"># make title bigger</span></span>
+<span id="cb54-9"><a href="#cb54-9" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="tidytuesday-exercise_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>There is alot of clustering in the lower left corner of this graph. There may be a few outliers, however, I will keep them in the dataset because I need to account for these states.</p>
+</section>
+<section id="analysis-and-models" class="level1">
+<h1>Analysis and Models:</h1>
+<p>I will now split the data into train and test data.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>data_split <span class="ot">&lt;-</span> <span class="fu">initial_split</span>(er_data_with_pop, <span class="at">prop =</span> <span class="fl">0.8</span>)</span>
+<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a>train_data <span class="ot">&lt;-</span> <span class="fu">training</span>(data_split)</span>
+<span id="cb56-4"><a href="#cb56-4" aria-hidden="true" tabindex="-1"></a>test_data  <span class="ot">&lt;-</span> <span class="fu">testing</span>(data_split)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>I will now do cross-validation. Folds = 5</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>cv_folds <span class="ot">&lt;-</span> <span class="fu">vfold_cv</span>(train_data, <span class="at">v =</span> <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now, I will define the ‘recipes’ for the 3 models (and the basic model recipe with my predictor and outcome). The three models I will use are: linear regression, random forest, and KNN.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Basic recipe :)</span></span>
+<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a>model_recipe <span class="ot">&lt;-</span> <span class="fu">recipe</span>(er_wait_score <span class="sc">~</span> population_2024, <span class="at">data =</span> train_data)</span>
+<span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-4"><a href="#cb58-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Linear Regression</span></span>
+<span id="cb58-5"><a href="#cb58-5" aria-hidden="true" tabindex="-1"></a>lm_spec <span class="ot">&lt;-</span> <span class="fu">linear_reg</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb58-6"><a href="#cb58-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">"lm"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb58-7"><a href="#cb58-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_mode</span>(<span class="st">"regression"</span>)</span>
+<span id="cb58-8"><a href="#cb58-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-9"><a href="#cb58-9" aria-hidden="true" tabindex="-1"></a>lm_wf <span class="ot">&lt;-</span> <span class="fu">workflow</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb58-10"><a href="#cb58-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_model</span>(lm_spec) <span class="sc">%&gt;%</span></span>
+<span id="cb58-11"><a href="#cb58-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_recipe</span>(model_recipe)</span>
+<span id="cb58-12"><a href="#cb58-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-13"><a href="#cb58-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Random Forest</span></span>
+<span id="cb58-14"><a href="#cb58-14" aria-hidden="true" tabindex="-1"></a>rf_spec <span class="ot">&lt;-</span> <span class="fu">rand_forest</span>(<span class="at">mtry =</span> <span class="dv">1</span>, <span class="at">trees =</span> <span class="dv">500</span>, <span class="at">min_n =</span> <span class="dv">5</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb58-15"><a href="#cb58-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">"ranger"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb58-16"><a href="#cb58-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_mode</span>(<span class="st">"regression"</span>)</span>
+<span id="cb58-17"><a href="#cb58-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-18"><a href="#cb58-18" aria-hidden="true" tabindex="-1"></a>rf_wf <span class="ot">&lt;-</span> <span class="fu">workflow</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb58-19"><a href="#cb58-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_model</span>(rf_spec) <span class="sc">%&gt;%</span></span>
+<span id="cb58-20"><a href="#cb58-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_recipe</span>(model_recipe)</span>
+<span id="cb58-21"><a href="#cb58-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-22"><a href="#cb58-22" aria-hidden="true" tabindex="-1"></a><span class="co"># KNN</span></span>
+<span id="cb58-23"><a href="#cb58-23" aria-hidden="true" tabindex="-1"></a>knn_spec <span class="ot">&lt;-</span> <span class="fu">nearest_neighbor</span>(<span class="at">neighbors =</span> <span class="fu">tune</span>()) <span class="sc">%&gt;%</span></span>
+<span id="cb58-24"><a href="#cb58-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">"kknn"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb58-25"><a href="#cb58-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_mode</span>(<span class="st">"regression"</span>)</span>
+<span id="cb58-26"><a href="#cb58-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-27"><a href="#cb58-27" aria-hidden="true" tabindex="-1"></a>knn_wf <span class="ot">&lt;-</span> <span class="fu">workflow</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb58-28"><a href="#cb58-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_model</span>(knn_spec) <span class="sc">%&gt;%</span></span>
+<span id="cb58-29"><a href="#cb58-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_recipe</span>(model_recipe)</span>
+<span id="cb58-30"><a href="#cb58-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-31"><a href="#cb58-31" aria-hidden="true" tabindex="-1"></a>knn_grid <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">neighbors =</span> <span class="fu">seq</span>(<span class="dv">1</span>, <span class="dv">20</span>, <span class="at">by =</span> <span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now, I will fit all the models and obtain their metrics.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Linear Regression</span></span>
+<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a>lm_fit <span class="ot">&lt;-</span> <span class="fu">fit_resamples</span>(</span>
+<span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a>  lm_wf,</span>
+<span id="cb59-4"><a href="#cb59-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">resamples =</span> cv_folds,</span>
+<span id="cb59-5"><a href="#cb59-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">metrics =</span> <span class="fu">metric_set</span>(rmse, rsq)</span>
+<span id="cb59-6"><a href="#cb59-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb59-7"><a href="#cb59-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-8"><a href="#cb59-8" aria-hidden="true" tabindex="-1"></a><span class="fu">collect_metrics</span>(lm_fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 6
+  .metric .estimator   mean     n std_err .config             
+  &lt;chr&gt;   &lt;chr&gt;       &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;               
+1 rmse    standard   32.3       5  4.36   Preprocessor1_Model1
+2 rsq     standard    0.127     5  0.0448 Preprocessor1_Model1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Random Forest</span></span>
+<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a>rf_fit <span class="ot">&lt;-</span> <span class="fu">fit_resamples</span>(</span>
+<span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a>  rf_wf,</span>
+<span id="cb61-4"><a href="#cb61-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">resamples =</span> cv_folds,</span>
+<span id="cb61-5"><a href="#cb61-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">metrics =</span> <span class="fu">metric_set</span>(rmse, rsq)</span>
+<span id="cb61-6"><a href="#cb61-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb61-7"><a href="#cb61-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb61-8"><a href="#cb61-8" aria-hidden="true" tabindex="-1"></a><span class="fu">collect_metrics</span>(rf_fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 6
+  .metric .estimator   mean     n std_err .config             
+  &lt;chr&gt;   &lt;chr&gt;       &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;               
+1 rmse    standard   36.0       5  6.68   Preprocessor1_Model1
+2 rsq     standard    0.184     5  0.0654 Preprocessor1_Model1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="co"># KNN</span></span>
+<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb63-4"><a href="#cb63-4" aria-hidden="true" tabindex="-1"></a>knn_fit <span class="ot">&lt;-</span> <span class="fu">tune_grid</span>(</span>
+<span id="cb63-5"><a href="#cb63-5" aria-hidden="true" tabindex="-1"></a>  knn_wf,</span>
+<span id="cb63-6"><a href="#cb63-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">resamples =</span> cv_folds,</span>
+<span id="cb63-7"><a href="#cb63-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">grid =</span> knn_grid,</span>
+<span id="cb63-8"><a href="#cb63-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">metrics =</span> <span class="fu">metric_set</span>(rmse, rsq)</span>
+<span id="cb63-9"><a href="#cb63-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb63-10"><a href="#cb63-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb63-11"><a href="#cb63-11" aria-hidden="true" tabindex="-1"></a><span class="fu">collect_metrics</span>(knn_fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 20 × 7
+   neighbors .metric .estimator   mean     n std_err .config              
+       &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;       &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;                
+ 1         1 rmse    standard   47.6       5  7.48   Preprocessor1_Model01
+ 2         1 rsq     standard    0.188     5  0.0784 Preprocessor1_Model01
+ 3         3 rmse    standard   36.3       5  5.98   Preprocessor1_Model02
+ 4         3 rsq     standard    0.154     5  0.0436 Preprocessor1_Model02
+ 5         5 rmse    standard   32.4       5  5.60   Preprocessor1_Model03
+ 6         5 rsq     standard    0.174     5  0.0615 Preprocessor1_Model03
+ 7         7 rmse    standard   31.1       5  5.15   Preprocessor1_Model04
+ 8         7 rsq     standard    0.191     5  0.0643 Preprocessor1_Model04
+ 9         9 rmse    standard   30.7       5  5.02   Preprocessor1_Model05
+10         9 rsq     standard    0.188     5  0.0757 Preprocessor1_Model05
+11        11 rmse    standard   30.4       5  5.03   Preprocessor1_Model06
+12        11 rsq     standard    0.201     5  0.0874 Preprocessor1_Model06
+13        13 rmse    standard   30.3       5  4.97   Preprocessor1_Model07
+14        13 rsq     standard    0.195     5  0.0832 Preprocessor1_Model07
+15        15 rmse    standard   30.5       5  4.81   Preprocessor1_Model08
+16        15 rsq     standard    0.180     5  0.0760 Preprocessor1_Model08
+17        17 rmse    standard   30.6       5  4.71   Preprocessor1_Model09
+18        17 rsq     standard    0.171     5  0.0726 Preprocessor1_Model09
+19        19 rmse    standard   30.8       5  4.66   Preprocessor1_Model10
+20        19 rsq     standard    0.165     5  0.0702 Preprocessor1_Model10</code></pre>
+</div>
+</div>
+<p>Now, I will make a summary table:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a>lm_metrics <span class="ot">&lt;-</span> <span class="fu">collect_metrics</span>(lm_fit) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">model =</span> <span class="st">"Linear Regression"</span>)</span>
+<span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a>rf_metrics <span class="ot">&lt;-</span> <span class="fu">collect_metrics</span>(rf_fit) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">model =</span> <span class="st">"Random Forest"</span>)</span>
+<span id="cb65-3"><a href="#cb65-3" aria-hidden="true" tabindex="-1"></a>knn_metrics <span class="ot">&lt;-</span> <span class="fu">collect_metrics</span>(knn_fit) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">model =</span> <span class="st">"KNN"</span>)</span>
+<span id="cb65-4"><a href="#cb65-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb65-5"><a href="#cb65-5" aria-hidden="true" tabindex="-1"></a><span class="fu">bind_rows</span>(lm_metrics, rf_metrics, knn_metrics)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 24 × 8
+   .metric .estimator   mean     n std_err .config               model neighbors
+   &lt;chr&gt;   &lt;chr&gt;       &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;                 &lt;chr&gt;     &lt;dbl&gt;
+ 1 rmse    standard   32.3       5  4.36   Preprocessor1_Model1  Line…        NA
+ 2 rsq     standard    0.127     5  0.0448 Preprocessor1_Model1  Line…        NA
+ 3 rmse    standard   36.0       5  6.68   Preprocessor1_Model1  Rand…        NA
+ 4 rsq     standard    0.184     5  0.0654 Preprocessor1_Model1  Rand…        NA
+ 5 rmse    standard   47.6       5  7.48   Preprocessor1_Model01 KNN           1
+ 6 rsq     standard    0.188     5  0.0784 Preprocessor1_Model01 KNN           1
+ 7 rmse    standard   36.3       5  5.98   Preprocessor1_Model02 KNN           3
+ 8 rsq     standard    0.154     5  0.0436 Preprocessor1_Model02 KNN           3
+ 9 rmse    standard   32.4       5  5.60   Preprocessor1_Model03 KNN           5
+10 rsq     standard    0.174     5  0.0615 Preprocessor1_Model03 KNN           5
+# ℹ 14 more rows</code></pre>
+</div>
+</div>
+<p>Linear Regression: The RMSE is 32.25 and the R-squared is 0.127 (indicates that approximately 12.7% of the variance is explained by the model).</p>
+<p>Random Forest: The RMSE is 35.59 and the R-squared is 0.194 (indicates that approximately 19.4% of the variance is explained by the model).</p>
+<p>KNN: The best RMSE is the KNN model with 13 neighbors, RMSE = 30.32 (corresponding R-squared of 0.195). The best R-squared is the KNN model with 11 neighbors, R-squared = is 0.201 (corresponding RMSE of 30.35).</p>
+<p>Now, I will obtain residual plots for the three models.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate residuals helper function</span></span>
+<span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a>get_residuals <span class="ot">&lt;-</span> <span class="cf">function</span>(model_fit, data, model_name) {</span>
+<span id="cb67-3"><a href="#cb67-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">predict</span>(model_fit, <span class="at">new_data =</span> data) <span class="sc">%&gt;%</span></span>
+<span id="cb67-4"><a href="#cb67-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">bind_cols</span>(data) <span class="sc">%&gt;%</span></span>
+<span id="cb67-5"><a href="#cb67-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">residual =</span> er_wait_score <span class="sc">-</span> .pred,</span>
+<span id="cb67-6"><a href="#cb67-6" aria-hidden="true" tabindex="-1"></a>           <span class="at">model =</span> model_name)</span>
+<span id="cb67-7"><a href="#cb67-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb67-8"><a href="#cb67-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-9"><a href="#cb67-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Linear Regression Residuals</span></span>
+<span id="cb67-10"><a href="#cb67-10" aria-hidden="true" tabindex="-1"></a>lm_final <span class="ot">&lt;-</span> <span class="fu">fit</span>(lm_wf, <span class="at">data =</span> train_data)</span>
+<span id="cb67-11"><a href="#cb67-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-12"><a href="#cb67-12" aria-hidden="true" tabindex="-1"></a>lm_resid <span class="ot">&lt;-</span> <span class="fu">get_residuals</span>(lm_final, train_data, <span class="st">"Linear Regression"</span>)</span>
+<span id="cb67-13"><a href="#cb67-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-14"><a href="#cb67-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Random Forest Residuals </span></span>
+<span id="cb67-15"><a href="#cb67-15" aria-hidden="true" tabindex="-1"></a>rf_final <span class="ot">&lt;-</span> <span class="fu">fit</span>(rf_wf, <span class="at">data =</span> train_data)</span>
+<span id="cb67-16"><a href="#cb67-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-17"><a href="#cb67-17" aria-hidden="true" tabindex="-1"></a>rf_resid <span class="ot">&lt;-</span> <span class="fu">get_residuals</span>(rf_final, train_data, <span class="st">"Random Forest"</span>)</span>
+<span id="cb67-18"><a href="#cb67-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-19"><a href="#cb67-19" aria-hidden="true" tabindex="-1"></a><span class="co"># KNN Residuals</span></span>
+<span id="cb67-20"><a href="#cb67-20" aria-hidden="true" tabindex="-1"></a>best_k <span class="ot">&lt;-</span> <span class="fu">select_best</span>(knn_fit, <span class="at">metric =</span> <span class="st">"rmse"</span>)</span>
+<span id="cb67-21"><a href="#cb67-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-22"><a href="#cb67-22" aria-hidden="true" tabindex="-1"></a>knn_final_wf <span class="ot">&lt;-</span> <span class="fu">finalize_workflow</span>(knn_wf, best_k)</span>
+<span id="cb67-23"><a href="#cb67-23" aria-hidden="true" tabindex="-1"></a>knn_final <span class="ot">&lt;-</span> <span class="fu">fit</span>(knn_final_wf, <span class="at">data =</span> train_data)</span>
+<span id="cb67-24"><a href="#cb67-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-25"><a href="#cb67-25" aria-hidden="true" tabindex="-1"></a>knn_resid <span class="ot">&lt;-</span> <span class="fu">get_residuals</span>(knn_final, train_data, <span class="st">"KNN"</span>)</span>
+<span id="cb67-26"><a href="#cb67-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-27"><a href="#cb67-27" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot! </span></span>
+<span id="cb67-28"><a href="#cb67-28" aria-hidden="true" tabindex="-1"></a>all_resid <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(lm_resid, rf_resid, knn_resid)</span>
+<span id="cb67-29"><a href="#cb67-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-30"><a href="#cb67-30" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(all_resid, <span class="fu">aes</span>(<span class="at">x =</span> .pred, <span class="at">y =</span> residual, <span class="at">color =</span> model)) <span class="sc">+</span></span>
+<span id="cb67-31"><a href="#cb67-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.7</span>, <span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb67-32"><a href="#cb67-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
+<span id="cb67-33"><a href="#cb67-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>model) <span class="sc">+</span></span>
+<span id="cb67-34"><a href="#cb67-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Residual Plots by Model"</span>,</span>
+<span id="cb67-35"><a href="#cb67-35" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Predicted ER Wait Time"</span>,</span>
+<span id="cb67-36"><a href="#cb67-36" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Residual (Actual - Predicted)"</span>,</span>
+<span id="cb67-37"><a href="#cb67-37" aria-hidden="true" tabindex="-1"></a>       <span class="at">color =</span> <span class="st">"Model"</span>) <span class="sc">+</span></span>
+<span id="cb67-38"><a href="#cb67-38" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb67-39"><a href="#cb67-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>) <span class="sc">+</span> </span>
+<span id="cb67-40"><a href="#cb67-40" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Linear Regression"</span> <span class="ot">=</span> <span class="st">"cadetblue3"</span>,</span>
+<span id="cb67-41"><a href="#cb67-41" aria-hidden="true" tabindex="-1"></a>                                <span class="st">"Random Forest"</span> <span class="ot">=</span> <span class="st">"green3"</span>,</span>
+<span id="cb67-42"><a href="#cb67-42" aria-hidden="true" tabindex="-1"></a>                                <span class="st">"KNN"</span> <span class="ot">=</span> <span class="st">"palevioletred2"</span>)) <span class="sc">+</span></span>
+<span id="cb67-43"><a href="#cb67-43" aria-hidden="true" tabindex="-1"></a><span class="fu">theme</span>(</span>
+<span id="cb67-44"><a href="#cb67-44" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>,  <span class="co"># center the title</span></span>
+<span id="cb67-45"><a href="#cb67-45" aria-hidden="true" tabindex="-1"></a>                              <span class="at">face =</span> <span class="st">"bold"</span>,  <span class="co"># make title bold</span></span>
+<span id="cb67-46"><a href="#cb67-46" aria-hidden="true" tabindex="-1"></a>                              <span class="at">size =</span> <span class="dv">16</span>)      <span class="co"># make title bigger</span></span>
+<span id="cb67-47"><a href="#cb67-47" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="tidytuesday-exercise_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="best-model-random-forest" class="level1">
+<h1>Best Model: Random Forest</h1>
+<p>I would say that the random forest model performed the best. While it doesn’t have the lowest RMSE, it has the least scatter in the plot above. You can see that the residuals are closer to the dashed line at 0. The random forest’s RMSE value is 35.59 and its R-squared value is 0.194. It can be noted that all of the RMSE and R-squared values were relatively similar. So when it came to the residual plots above, I saw the least scatter within the random forest plot (which is ultimately what led me to make this decision).</p>
+</section>
+<section id="test-data-with-random-forest-model" class="level1">
+<h1>Test Data with Random Forest Model:</h1>
+<p>Now, per class instruction, I will run the random forest model on the test data. It should be noted that the test data is very small in this exercise</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Final fit on full training data</span></span>
+<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a>rf_final <span class="ot">&lt;-</span> <span class="fu">fit</span>(rf_wf, <span class="at">data =</span> train_data)</span>
+<span id="cb68-3"><a href="#cb68-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb68-4"><a href="#cb68-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Predict on test data</span></span>
+<span id="cb68-5"><a href="#cb68-5" aria-hidden="true" tabindex="-1"></a>rf_predictions <span class="ot">&lt;-</span> <span class="fu">predict</span>(rf_final, <span class="at">new_data =</span> test_data) <span class="sc">%&gt;%</span></span>
+<span id="cb68-6"><a href="#cb68-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_cols</span>(test_data)</span>
+<span id="cb68-7"><a href="#cb68-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb68-8"><a href="#cb68-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate metrics (RMSE, R-squared) on the test data</span></span>
+<span id="cb68-9"><a href="#cb68-9" aria-hidden="true" tabindex="-1"></a>rf_metrics_test <span class="ot">&lt;-</span> rf_predictions <span class="sc">%&gt;%</span></span>
+<span id="cb68-10"><a href="#cb68-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">metrics</span>(<span class="at">truth =</span> er_wait_score, <span class="at">estimate =</span> .pred)</span>
+<span id="cb68-11"><a href="#cb68-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb68-12"><a href="#cb68-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Print performance metrics</span></span>
+<span id="cb68-13"><a href="#cb68-13" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(rf_metrics_test)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 3
+  .metric .estimator .estimate
+  &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;
+1 rmse    standard      20.7  
+2 rsq     standard       0.358
+3 mae     standard      17.8  </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Residuals on test data</span></span>
+<span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a>rf_predictions <span class="ot">&lt;-</span> rf_predictions <span class="sc">%&gt;%</span></span>
+<span id="cb70-3"><a href="#cb70-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">residual =</span> er_wait_score <span class="sc">-</span> .pred)</span>
+<span id="cb70-4"><a href="#cb70-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-5"><a href="#cb70-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot residuals</span></span>
+<span id="cb70-6"><a href="#cb70-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(rf_predictions, <span class="fu">aes</span>(<span class="at">x =</span> .pred, <span class="at">y =</span> residual)) <span class="sc">+</span></span>
+<span id="cb70-7"><a href="#cb70-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.7</span>, <span class="at">size =</span> <span class="dv">2</span>, <span class="at">color =</span> <span class="st">"orange"</span>) <span class="sc">+</span></span>
+<span id="cb70-8"><a href="#cb70-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">color =</span> <span class="st">"gray"</span>) <span class="sc">+</span></span>
+<span id="cb70-9"><a href="#cb70-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Residual Plot: Random Forest (Test Data)"</span>, </span>
+<span id="cb70-10"><a href="#cb70-10" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Predicted ER Wait Time"</span>, <span class="at">y =</span> <span class="st">"Residual (Actual - Predicted)"</span>) <span class="sc">+</span></span>
+<span id="cb70-11"><a href="#cb70-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span> </span>
+<span id="cb70-12"><a href="#cb70-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb70-13"><a href="#cb70-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>,  <span class="co"># center the title</span></span>
+<span id="cb70-14"><a href="#cb70-14" aria-hidden="true" tabindex="-1"></a>                              <span class="at">face =</span> <span class="st">"bold"</span>,  <span class="co"># make title bold</span></span>
+<span id="cb70-15"><a href="#cb70-15" aria-hidden="true" tabindex="-1"></a>                              <span class="at">size =</span> <span class="dv">16</span>)      <span class="co"># make title bigger</span></span>
+<span id="cb70-16"><a href="#cb70-16" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="tidytuesday-exercise_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The RMSE is 21.28, and the R-squared value is 0.334 (indicating that approximately 33.4% of the variance is explained by the model). The residuals are somewhat scattered (ranging from roughly -40 to 40).</p>
+</section>
+<section id="summary-and-disucssion" class="level1">
+<h1>Summary and Disucssion:</h1>
+<p>In this tidy-tuesday exercise, I aimed to assess whether there is a connection between the size of a state’s population and their median emergency department wait times (in minutes). As described previously, the data was obtained from CMS and includes information about emergency department (and others) wait times for various states. After performing some basic data cleaning and exploration, I decided to look specifically at median emergency department wait times (in minutes). Since this dataset did not include the population size of each state, I had to obtain this information from elsewhere online. The dataset I used did not include the populations of DC and PR, therefore I decided to exclude them from my analysis.</p>
+<p>After cleaning my data and running some basic summary functions on it, I found that the average median emergency department wait time across all states was 155.4 minutes, with a range of 110 to 251 minutes (141 minutes). After assessing the histogram for median emergency department wait times, I found that it was right-skewed. As for population, I found that the average population in US states is 6,788,175 people. The range for state population was found to be 587618 to 39431263 people, which is much larger than the range for median emergency department wait times. The histogram for state population was found to be right-skewed as well, but to a greater degree than the skewness of the median emergency department wait times histogram. I then calculated the correlation between median emergency department wait times and state population sizes. I found a correlation coefficient of 0.2517527, which indicates a weak postitive relationship. Then, I ran a scatterplot between the two variables and found that most of the points were clustered in the lower left corner of the graph. A few points deviated from the overall pattern. However, I decided to keep in the potential outliers, since each US state should be represented in this analysis. Overall, this reveals that larger states tend to have slightly longer ER wait times. However, this relationship is not strong.</p>
+<p>After setting up my test and train data (as well as cross-validation folds), I developed three models for this exercise. The first model was a simple linear regression model; it had an RMSE of 32.25 and an R-squared value of 0.127. Then I ran a scatterplot of the residuals and found that they appeared to be quite scattered. The next model I developed was the random forest model; it had an RMSE of 35.59 and an R-squared value of 0.194. The residuals within the residual scatterplot appeared to be less scattered about the 0 line. The last model that I chose to develop was the KNN model; the best RMSE was found to be 30.32 (with 13 neighbors) and the best R-squared value was 0.201 (with 11 neighbors). The residuals for this model were also quite scattered. After comparing all three models, I decided that the random forest model was the best due to it having the least scatter of residuals (despite it not having the lowest RMSE value). I then ran the random forest model on the test data and found that the RMSE was 21.28 and the R-squared value was 0.334. the residuals for this model were somewhat scattered. However, I believe that they would be more scattered if I had chosen another model to run with.</p>
+<p>Overall, my analysis for tidy-tuesday suggests that state population had a weak positive association with median emergency department wait times (in minutes). However, it should be noted that the analysis would be enriched by inclusion of other elements in the dataset, such as the number of hospitals within each state/hopsital density.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a data frame with the results, including correlation for ER wait time and population</span></span>
+<span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a>model_results <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb71-3"><a href="#cb71-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">Model =</span> <span class="fu">c</span>(<span class="st">"Linear Regression"</span>, <span class="st">"Random Forest"</span>, <span class="st">"KNN (13 neighbors)"</span>, <span class="st">"Correlation between ER wait time and State Population"</span>),</span>
+<span id="cb71-4"><a href="#cb71-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">Correlation =</span> <span class="fu">c</span>(<span class="cn">NA</span>, <span class="cn">NA</span>, <span class="cn">NA</span>, <span class="fl">0.15</span>),  </span>
+<span id="cb71-5"><a href="#cb71-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">RMSE =</span> <span class="fu">c</span>(<span class="fl">32.25</span>, <span class="fl">35.59</span>, <span class="fl">30.32</span>, <span class="cn">NA</span>),</span>
+<span id="cb71-6"><a href="#cb71-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">R_squared =</span> <span class="fu">c</span>(<span class="fl">0.127</span>, <span class="fl">0.194</span>, <span class="fl">0.201</span>, <span class="cn">NA</span>)</span>
+<span id="cb71-7"><a href="#cb71-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb71-8"><a href="#cb71-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb71-9"><a href="#cb71-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Use GT to format the table</span></span>
+<span id="cb71-10"><a href="#cb71-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gt)</span>
+<span id="cb71-11"><a href="#cb71-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb71-12"><a href="#cb71-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Create the GT table</span></span>
+<span id="cb71-13"><a href="#cb71-13" aria-hidden="true" tabindex="-1"></a>model_results_gt <span class="ot">&lt;-</span> model_results <span class="sc">%&gt;%</span></span>
+<span id="cb71-14"><a href="#cb71-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb71-15"><a href="#cb71-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_header</span>(</span>
+<span id="cb71-16"><a href="#cb71-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Model Performance and Correlation Results"</span></span>
+<span id="cb71-17"><a href="#cb71-17" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb71-18"><a href="#cb71-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_label</span>(</span>
+<span id="cb71-19"><a href="#cb71-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">Model =</span> <span class="st">"Model / Metric"</span>,</span>
+<span id="cb71-20"><a href="#cb71-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">Correlation =</span> <span class="st">"Correlation between ER wait time and State Population"</span>,</span>
+<span id="cb71-21"><a href="#cb71-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">RMSE =</span> <span class="st">"Root Mean Squared Error (RMSE)"</span>,</span>
+<span id="cb71-22"><a href="#cb71-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">R_squared =</span> <span class="st">"R-squared"</span></span>
+<span id="cb71-23"><a href="#cb71-23" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb71-24"><a href="#cb71-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_spanner</span>(</span>
+<span id="cb71-25"><a href="#cb71-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">label =</span> <span class="st">"Model Metrics"</span>,</span>
+<span id="cb71-26"><a href="#cb71-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">columns =</span> <span class="fu">c</span>(RMSE, R_squared)</span>
+<span id="cb71-27"><a href="#cb71-27" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb71-28"><a href="#cb71-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_style</span>(</span>
+<span id="cb71-29"><a href="#cb71-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">style =</span> <span class="fu">list</span>(</span>
+<span id="cb71-30"><a href="#cb71-30" aria-hidden="true" tabindex="-1"></a>      <span class="fu">cell_borders</span>(<span class="at">sides =</span> <span class="st">"all"</span>, <span class="at">color =</span> <span class="st">"gray"</span>, <span class="at">weight =</span> <span class="fu">px</span>(<span class="fl">0.5</span>))</span>
+<span id="cb71-31"><a href="#cb71-31" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb71-32"><a href="#cb71-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">locations =</span> <span class="fu">cells_body</span>(<span class="at">columns =</span> <span class="fu">c</span>(Correlation, RMSE, R_squared))</span>
+<span id="cb71-33"><a href="#cb71-33" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb71-34"><a href="#cb71-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb71-35"><a href="#cb71-35" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the GT table</span></span>
+<span id="cb71-36"><a href="#cb71-36" aria-hidden="true" tabindex="-1"></a>model_results_gt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="swbkeaboyk" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#swbkeaboyk table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#swbkeaboyk thead, #swbkeaboyk tbody, #swbkeaboyk tfoot, #swbkeaboyk tr, #swbkeaboyk td, #swbkeaboyk th {
+  border-style: none;
+}
+
+#swbkeaboyk p {
+  margin: 0;
+  padding: 0;
+}
+
+#swbkeaboyk .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#swbkeaboyk .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#swbkeaboyk .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#swbkeaboyk .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#swbkeaboyk .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#swbkeaboyk .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#swbkeaboyk .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#swbkeaboyk .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#swbkeaboyk .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#swbkeaboyk .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#swbkeaboyk .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#swbkeaboyk .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#swbkeaboyk .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#swbkeaboyk .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#swbkeaboyk .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#swbkeaboyk .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#swbkeaboyk .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#swbkeaboyk .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#swbkeaboyk .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#swbkeaboyk .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#swbkeaboyk .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#swbkeaboyk .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#swbkeaboyk .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#swbkeaboyk .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#swbkeaboyk .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#swbkeaboyk .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#swbkeaboyk .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#swbkeaboyk .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#swbkeaboyk .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#swbkeaboyk .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#swbkeaboyk .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#swbkeaboyk .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#swbkeaboyk .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#swbkeaboyk .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#swbkeaboyk .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#swbkeaboyk .gt_left {
+  text-align: left;
+}
+
+#swbkeaboyk .gt_center {
+  text-align: center;
+}
+
+#swbkeaboyk .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#swbkeaboyk .gt_font_normal {
+  font-weight: normal;
+}
+
+#swbkeaboyk .gt_font_bold {
+  font-weight: bold;
+}
+
+#swbkeaboyk .gt_font_italic {
+  font-style: italic;
+}
+
+#swbkeaboyk .gt_super {
+  font-size: 65%;
+}
+
+#swbkeaboyk .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#swbkeaboyk .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#swbkeaboyk .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#swbkeaboyk .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#swbkeaboyk .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#swbkeaboyk .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#swbkeaboyk .gt_indent_5 {
+  text-indent: 25px;
+}
+
+#swbkeaboyk .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#swbkeaboyk div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
+}
+</style>
+
+<table class="gt_table caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="gt_heading header">
+<th colspan="4" class="gt_heading gt_title gt_font_normal gt_bottom_border">Model Performance and Correlation Results</th>
+</tr>
+<tr class="gt_col_headings gt_spanner_row even">
+<th rowspan="2" id="Model" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">Model / Metric</th>
+<th rowspan="2" id="Correlation" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Correlation between ER wait time and State Population</th>
+<th colspan="2" id="Model Metrics" class="gt_center gt_columns_top_border gt_column_spanner_outer" data-quarto-table-cell-role="th" scope="colgroup"><div class="gt_column_spanner">
+Model Metrics
+</div></th>
+</tr>
+<tr class="gt_col_headings header">
+<th id="RMSE" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Root Mean Squared Error (RMSE)</th>
+<th id="R_squared" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">R-squared</th>
+</tr>
+</thead>
+<tbody class="gt_table_body">
+<tr class="odd">
+<td class="gt_row gt_left" headers="Model">Linear Regression</td>
+<td class="gt_row gt_right" headers="Correlation" style="border-left-width: 0.5px; border-left-style: solid; border-left-color: gray; border-right-width: 0.5px; border-right-style: solid; border-right-color: gray; border-top-width: 0.5px; border-top-style: solid; border-top-color: gray; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: gray">NA</td>
+<td class="gt_row gt_right" headers="RMSE" style="border-left-width: 0.5px; border-left-style: solid; border-left-color: gray; border-right-width: 0.5px; border-right-style: solid; border-right-color: gray; border-top-width: 0.5px; border-top-style: solid; border-top-color: gray; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: gray">32.25</td>
+<td class="gt_row gt_right" headers="R_squared" style="border-left-width: 0.5px; border-left-style: solid; border-left-color: gray; border-right-width: 0.5px; border-right-style: solid; border-right-color: gray; border-top-width: 0.5px; border-top-style: solid; border-top-color: gray; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: gray">0.127</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="Model">Random Forest</td>
+<td class="gt_row gt_right" headers="Correlation" style="border-left-width: 0.5px; border-left-style: solid; border-left-color: gray; border-right-width: 0.5px; border-right-style: solid; border-right-color: gray; border-top-width: 0.5px; border-top-style: solid; border-top-color: gray; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: gray">NA</td>
+<td class="gt_row gt_right" headers="RMSE" style="border-left-width: 0.5px; border-left-style: solid; border-left-color: gray; border-right-width: 0.5px; border-right-style: solid; border-right-color: gray; border-top-width: 0.5px; border-top-style: solid; border-top-color: gray; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: gray">35.59</td>
+<td class="gt_row gt_right" headers="R_squared" style="border-left-width: 0.5px; border-left-style: solid; border-left-color: gray; border-right-width: 0.5px; border-right-style: solid; border-right-color: gray; border-top-width: 0.5px; border-top-style: solid; border-top-color: gray; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: gray">0.194</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="Model">KNN (13 neighbors)</td>
+<td class="gt_row gt_right" headers="Correlation" style="border-left-width: 0.5px; border-left-style: solid; border-left-color: gray; border-right-width: 0.5px; border-right-style: solid; border-right-color: gray; border-top-width: 0.5px; border-top-style: solid; border-top-color: gray; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: gray">NA</td>
+<td class="gt_row gt_right" headers="RMSE" style="border-left-width: 0.5px; border-left-style: solid; border-left-color: gray; border-right-width: 0.5px; border-right-style: solid; border-right-color: gray; border-top-width: 0.5px; border-top-style: solid; border-top-color: gray; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: gray">30.32</td>
+<td class="gt_row gt_right" headers="R_squared" style="border-left-width: 0.5px; border-left-style: solid; border-left-color: gray; border-right-width: 0.5px; border-right-style: solid; border-right-color: gray; border-top-width: 0.5px; border-top-style: solid; border-top-color: gray; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: gray">0.201</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="Model">Correlation between ER wait time and State Population</td>
+<td class="gt_row gt_right" headers="Correlation" style="border-left-width: 0.5px; border-left-style: solid; border-left-color: gray; border-right-width: 0.5px; border-right-style: solid; border-right-color: gray; border-top-width: 0.5px; border-top-style: solid; border-top-color: gray; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: gray">0.15</td>
+<td class="gt_row gt_right" headers="RMSE" style="border-left-width: 0.5px; border-left-style: solid; border-left-color: gray; border-right-width: 0.5px; border-right-style: solid; border-right-color: gray; border-top-width: 0.5px; border-top-style: solid; border-top-color: gray; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: gray">NA</td>
+<td class="gt_row gt_right" headers="R_squared" style="border-left-width: 0.5px; border-left-style: solid; border-left-color: gray; border-right-width: 0.5px; border-right-style: solid; border-right-color: gray; border-top-width: 0.5px; border-top-style: solid; border-top-color: gray; border-bottom-width: 0.5px; border-bottom-style: solid; border-bottom-color: gray">NA</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Bind together the residuals for all models from both train and test data</span></span>
+<span id="cb72-2"><a href="#cb72-2" aria-hidden="true" tabindex="-1"></a>all_resid_combined <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(</span>
+<span id="cb72-3"><a href="#cb72-3" aria-hidden="true" tabindex="-1"></a>  lm_resid <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">Color =</span> <span class="st">"blue"</span>, <span class="at">Dataset =</span> <span class="st">"Train"</span>),</span>
+<span id="cb72-4"><a href="#cb72-4" aria-hidden="true" tabindex="-1"></a>  rf_resid <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">Color =</span> <span class="st">"red"</span>, <span class="at">Dataset =</span> <span class="st">"Train"</span>),</span>
+<span id="cb72-5"><a href="#cb72-5" aria-hidden="true" tabindex="-1"></a>  knn_resid <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">Color =</span> <span class="st">"green"</span>, <span class="at">Dataset =</span> <span class="st">"Train"</span>),</span>
+<span id="cb72-6"><a href="#cb72-6" aria-hidden="true" tabindex="-1"></a>  rf_predictions <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">Color =</span> <span class="st">"orange"</span>, <span class="at">Dataset =</span> <span class="st">"Test"</span>)</span>
+<span id="cb72-7"><a href="#cb72-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb72-8"><a href="#cb72-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb72-9"><a href="#cb72-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Plotting the combined residuals with the legend</span></span>
+<span id="cb72-10"><a href="#cb72-10" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(all_resid_combined, <span class="fu">aes</span>(<span class="at">x =</span> .pred, <span class="at">y =</span> residual, <span class="at">color =</span> Color)) <span class="sc">+</span></span>
+<span id="cb72-11"><a href="#cb72-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.7</span>, <span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb72-12"><a href="#cb72-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">color =</span> <span class="st">"gray"</span>) <span class="sc">+</span></span>
+<span id="cb72-13"><a href="#cb72-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb72-14"><a href="#cb72-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Residual Plots for Different Models and Datasets"</span>,</span>
+<span id="cb72-15"><a href="#cb72-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Predicted ER Wait Time"</span>,</span>
+<span id="cb72-16"><a href="#cb72-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Residual (Actual - Predicted)"</span></span>
+<span id="cb72-17"><a href="#cb72-17" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb72-18"><a href="#cb72-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(</span>
+<span id="cb72-19"><a href="#cb72-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">name =</span> <span class="st">"Model/Dataset"</span>,</span>
+<span id="cb72-20"><a href="#cb72-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">values =</span> <span class="fu">c</span>(<span class="st">"blue"</span>, <span class="st">"red"</span>, <span class="st">"green"</span>, <span class="st">"orange"</span>),</span>
+<span id="cb72-21"><a href="#cb72-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Linear Regression (Train)"</span>, <span class="st">"Random Forest (Train)"</span>, <span class="st">"KNN (Train)"</span>, <span class="st">"Random Forest (Test)"</span>)</span>
+<span id="cb72-22"><a href="#cb72-22" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb72-23"><a href="#cb72-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb72-24"><a href="#cb72-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb72-25"><a href="#cb72-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">size =</span> <span class="dv">16</span>),</span>
+<span id="cb72-26"><a href="#cb72-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">"right"</span></span>
+<span id="cb72-27"><a href="#cb72-27" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="tidytuesday-exercise_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

@@ -161,6 +161,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <a class="dropdown-item" href="../ml-models-exercise/ml-models-exercise.html">
  <span class="dropdown-text">Machine Learning</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="../tidytuesday-exercise/tidytuesday-exercise.html">
+ <span class="dropdown-text">Tidy Tuesday</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../course-project/Project-Manuscript.html">
+ <span class="dropdown-text">Course Project</span></a>
+  </li>  
     </ul>
   </li>
 </ul>
@@ -288,7 +296,7 @@ The following object is masked from 'package:purrr':
 ✖ yardstick::spec()        masks readr::spec()
 ✖ caret::specificity()     masks yardstick::specificity()
 ✖ recipes::step()          masks stats::step()
-• Use suppressPackageStartupMessages() to eliminate package startup messages</code></pre>
+• Search for functions across packages at https://www.tidymodels.org/find/</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(workflows)</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(parsnip)</span>
@@ -303,7 +311,7 @@ The following object is masked from 'package:purrr':
 <div class="cell-output cell-output-stdout">
 <pre><code>
 The downloaded binary packages are in
-    /var/folders/n7/2hn_592d3db_b95vx1v5wcjr0000gn/T//Rtmp8DxzWI/downloaded_packages</code></pre>
+    /var/folders/n7/2hn_592d3db_b95vx1v5wcjr0000gn/T//RtmpBwMJ7q/downloaded_packages</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(nlmixr2data) <span class="co"># load package</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -1564,19 +1572,19 @@ Summary of sample sizes: 120, 120, 120, 120, 120, 120, ...
 Resampling results across tuning parameters:
 
   k   RMSE      Rsquared   MAE     
-   5  816.4175  0.3704904  624.3632
-   7  765.6122  0.4220172  586.6329
-   9  736.5521  0.4516533  570.4405
-  11  719.0186  0.4708220  554.9617
-  13  704.6527  0.4885865  543.2718
-  15  698.0858  0.4946256  537.5211
-  17  687.5843  0.5083517  529.9757
-  19  685.2803  0.5101223  527.6925
-  21  683.9260  0.5113188  525.8040
-  23  681.5551  0.5132569  522.1883
+   5  765.5680  0.4313438  582.6302
+   7  726.9596  0.4768647  557.0096
+   9  702.9112  0.5055499  538.6803
+  11  686.4940  0.5269320  529.9950
+  13  679.1912  0.5353466  524.8702
+  15  679.9610  0.5332320  525.9890
+  17  674.1119  0.5451693  522.4568
+  19  669.5949  0.5525834  517.2584
+  21  670.3659  0.5529713  515.4481
+  23  671.7023  0.5556909  514.5243
 
 RMSE was used to select the optimal model using the smallest value.
-The final value used for the model was k = 23.</code></pre>
+The final value used for the model was k = 19.</code></pre>
 </div>
 </div>
 <p>k = 23 has the lowest RMSE, 698.5967. Therefore, on average, the model’s predictions are approximately 698.5967 units off from the actual values. k = 23 also has the highest R-squared value, of 0.5056991 (which is truly not that high at all). This means that roughly 50.5056991% of the variance in Y can be explained by the model. k = 23 has a Mean Absolute Error (MAE) of 527.1237; indicating that the model’s predictions deviate by roughly 527.1237 units from the actual values.</p>
@@ -1604,19 +1612,19 @@ Summary of sample sizes: 120, 120, 120, 120, 120, 120, ...
 Resampling results across tuning parameters:
 
   k   Accuracy   Kappa     
-   5  0.8540790  0.30904482
-   7  0.8574789  0.26858625
-   9  0.8642548  0.23287184
-  11  0.8558227  0.14260299
-  13  0.8588946  0.11476329
-  15  0.8609495  0.06473771
-  17  0.8600653  0.05043470
-  19  0.8589577  0.05687962
-  21  0.8616719  0.04972587
-  23  0.8590151  0.02352348
+   5  0.8536393  0.25278278
+   7  0.8597455  0.21637229
+   9  0.8577352  0.15754322
+  11  0.8627509  0.15571728
+  13  0.8625974  0.11551663
+  15  0.8609266  0.05754218
+  17  0.8625800  0.04479476
+  19  0.8620627  0.01048340
+  21  0.8647044  0.03440784
+  23  0.8676064  0.02772733
 
 Accuracy was used to select the optimal model using the largest value.
-The final value used for the model was k = 9.</code></pre>
+The final value used for the model was k = 23.</code></pre>
 </div>
 </div>
 <p>The highest accuracy, 0.8557523, is for k = 21. This means the model accurately predicted SEX roughly 85.57523% of the time. The kappa value measures the agreement betwen the actual and predicted classes (in this case, SEX). The kappa for k = 21 is 0.022910974; this indicates low agreement between actual and predicted SEX beyond chance. It appears as though this model is not performing well.</p>

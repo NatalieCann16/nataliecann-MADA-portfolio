@@ -24,6 +24,10 @@ website:
             file: fitting-exercise/fitting-exercise.qmd
           - text: "Machine Learning"
             file: ml-models-exercise/ml-models-exercise.qmd
+          - text: "Tidy Tuesday"
+            file: tidytuesday-exercise/tidytuesday-exercise.qmd
+          - text: "Course Project"
+            file: course-project/Project-Manuscript.qmd
 
     right:
       - icon: github 

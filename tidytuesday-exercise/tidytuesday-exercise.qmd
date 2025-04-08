@@ -1,0 +1,486 @@
+---
+title: "Tidy Tuesday Exercise"
+---
+
+# Loading Packages:
+
+```{r}
+library(tidyverse)
+library(dplyr)
+library(ggplot2)
+library(gt)
+library(kableExtra)
+library(readr)
+library(here)
+library(naniar)
+library(GGally)
+library(yardstick)
+library(caret)
+library(tidymodels)
+library(workflows)
+library(parsnip)
+library(ranger)
+library(glmnet)
+library(tidytuesdayR)
+library(readxl)
+library(janitor)
+library(kknn)
+```
+
+# About the Data:
+
+This exercise will use the tidy tuesday data uploaded April 8th, 2025 (https://github.com/rfordatascience/tidytuesday/tree/main/data/2025/2025-04-08). 
+
+This data is from the Center for Medicare and Medicaid Services (CMS) and pertains to emergency room wait time variation between states. 
+
+# Loading in the Data:
+
+The readme.md file specified several ways by which the data for this week could be brought in. Since I was able to download the data (from the link specified above), I will use the `read_csv` function from the `readr` package to load in the data.
+
+```{r}
+data <- read_csv(here("tidytuesday-exercise", "care_state.csv"))
+```
+
+# Preliminary Data Exploration: 
+
+First, I will perform a few simple functions to get a basic sense of the data. 
+
+```{r}
+head(data)
+dim(data)
+summary(data)
+colnames(data)
+gg_miss_var(data)
+```
+There are 8 variables and 1232 observations. The variable names are: state, condition, measure_id, measure_name, score, footnote, start_date, and end_date. The variables that are characters are: state, condition, measure_id, measure_name, and footnote. The variables that are numeric are: score, start_date, and end_date. It looks like there are several scores for variables (under the measure_name variable) for each state (under several conditions). It appears as though score and footnote have some missing values. 
+
+I have placed the data dictionary below for ease: 
+|variable     |class     |description                           |
+|:------------|:---------|:-------------------------------------|
+|state        |character |The two-letter code for the state (or territory, etc) where the hospital is located. |
+|condition    |character |The condition for which the patient was admitted. Six categories of conditions are included in the data. |
+|measure_id   |character |The ID of the thing being measured. Note that there are 22 unique IDs but only 21 unique names. |
+|measure_name |character |The name of the thing being measured. Note that there are 22 unique IDs but only 21 unique names. |
+|score        |double    |The score of the measure. |
+|footnote     |character |Footnotes that apply to this measure: 5 = "Results are not available for this reporting period.", 25 = "State and national averages include Veterans Health Administration (VHA) hospital data.", 26 = "State and national averages include Department of Defense (DoD) hospital data.". |
+|start_date   |date      |The date on which measurement began for this measure. |
+|end_date     |date      |The date on which measurement ended for this measure. |
+
+# Formulation of Question and Hypothesis: 
+
+Here are the two questions from within the readme.md script: 
+- Is there a connection between state populations and wait times?
+- Which conditions have the longest wait times? The shortest?
+
+I would like to go more specific and assess if there is a connection between state populations and wait times in the Emergency Department.
+
+# Data Cleaning: 
+
+First, I will only obtain the data that is relevant to answering my question (measurement_name = Average (median) time patients spent in the emergency department before leaving from the visit A lower number of minutes is better AND condition = Emergency Department FOR EACH STATE). I will call this data set er_data.
+
+```{r}
+ data %>%
+  filter(condition == "Emergency Department") %>%
+  distinct(measure_name) %>%
+  pull(measure_name)
+
+er_data <- data %>%
+  filter(
+    condition == "Emergency Department",
+    measure_name == "Average (median) time patients spent in the emergency department before leaving from the visit A lower number of minutes is better"
+  ) %>% # obtain data of interest
+  select(state, condition, measure_id, measure_name, score) %>% # select my columns
+  rename(er_wait_score = score) %>% # rename so that it relfects emergency depts
+  filter(!is.na(er_wait_score)) # drop missing values if there are any
+```
+
+Now, I need to add a column that shows the population size for each state. First, I will read in this states population dataset (from: https://www.britannica.com/topic/largest-U-S-state-by-population). 
+
+```{r}
+states_pop <- read_excel(here("tidytuesday-exercise", "states.xlsx"))
+colnames(states_pop)
+```
+
+Now, I want to add the state population data to the er_data dataset. I will do this with left join. 
+
+```{r}
+er_data_with_pop <- er_data %>%
+  left_join(states_pop, by = c("state" = "U.S. state"))
+
+head(er_data_with_pop)
+```
+
+From viewing the data, I can see that PR and DC weren't included in the population dataset. So, I will exclude them for this assignment. 
+
+```{r}
+er_data_with_pop <- er_data_with_pop %>%
+  filter(state != "PR" & state != "DC")
+
+dim(er_data_with_pop)
+```
+I can see that this worked as we now only have 50 (instead of 52) observations. 
+
+Now, I will remove the condition, measure_id, and measure_name columns as they are no longer needed since I have confirmed that only the correct data is present. I will also remove the two random columsn R added (...4 and ...5).
+
+```{r}
+er_data_with_pop <- er_data_with_pop %>%
+  select(-condition, -measure_id, -measure_name, -...4, -...5)
+
+head(er_data_with_pop)
+```
+This worked since we have the state, score, 2024 population, and 2020 population. 
+
+Lastly, I will rename the population columns to be shorter. 
+
+```{r}
+er_data_with_pop <- er_data_with_pop %>%
+  rename(
+    population_2024 = `population: estimate (2024 est.)`,
+    population_2020 = `population: census (2020)`
+  )
+```
+
+Note that I will use the 2024 population since this is more recent.
+
+# Exploratory Data Analysis: 
+
+I will first obtain a summary of the wait time scores and the populations among the states. 
+
+```{r}
+summary(er_data_with_pop$er_wait_score)
+summary(er_data_with_pop$population_2024)
+```
+The average median wait time for the ER in US states (exluding DC and PR) is 155.4 minutes. The range is 251-110 = 141 minutes.
+The average population in US states (excluding DC and PR) is 6,788,175. The range is 39431263-587618 = 38843645. This is a much larger range than the wait time scores. 
+
+Next, I will obtain a histogram for ER wait times in US staets. 
+
+```{r}
+ggplot(er_data_with_pop, aes(x = er_wait_score)) +
+  geom_histogram(binwidth = 5, fill = "skyblue", color = "black") +
+  labs(title = "Distribution of Emergency Room Wait Times", x = "Wait Time (minutes)", y = "Frequency") + 
+  theme(
+    plot.title = element_text(hjust = 0.5,  # center the title
+                              face = "bold",  # make title bold
+                              size = 16)      # make title bigger
+  )
+```
+As you can tell, it looks like this histogram is slightly skewed to the right.
+
+Now, I will obtain a histogram for the populations of US states. 
+
+```{r}
+ggplot(er_data_with_pop, aes(x = population_2024)) +
+  geom_histogram(binwidth = 500000, fill = "lightgreen", color = "black") +
+  labs(title = "Distribution of State Populations", x = "Population", y = "Frequency") + 
+  theme(
+    plot.title = element_text(hjust = 0.5,  # center the title
+                              face = "bold",  # make title bold
+                              size = 16)      # make title bigger
+  )
+```
+It looks like this histogram is skewed to the right.
+
+```{r}
+cor(er_data_with_pop$er_wait_score, er_data_with_pop$population_2024, use = "complete.obs")
+```
+
+It looks like there is a weak positive correlation between the ER wait times and the population size of the states (0.2517527). 
+
+I will now create a scatterplot to visualize this correlation. 
+
+```{r}
+ggplot(er_data_with_pop, aes(x = population_2024, y = er_wait_score)) +
+  geom_point(color = "lightpink") +
+  labs(title = "Scatterplot of ER Wait Times vs. State Population", x = "State Population", y = "ER Wait Time (minutes)") +
+  geom_smooth(method = "lm", se = FALSE, color = "gray") + 
+  theme(
+    plot.title = element_text(hjust = 0.5,  # center the title
+                              face = "bold",  # make title bold
+                              size = 16)      # make title bigger
+  )
+```
+There is alot of clustering in the lower left corner of this graph. There may be a few outliers, however, I will keep them in the dataset because I need to account for these states. 
+
+# Analysis and Models:
+
+I will now split the data into train and test data. 
+
+```{r}
+set.seed(123)
+data_split <- initial_split(er_data_with_pop, prop = 0.8)
+train_data <- training(data_split)
+test_data  <- testing(data_split)
+```
+
+I will now do cross-validation. Folds = 5
+
+```{r}
+set.seed(123)
+cv_folds <- vfold_cv(train_data, v = 5)
+```
+
+Now, I will define the 'recipes' for the 3 models (and the basic model recipe with my predictor and outcome). The three models I will use are: linear regression, random forest, and KNN. 
+
+```{r}
+# Basic recipe :)
+model_recipe <- recipe(er_wait_score ~ population_2024, data = train_data)
+
+# Linear Regression
+lm_spec <- linear_reg() %>%
+  set_engine("lm") %>%
+  set_mode("regression")
+
+lm_wf <- workflow() %>% 
+  add_model(lm_spec) %>%
+  add_recipe(model_recipe)
+
+# Random Forest
+rf_spec <- rand_forest(mtry = 1, trees = 500, min_n = 5) %>%
+  set_engine("ranger") %>%
+  set_mode("regression")
+
+rf_wf <- workflow() %>%
+  add_model(rf_spec) %>%
+  add_recipe(model_recipe)
+
+# KNN
+knn_spec <- nearest_neighbor(neighbors = tune()) %>%
+  set_engine("kknn") %>%
+  set_mode("regression")
+
+knn_wf <- workflow() %>%
+  add_model(knn_spec) %>%
+  add_recipe(model_recipe)
+
+knn_grid <- tibble(neighbors = seq(1, 20, by = 2))
+```
+
+Now, I will fit all the models and obtain their metrics. 
+
+```{r}
+# Linear Regression
+lm_fit <- fit_resamples(
+  lm_wf,
+  resamples = cv_folds,
+  metrics = metric_set(rmse, rsq)
+)
+
+collect_metrics(lm_fit)
+
+# Random Forest
+rf_fit <- fit_resamples(
+  rf_wf,
+  resamples = cv_folds,
+  metrics = metric_set(rmse, rsq)
+)
+
+collect_metrics(rf_fit)
+
+# KNN
+
+set.seed(123)
+knn_fit <- tune_grid(
+  knn_wf,
+  resamples = cv_folds,
+  grid = knn_grid,
+  metrics = metric_set(rmse, rsq)
+)
+
+collect_metrics(knn_fit)
+```
+
+Now, I will make a summary table:
+
+```{r}
+lm_metrics <- collect_metrics(lm_fit) %>% mutate(model = "Linear Regression")
+rf_metrics <- collect_metrics(rf_fit) %>% mutate(model = "Random Forest")
+knn_metrics <- collect_metrics(knn_fit) %>% mutate(model = "KNN")
+
+bind_rows(lm_metrics, rf_metrics, knn_metrics)
+```
+
+Linear Regression: 
+The RMSE is 32.25 and the R-squared is 0.127 (indicates that approximately 12.7% of the variance is explained by the model).
+
+Random Forest:
+The RMSE is 35.59 and the R-squared is 0.194 (indicates that approximately 19.4% of the variance is explained by the model).
+
+KNN: 
+The best RMSE is the KNN model with 13 neighbors, RMSE = 30.32 (corresponding R-squared of 0.195). The best R-squared is the KNN model with 11 neighbors, R-squared = is 0.201 (corresponding RMSE of 30.35).
+
+Now, I will obtain residual plots for the three models. 
+
+```{r}
+# Calculate residuals helper function
+get_residuals <- function(model_fit, data, model_name) {
+  predict(model_fit, new_data = data) %>%
+    bind_cols(data) %>%
+    mutate(residual = er_wait_score - .pred,
+           model = model_name)
+}
+
+# Linear Regression Residuals
+lm_final <- fit(lm_wf, data = train_data)
+
+lm_resid <- get_residuals(lm_final, train_data, "Linear Regression")
+
+# Random Forest Residuals 
+rf_final <- fit(rf_wf, data = train_data)
+
+rf_resid <- get_residuals(rf_final, train_data, "Random Forest")
+
+# KNN Residuals
+best_k <- select_best(knn_fit, metric = "rmse")
+
+knn_final_wf <- finalize_workflow(knn_wf, best_k)
+knn_final <- fit(knn_final_wf, data = train_data)
+
+knn_resid <- get_residuals(knn_final, train_data, "KNN")
+
+# Plot! 
+all_resid <- bind_rows(lm_resid, rf_resid, knn_resid)
+
+ggplot(all_resid, aes(x = .pred, y = residual, color = model)) +
+  geom_point(alpha = 0.7, size = 2) +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "black") +
+  facet_wrap(~model) +
+  labs(title = "Residual Plots by Model",
+       x = "Predicted ER Wait Time",
+       y = "Residual (Actual - Predicted)",
+       color = "Model") +
+  theme_minimal() +
+  theme(legend.position = "none") + 
+  scale_color_manual(values = c("Linear Regression" = "cadetblue3",
+                                "Random Forest" = "green3",
+                                "KNN" = "palevioletred2")) +
+theme(
+    plot.title = element_text(hjust = 0.5,  # center the title
+                              face = "bold",  # make title bold
+                              size = 16)      # make title bigger
+  )
+```
+
+# Best Model: Random Forest
+
+I would say that the random forest model performed the best. While it doesn't have the lowest RMSE, it has the least scatter in the plot above. You can see that the residuals are closer to the dashed line at 0. The random forest's RMSE value is 35.59 and its R-squared value is 0.194. It can be noted that all of the RMSE and R-squared values were relatively similar. So when it came to the residual plots above, I saw the least scatter within the random forest plot (which is ultimately what led me to make this decision). 
+
+# Test Data with Random Forest Model: 
+
+Now, per class instruction, I will run the random forest model on the test data. It should be noted that the test data is very small in this exercise 
+
+```{r}
+# Final fit on full training data
+rf_final <- fit(rf_wf, data = train_data)
+
+# Predict on test data
+rf_predictions <- predict(rf_final, new_data = test_data) %>%
+  bind_cols(test_data)
+
+# Calculate metrics (RMSE, R-squared) on the test data
+rf_metrics_test <- rf_predictions %>%
+  metrics(truth = er_wait_score, estimate = .pred)
+
+# Print performance metrics
+print(rf_metrics_test)
+
+# Residuals on test data
+rf_predictions <- rf_predictions %>%
+  mutate(residual = er_wait_score - .pred)
+
+# Plot residuals
+ggplot(rf_predictions, aes(x = .pred, y = residual)) +
+  geom_point(alpha = 0.7, size = 2, color = "orange") +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "gray") +
+  labs(title = "Residual Plot: Random Forest (Test Data)", 
+       x = "Predicted ER Wait Time", y = "Residual (Actual - Predicted)") +
+  theme_minimal() + 
+  theme(
+    plot.title = element_text(hjust = 0.5,  # center the title
+                              face = "bold",  # make title bold
+                              size = 16)      # make title bigger
+  )
+
+```
+The RMSE is 21.28, and the R-squared value is 0.334 (indicating that approximately 33.4% of the variance is explained by the model). The residuals are somewhat scattered (ranging from roughly -40 to 40). 
+
+# Summary and Disucssion: 
+
+In this tidy-tuesday exercise, I aimed to assess whether there is a connection between the size of a state's population and their median emergency department wait times (in minutes). As described previously, the data was obtained from CMS and includes information about emergency department (and others) wait times for various states. After performing some basic data cleaning and exploration, I decided to look specifically at median emergency department wait times (in minutes). Since this dataset did not include the population size of each state, I had to obtain this information from elsewhere online. The dataset I used did not include the populations of DC and PR, therefore I decided to exclude them from my analysis. 
+
+After cleaning my data and running some basic summary functions on it, I found that the average median emergency department wait time across all states was 155.4 minutes, with a range of 110 to 251 minutes (141 minutes). After assessing the histogram for median emergency department wait times, I found that it was right-skewed. As for population, I found that the average population in US states is 6,788,175 people. The range for state population was found to be 587618 to 39431263 people, which is much larger than the range for median emergency department wait times. The histogram for state population was found to be right-skewed as well, but to a greater degree than the skewness of the median emergency department wait times histogram. I then calculated the correlation between median emergency department wait times and state population sizes. I found a correlation coefficient of 0.2517527, which indicates a weak postitive relationship. Then, I ran a scatterplot between the two variables and found that most of the points were clustered in the lower left corner of the graph. A few points deviated from the overall pattern. However, I decided to keep in the potential outliers, since each US state should be represented in this analysis. Overall, this reveals that larger states tend to have slightly longer ER wait times. However, this relationship is not strong.
+
+After setting up my test and train data (as well as cross-validation folds), I developed three models for this exercise. The first model was a simple linear regression model; it had an RMSE of 32.25 and an R-squared value of 0.127. Then I ran a scatterplot of the residuals and found that they appeared to be quite scattered. The next model I developed was the random forest model; it had an RMSE of 35.59 and an R-squared value of 0.194. The residuals within the residual scatterplot appeared to be less scattered about the 0 line. The last model that I chose to develop was the KNN model; the best RMSE was found to be 30.32 (with 13 neighbors) and the best R-squared value was 0.201 (with 11 neighbors). The residuals for this model were also quite scattered. After comparing all three models, I decided that the random forest model was the best due to it having the least scatter of residuals (despite it not having the lowest RMSE value). I then ran the random forest model on the test data and found that the RMSE was 21.28 and the R-squared value was 0.334. the residuals for this model were somewhat scattered. However, I believe that they would be more scattered if I had chosen another model to run with. 
+
+Overall, my analysis for tidy-tuesday suggests that state population had a weak positive association with median emergency department wait times (in minutes). However, it should be noted that the analysis would be enriched by inclusion of other elements in the dataset, such as the number of hospitals within each state/hopsital density.
+
+
+```{r}
+# Create a data frame with the results, including correlation for ER wait time and population
+model_results <- data.frame(
+  Model = c("Linear Regression", "Random Forest", "KNN (13 neighbors)", "Correlation between ER wait time and State Population"),
+  Correlation = c(NA, NA, NA, 0.15),  
+  RMSE = c(32.25, 35.59, 30.32, NA),
+  R_squared = c(0.127, 0.194, 0.201, NA)
+)
+
+# Use GT to format the table
+library(gt)
+
+# Create the GT table
+model_results_gt <- model_results %>%
+  gt() %>%
+  tab_header(
+    title = "Model Performance and Correlation Results"
+  ) %>%
+  cols_label(
+    Model = "Model / Metric",
+    Correlation = "Correlation between ER wait time and State Population",
+    RMSE = "Root Mean Squared Error (RMSE)",
+    R_squared = "R-squared"
+  ) %>%
+  tab_spanner(
+    label = "Model Metrics",
+    columns = c(RMSE, R_squared)
+  ) %>%
+  tab_style(
+    style = list(
+      cell_borders(sides = "all", color = "gray", weight = px(0.5))
+    ),
+    locations = cells_body(columns = c(Correlation, RMSE, R_squared))
+  )
+
+# Print the GT table
+model_results_gt
+
+```
+
+```{r}
+# Bind together the residuals for all models from both train and test data
+all_resid_combined <- bind_rows(
+  lm_resid %>% mutate(Color = "blue", Dataset = "Train"),
+  rf_resid %>% mutate(Color = "red", Dataset = "Train"),
+  knn_resid %>% mutate(Color = "green", Dataset = "Train"),
+  rf_predictions %>% mutate(Color = "orange", Dataset = "Test")
+)
+
+# Plotting the combined residuals with the legend
+ggplot(all_resid_combined, aes(x = .pred, y = residual, color = Color)) +
+  geom_point(alpha = 0.7, size = 2) +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "gray") +
+  labs(
+    title = "Residual Plots for Different Models and Datasets",
+    x = "Predicted ER Wait Time",
+    y = "Residual (Actual - Predicted)"
+  ) +
+  scale_color_manual(
+    name = "Model/Dataset",
+    values = c("blue", "red", "green", "orange"),
+    labels = c("Linear Regression (Train)", "Random Forest (Train)", "KNN (Train)", "Random Forest (Test)")
+  ) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(hjust = 0.5, face = "bold", size = 16),
+    legend.position = "right"
+  )
+```
