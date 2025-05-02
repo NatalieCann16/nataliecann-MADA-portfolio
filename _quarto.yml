@@ -28,6 +28,8 @@ website:
             file: tidytuesday-exercise/tidytuesday-exercise.qmd
           - text: "Course Project"
             file: course-project/Project-Manuscript.qmd
+          - text: "Course Project - Supplementary Material"
+            file: course-project/Supplementary-Material.qmd
 
     right:
       - icon: github 

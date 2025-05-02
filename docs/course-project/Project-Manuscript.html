@@ -8,7 +8,7 @@
 
 <meta name="author" content="Natalie Cann">
 
-<title>Analysis of COVID-19 and Influenza Vaccine Associations – Natalie Cann Data Analysis Portfolio</title>
+<title>Analysis of COVID-19 Vaccination Trends: Distribution and Administration Between 2021 and 2023 – Natalie Cann Data Analysis Portfolio</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -163,6 +163,10 @@ window.Quarto = {
     <a class="dropdown-item" href="../course-project/Project-Manuscript.html">
  <span class="dropdown-text">Course Project</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="../course-project/Supplementary-Material.html">
+ <span class="dropdown-text">Course Project - Supplementary Material</span></a>
+  </li>  
     </ul>
   </li>
 </ul>
@@ -189,7 +193,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Analysis of COVID-19 and Influenza Vaccine Associations</h1>
+<h1 class="title">Analysis of COVID-19 Vaccination Trends: Distribution and Administration Between 2021 and 2023</h1>
 </div>
 
 
@@ -214,36 +218,39 @@ window.Quarto = {
 
 <p><strong>Authors</strong></p>
 <ul>
-<li>Natalie Cann <span class="math inline">\(^{1,2}\)</span></li>
+<li>Natalie Cann <span class="math inline">\(^{1}\)</span></li>
 </ul>
 <p><strong>Author Affiliations</strong></p>
 <ol type="1">
 <li>Masters in Public Health Candidate, University of Georgia</li>
-<li>B.S. Microbiology, Virginia Tech</li>
 </ol>
 <p><span class="math inline">\(\dagger\)</span> Disclaimer: The opinions expressed in this article are the author’s own and don’t reflect those of their university affiliations.</p>
+<p>For full project, visit the repository: https://github.com/NatalieCann16/Cann-MADA-project/tree/main</p>
 <div style="page-break-after: always;"></div>
 <section id="summaryabstract" class="level1" data-number="1">
 <h1 data-number="1"><span class="header-section-number">1</span> Summary/Abstract</h1>
-<p><em>Add in Summary/Abstract Once Study is Complete</em></p>
+<p>This project presents an analysis of COVID-19 vaccine distribution and administration trends in the United States from 2021 to 2023, utilizing publicly available data from the Centers for Disease Control and Prevention. The analysis focuses on three primary research questions: (1) How do regional differences impact the distribution and administration of COVID-19 vaccines, and are these patterns associated with specific vaccine manufacturers?; (2) How have regional patterns and manufacturer-specific trends in distribution and administration changed over time?; (3) Can the proportion of Pfizer vaccines distributed be predicted by several synthetic variables, year, MMWR week, and doses distributed per 100k? Exploratory data analysis revealed that the Pfizer COVID-19 vaccine led in both the number of doses distributed and administered, followed by Moderna. Regional analysis uncovered that the Northeast consistently had the highest number of doses distributed and administered after controlling for regional population sizes. The models to predict the proportion of Pfizer vaccines administered from synthetic variables, doses distributed per 100,000 population, year, and morbidity and mortality weekly report week were simple linear regression, multiple linear regression, least absolute shrinkage and selection operator regression, and random forest models. Overall, these models did not perform well. This indicates that these variables are not strong predictors of the proportion of Pfizer vaccines administered. However, the model that performed the best was a random forest model utilizing all synthetic variables and year. A key limitation in this project was the lack of appropriate predictor variables within the CDC dataset. This underscores the need for better data collection and reporting of vaccine distribution and administration. Further research is needed to assess the factors influencing COVID-19 vaccine manufacturer specific distribution and administration.</p>
 <div style="page-break-after: always;"></div>
 </section>
 <section id="introduction" class="level1" data-number="2">
 <h1 data-number="2"><span class="header-section-number">2</span> Introduction</h1>
 <section id="general-background-information" class="level2" data-number="2.1">
 <h2 data-number="2.1" class="anchored" data-anchor-id="general-background-information"><span class="header-section-number">2.1</span> General Background Information</h2>
-<p>Respiratory illnesses are a large burden to both medical and public health systems. These illnesses are known to spike in the colder months, such as December, January, and February. One such respiratory illness is Influenza. Seasonal Influenza in humans is caused by influenza viruses that undergo antigenic drift and antigenic shift, resulting in novel flu viruses each year. Antigenic drift is known to occur when mutations develop within the surface proteins hemagglutinin (HA) and neuraminidase (NA) <span class="citation" data-cites="cdcFluViruses2024">[@cdcFluViruses2024]</span>. These surface proteins serve as anitgens which are recognized by our immune systems, which will produce antibodies to recognize the surface protein antigens <span class="citation" data-cites="cdcFluViruses2024">[@cdcFluViruses2024]</span>. Antigenic shift results when entirely new HA and/or NA proteins develop, creating a novel flu virus <span class="citation" data-cites="cdcFluViruses2024">[@cdcFluViruses2024]</span>. According to the CDC, the most common month for a peak in flu cases to be observed is February; 17 of the past 40 flu seasons have reached peaks in February <span class="citation" data-cites="cdcFluSeason2024">[@cdcFluSeason2024]</span>.</p>
-<p>Another respiratory virus is COVID-19, also known as severe acute respiratory syndrome coronavirus 2 (SARS-CoV-2) <span class="citation" data-cites="CoronavirusDisease2019">[@CoronavirusDisease2019]</span>. COVID-19 was declared a pandemic in 2020. The virus is known to spread through fluid droplets shared between individuals in close contact as well as through the air <span class="citation" data-cites="CoronavirusDisease2019">[@CoronavirusDisease2019]</span>. The spike protein is known to mediate entry of the virus into host cells via its S1 subunit, which binds to a receptor on the host cell, and S2 subunit, which allows the virus to fuse with the host cell <span class="citation" data-cites="liStructureFunctionEvolution2016">[@liStructureFunctionEvolution2016]</span>. Therefore, the spike protein is a major antigen of the COVID-19 virus recognized by the immune system.</p>
-<p>Many individuals receive vaccinations to protect themselves from these respiratory illnesses. Flu vaccines are designed to protect individuals against the flu strains that are predicted to be most common during the upcoming flu season <span class="citation" data-cites="cdcKeyFactsSeasonal2025">[@cdcKeyFactsSeasonal2025]</span>. The flu vaccine results in the production of antibodies within roughly two weeks after vaccination <span class="citation" data-cites="cdcKeyFactsSeasonal2025">[@cdcKeyFactsSeasonal2025]</span>. The effectiveness of the flu vaccines varies with strains in circulation and the individual’s health status <span class="citation" data-cites="cdcKeyFactsSeasonal2025">[@cdcKeyFactsSeasonal2025]</span>. The flu vaccine will be more beneficial during years which the vaccine matches the strains of that season <span class="citation" data-cites="cdcKeyFactsSeasonal2025">[@cdcKeyFactsSeasonal2025]</span>.</p>
-<p>There are two different types of COVID-19 vaccinations available in the United States. The first is the mRNA vaccine, which uses mRNA created in a laboratory that triggers an immune response within the body that produces antibodies to protect against COVID-19 <span class="citation" data-cites="cdcCOVID19VaccineBasics2024">[@cdcCOVID19VaccineBasics2024]</span>. The second is the protein subunit vaccine, which contains spike proteins from the virus as well as an adjuvant; this enables the body to produce antibodies and better recognize the spike protein in the future <span class="citation" data-cites="cdcCOVID19VaccineBasics2024">[@cdcCOVID19VaccineBasics2024]</span>. The Pfizer-BioNTech and Moderna vaccines are both mRNA vaccines <span class="citation" data-cites="ComparingCOVID19Vaccines">[@ComparingCOVID19Vaccines]</span>. The Novavax vaccine is a protein subunit vaccine <span class="citation" data-cites="ComparingCOVID19Vaccines">[@ComparingCOVID19Vaccines]</span>. The Janssen vaccine, also known as the Johnson and Johnson vaccine was disconintued <span class="citation" data-cites="ComparingCOVID19Vaccines">[@ComparingCOVID19Vaccines]</span>. This vaccine utilized an adenvovirus as a vector <span class="citation" data-cites="JohnsonJohnsonAdenovirus">[@JohnsonJohnsonAdenovirus]</span>. Adenovirus vaccines use an omnipresent virus that is altered so that it cannot cause illness or integrate into the host’s DNA <span class="citation" data-cites="JohnsonJohnsonAdenovirus">[@JohnsonJohnsonAdenovirus]</span>. The adenovirus is engineered to contain a genes involved in making the spike protein COVID-19, which then leads to the immune system producing antibodies for the spike protein <span class="citation" data-cites="JohnsonJohnsonAdenovirus">[@JohnsonJohnsonAdenovirus]</span>.</p>
+<p>Respiratory illnesses are a large burden to both medical and public health systems. These illnesses are known to spike in the colder months, such as December, January, and February. One such respiratory virus is COVID-19, also known as severe acute respiratory syndrome coronavirus 2 (SARS-CoV-2) (1). COVID-19 was declared a pandemic in 2020. The virus is known to spread through fluid droplets shared between individuals in close contact as well as through the air (1). The spike protein is known to mediate entry of the virus into host cells via its S1 subunit, which binds to a receptor on the host cell, and S2 subunit, which allows the virus to fuse with the host cell (2). Therefore, the spike protein is a major antigen of the COVID-19 virus recognized by the immune system.</p>
+<p>There are two different types of COVID-19 vaccinations available in the United States (U.S.). The first is the mRNA vaccine, which uses mRNA created in a laboratory that triggers an immune response within the body that produces antibodies to protect against COVID-19 (3). The second is the protein subunit vaccine, which contains spike proteins from the virus as well as an adjuvant; this enables the body to produce antibodies and better recognize the spike protein in the future (3). The Pfizer-BioNTech and Moderna vaccines are both mRNA vaccines (4). The Novavax vaccine is a protein subunit vaccine (4). The Janssen vaccine, also known as the Johnson and Johnson vaccine, utilized an adenovirus as a vector (5). Adenovirus vaccines use an omnipresent virus that is altered so that it cannot cause illness or integrate into the host’s DNA (5). The adenovirus is engineered to contain genes involved in making the COVID-19 spike protein, which then leads to the immune system producing antibodies for the spike protein (5). The Janssen vaccine was discontinued in May 2023 (4).</p>
+<p>Research on the distribution of vaccines as a whole has been relatively limited. Vaccine distribution and administration have not had the best documentation throughout history in both the U.S. and globally (6). Few states have effective systems to track vaccine distribution, administration, inventory, and demand (6). As a result of this, in the U.S., some regions receive more vaccines than are used, while other regions do not receive enough vaccines to fulfill the demand (6). Not only is this an ineffective use of resources, but it also has an economic cost (6). Successful distribution and administration of vaccines, especially in times of emergency, is crucial as it can lower the burden on healthcare systems and lower mortality (7). These issues convey the importance of effective vaccine data collection and reporting in order to improve the efficiency of vaccination campaigns.</p>
+<p>While the COVID-19 vaccines were developed in a timely response, the U.S. was not prepared to effectively distribute these vaccines. Healthcare workers and elderly individuals were prioritized for vaccination, which was a great first step. However, there proved to be issues with the distribution of the vaccines. First, vaccines distributed to pharmacies and other small venues were administered at a low rate, indicating poor distribution plans (7). Additionally, the storage and transport of the COVID-19 vaccines was a challenge as the vaccine needed to be kept at a very low temperature. This proved to be difficult to incorporate into planning effective distribution of the COVID-19 vaccine (7). Research must be done in order to better respond to regional vaccine demand in emergency, and non-emergency, situations in the future.</p>
+<p>Research has been done to determine ways in which the distribution of the COVID-19 vaccine during the pandemic could be improved. A study by Muckstadt et al.&nbsp;(2023) proposed a new distribution strategy that would have allow for more effective distribution of the COVID-19 vaccine in the U.S. during the pandemic (7). Another study by Bertsimas et al.&nbsp;(2021) proposed the use of the DELPHI model to capture the effects of the vaccine and differing mortality rates across age groups to improve the allocation of the COVID-19 vaccination (8). Building on this body of research, this project aims to assess how regional and manufacturer-specific distribution and administration trends differ and have changed over time. Furthermore, it attempts to determine whether the manufacturer-specific proportion of total vaccines administered can be predicted by several synthetic variables. Understanding these patterns may offer additional insight into how vaccine characteristics, supply chain logistics, and demographic or regional factors influence distribution outcomes.</p>
 </section>
-<section id="description-of-data-and-data-sources" class="level2" data-number="2.2">
-<h2 data-number="2.2" class="anchored" data-anchor-id="description-of-data-and-data-sources"><span class="header-section-number">2.2</span> Description of Data and Data Sources</h2>
-<p>The datasets used in this analysis are both from the CDC. The first dataset, regarding COVID-19 vaccinations, contains information on the distribution and administration of COVID-19 vaccinations between 2020 and 2023. The second dataset, focusing on influenza vaccinations, contains information on the distribution of flu vaccines between 2018 and 2024. The influenza vaccination dataset is grouped by flu-season. More information on the datasets can be found in the “Methods” section under “Data Acquisition.”</p>
-</section>
-<section id="questions-to-be-addressed" class="level2" data-number="2.3">
-<h2 data-number="2.3" class="anchored" data-anchor-id="questions-to-be-addressed"><span class="header-section-number">2.3</span> Questions to be Addressed</h2>
-<p>I aim to assess if the administration of the COVID-19 vaccine is associated with its manufacturer. I will examine whether or not certain manufacturers had a greater number of administered doses. I will also assess whether or not the administration of the COVID-19 vaccine is associated with the administration of the flu vaccine by looking at the number of doses of the vaccines administered in the same year.</p>
+<section id="questions-to-be-addressed" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="questions-to-be-addressed"><span class="header-section-number">2.2</span> Questions to be Addressed</h2>
+<p>As introduced previously, the three questions that will be addressed in this project are as follows:</p>
+<ol type="1">
+<li><p>How do regional differences in the United States influence the distribution and administration of COVID-19 vaccines, and are these patterns associated with specific vaccine manufacturers?</p></li>
+<li><p>How have regional patterns and manufacturer-specific trends in COVID-19 vaccine distribution and administration evolved over time in the United States?</p></li>
+<li><p>Can the proportion of Pfizer vaccines distributed be predicted by several synthetic variables (listed in the modeling section), year, MMWR week, and doses distributed per 100k?</p></li>
+</ol>
+<p>It is hypothesized that the Northeast region of the U.S. will have the highest uptake of the COVID-19 vaccine due to the area being predominantly liberal. Left-leaning individuals tend to be more trusting of the COVID-19 vaccine (9). It is believed that Pfizer will have the highest distribution and administration of the vaccine as it received a significant amount of media coverage as compared to other manufacturers (10). Furthermore, it is likely that the distribution and administration of the COVID-19 vaccine peaked around 2022 during the height of the pandemic. Lastly, it is hypothesized that the models will not sufficiently predict the proportion of Pfizer vaccines distributed since synthetic variables were used.</p>
 <div style="page-break-after: always;"></div>
 </section>
 </section>
@@ -251,35 +258,52 @@ window.Quarto = {
 <h1 data-number="3"><span class="header-section-number">3</span> Methods</h1>
 <section id="schematic-of-workflow-for-analysis" class="level2" data-number="3.1">
 <h2 data-number="3.1" class="anchored" data-anchor-id="schematic-of-workflow-for-analysis"><span class="header-section-number">3.1</span> Schematic of Workflow for Analysis</h2>
-<p>In order to answer my first aim, which is to determine if the administration of the COVID-19 vaccine is associated with its manufacturer, I will run several models. These models will include simple linear regression, linear regression with cross-validation, LASSO regression, and random forest. To determine if certain manufacturers of tehe COVID-19 vaccine had a greater number of administered doses, I will perform exploratory data analysis to determine the cumulative doses of the COVID-19 vaccine administered each year between 2021 and 2023. I will also do this for the Influenza vaccine as well. To determine whether or not the administration of the COVID-19 vaccine is associated with that of the influenza vaccine, I will perform a Granger causality test and a cross-correlation function.</p>
+<p>First, the data was obtained from the Centers for Disease Control and Prevention (CDC) and the population data was obtained from the U.S. Census Bureau. For more details on the datasets, see the Data Acquisition section below. Then, the data was processed and cleaned. The data was sorted by MMWR week and region. For more details on this, see the Data Cleaning Process section. Then, exploratory data analysis was performed. From this, the answers to the first two research questions were obtained. Finally, in order to answer the final research question, models were performed. The data was split into train and test datasets and five-fold cross-validation repeated five times was performed. The models used were: simple linear regression, multiple linear regression, least absolute shrinkage and selection operator (LASSO) regression, and random forest modeling. The models were evaluated using RMSE (Root Mean Square Error) values, R-squared values, and their residual plots were observed.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="workflow-schematic.png" class="img-fluid figure-img"></p>
+<p><img src="assets/workflow-schematic-final.png" class="img-fluid figure-img"></p>
 <figcaption>Schematic of Workflow for Analysis</figcaption>
 </figure>
 </div>
 </div>
 </div>
 </section>
-<section id="data-aquisition" class="level2" data-number="3.2">
-<h2 data-number="3.2" class="anchored" data-anchor-id="data-aquisition"><span class="header-section-number">3.2</span> Data Aquisition</h2>
-<p><strong>COVID-19 Dataset:</strong> https://data.cdc.gov/Vaccinations/COVID-19-Vaccinations-in-the-United-States-Jurisdi/unsk-b7fc/about_data</p>
-<p>This dataset came from the CDC and contains information on the distribution and administration of COVID-19 vaccinations between 2020 and 2023.Data is included from all sites that distribute and administer vaccinations in the U.S.; such as jurisdictional partner clinics, retail pharmacies, dialysis centers, long-term care facilities, Federal Emergency Management Agency (FEMA), and federal entity facilities. The CDC states that the dataset was provided by IISInfo. I downloaded the data directly from the CDC website provided above. This dataset was last updated May 12, 2023.</p>
-<p><strong>Influenza Dataset:</strong> https://data.cdc.gov/Vaccinations/Weekly-Cumulative-Doses-in-Millions-of-Influenza-V/k87d-gv3u/about_data</p>
-<p>This dataset also came from the CDC and contains information regarding the doses of flu vaccines in Millions distributed between 2018 and 2024. According to the CDC website, the dataset was provided by the National Center for Immunization and Respiratory Diseases (NCIRD). This dataset was last updated March 29, 2024.</p>
+<section id="description-of-the-data-and-data-acquisition" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="description-of-the-data-and-data-acquisition"><span class="header-section-number">3.2</span> Description of the Data and Data Acquisition</h2>
+<p><strong>COVID-19 Dataset</strong></p>
+<p>This dataset came from the CDC and contains information on the distribution and administration of COVID-19 vaccinations between 2020 and 2023 (11). Data is included from all sites that distribute and administer vaccinations in the U.S., such as jurisdictional partner clinics, retail pharmacies, dialysis centers, long-term care facilities, Federal Emergency Management Agency (FEMA), and federal entity facilities. The CDC states that the dataset was provided by IISInfo. The data was downloaded directly from the CDC and was last updated May 12, 2023. The dataset contains both overall distribution and administration data, while also including distribution and administration data specific to each manufacturer. Furthermore, there are variables stating the morbidity and mortality weekly report (MMWR) week that the data was reported during as well as the state from which the data was reported. The data from 2020 is not as well documented as that of 2021 through 2023; therefore, only data from 2021 to 2023 will be used in this project.</p>
+<p><strong>U.S. Census Bureau Dataset</strong></p>
+<p>Some U.S. regions, such as the South, has a disproportionately higher population than the rest of the major regions. In 2022, the South had 128,716,192 residents (12). Therefore, population must be controlled for in this analysis. In order to control for regional population, U.S. Census Bureau data of the four major U.S. region’s populations between 2021 and 2023 was used (13). The four major regions are the Midwest, Northeast, South, and West. Note the states included in each region within the map included in the data cleaning section.</p>
 </section>
 <section id="data-cleaning-process" class="level2" data-number="3.3">
 <h2 data-number="3.3" class="anchored" data-anchor-id="data-cleaning-process"><span class="header-section-number">3.3</span> Data Cleaning Process</h2>
-<p>The COVID_vaccine dataset contains 109 variables and 38,488 observations. I am specifically interested in the variables that contain the counts of administered COVID-19 vaccines by manufacturer (Administered_Janssen, Administered_Moderna, Administered_Pfizer, Administered_Novavax, and Administered_Unk_Manuf) as well as the variable “date” (day that the vaccine data was reported).</p>
-<p>The flu_vaccine dataset contains 9 variables and 193 observations (considerably less than the COVID_vaccine dataset). The variables of interest from this dataset include: year (Influenza_Season) and the cumulative doses distributed (Cumulative_Flu_Doses_Distributed; Note: this is in millions).</p>
-<p>I performed the following data processing and cleaning steps for the COVID-19 vaccine dataset: - Defined variables - Assessed missingness of data and variable classes - Used the lubridate package to fix the date format - Select variables of interest to work with for analysis - Create separate datasets for 2021, 2022, and 2023 - Create a new variable that calculates the cumulative doses distributed and administered for each manufacturer - Save final datasets as RDS files</p>
-<p>I performed the following data processing and cleaning steps for the influenza vaccine dataset: - Defined variables - Assessed missingness of data and variable classes - Used the lubridate package to fix the date format - Create a new variable that contains the number of flu vaccine doses administered per week - Create two new variables that display the number of doses of the flu vaccine administered in millions (one variable for cumulative doses and the other for weekly doses) - Create separate datasets for 2021, 2022, and 2023 - Save final datasets as RDS files</p>
-</section>
-<section id="statistical-analysis" class="level2" data-number="3.4">
-<h2 data-number="3.4" class="anchored" data-anchor-id="statistical-analysis"><span class="header-section-number">3.4</span> Statistical Analysis</h2>
-<p>I will perform simple linear regressions, a granger-causality test, and cross-correlation functions to assess the relationships between the administration of the COVID-19 vaccine and its manufacturer as well as the administration of the flu vaccine. I will also run a few machine learning models, such as random forest.</p>
+<p>The COVID-19 vaccine dataset contains 109 variables and 38,488 observations. The variables of special interest in this dataset are: Date, MMWR week, Location, Total Distributed Doses, Total Manufacturer-Specific Distributed Doses, Total Administered Doses, and Total Manufacturer-Specific Administered Doses.</p>
+<p>The following data processing and cleaning steps were performed:</p>
+<ol type="1">
+<li><p>Defined variables of interest</p></li>
+<li><p>Assessed missingness of data and variable classes</p></li>
+<li><p>Used the lubridate package to fix the date format</p></li>
+<li><p>Select variables of interest to work with for analysis</p></li>
+<li><p>Created Region variable and sorted U.S. states into their appropriate geographic regions</p></li>
+<li><p>Manipulated dataset to only include data from 2021 to 2023 (data from 2020 was not as well documented, and therefore was excluded)</p></li>
+<li><p>Summed distribution and administration variables by MMWR week and region (each region had its own row for each MMWR week)</p></li>
+<li><p>Added U.S. Census Bureau Regional Population Data in order to properly control for population by calculating distributed or administered vaccines per 100,000</p></li>
+<li><p>Created synthetic variables to use in modeling</p></li>
+<li><p>Save final dataset as an RDS file</p></li>
+</ol>
+<p>In order to categorize the states into their appropriate regions, the CDC’s geographic divisions were used (14). The graphic below displays these regions. For simplicity, only the Northeast, Midwest, South, and West regions were used in this project. Note the states included in each region within the map below.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="assets/cdcregion.png" class="img-fluid figure-img"></p>
+<figcaption>CDC’s Geographic Division Regions</figcaption>
+</figure>
+</div>
+</div>
+</div>
 <div style="page-break-after: always;"></div>
 </section>
 </section>
@@ -287,116 +311,142 @@ window.Quarto = {
 <h1 data-number="4"><span class="header-section-number">4</span> Results</h1>
 <section id="exploratory-and-descriptive-analysis" class="level2" data-number="4.1">
 <h2 data-number="4.1" class="anchored" data-anchor-id="exploratory-and-descriptive-analysis"><span class="header-section-number">4.1</span> Exploratory and Descriptive analysis</h2>
-<p>The table below displays the cumulative counts of flu vaccine doses administered in 2021, 2022, and 2023.</p>
-<div class="cell" data-tbl-cap="Table 1: Cumulative Counts of Flu Vaccine Doses Administered in 2021, 2022, and 2023">
+<p>Table 1 displays the total counts of COVID-19 vaccines distributed and administered in 2021, 2022, and 2023 for each region of the U.S. The mean total distributed doses of the vaccine for the U.S. as a whole between 2021 and 2023 was determined to be 5.667e+08; the mean total administered doses of the vaccine for the U.S. between 2021 and 2023 was 4.479e+08 (Supplement Table 1). There was a nearly perfect positive correlation of 0.99 between the number of total weekly doses distributed and administered (Supplement Figure 1). It can be seen that Pfizer had the highest number of doses distributed and administered, followed by Moderna, Janssen, and Novavax. It should be noted that the Novavax vaccine was not made available until 2022 and that the Janssen vaccine was discontinued in 2023. Across all three years of interest, the South had both the highest number of COVID-19 vaccines distributed and administered. The West had the second highest number of vaccines distributed and administered. The Midwest had the third highest number of vaccines distributed and administered. The Northeast had the lowest number of vaccines distributed and administered. However, the Midwest and Northeast’s numbers were very similar.</p>
+<div class="cell">
 <div class="cell-output-display">
-<div>
+<div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="cumul-covid-table.png" class="img-fluid figure-img"></p>
+<p><img src="../course-project/results/tables/dist_admin_yearregion.png" class="img-fluid figure-img"></p>
+<figcaption>Table 1: COVID-19 Vaccine Administration and Distribution by Region</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p>As seen in the table above, each year Pfizer had the greatest number of vaccines administered. Followed by Moderna, Janssen, Unknown Manufacturer, and Novavax. It is important to note that Novavax was not available in 2021; it became available in late 2022. There was a large number of vaccines administered for which the manufacturer was not recorded. Unfortunately, I will not be able to use this data on vaccines administered by unknown manufacturers in my analysis.</p>
-<p>The plot below displays the cumulative counts of COVID-19 vaccine doses administered in 2021, 2022, and 2023. This serves as a visual representation of the counts within Table 1 above. The plots were created on a logarithmic scale to enable for better visibility.</p>
-<div class="cell" data-tbl-cap="Figure 1: Cumulative Counts of COVID-19 Vaccine Doses Administered in 2021, 2022, and 2023">
+<p>Table 2 displays the total counts of COVID-19 vaccines distributed and administered in 2021, 2022, and 2023 for each region of the U.S. after being adjusted by population size. After this adjustment, the mean total distributed doses per 100,000 population in the U.S. between 2021 and 2023 was 687,974; the mean total administered doses per 100,000 population in the U.S. between 2021 and 2023 was 549,053 (Supplement Table 1). These numbers are likely very high due to the fact that multiple doses are required for the COVID-19 vaccine. After adjustment, the Northeast actually had the highest number of doses distributed and administered between 2021 and 2023. The West followed behind the Northeast in doses distributed and administered. In general, the South and Midwest had comparable numbers. The Midwest had higher numbers than the South in all but one case, the distributed doses in 2023. Pfizer had the greatest number of doses administered and distributed, followed by Moderna and then Janssen. For quick comparison with Table 1, the formatting of reporting doses by Millions was kept. Therefore, Novavax, as well as Unknown Manufacturer, were reported as 0 million as they were not high enough to surprass this threshold.</p>
+<div class="cell">
 <div class="cell-output-display">
-<div>
+<div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="covid-combined-plot.png" class="img-fluid figure-img"></p>
+<p><img src="../course-project/results/tables/dist_admin_yearregion_adj.png" class="img-fluid figure-img"></p>
+<figcaption>Table 2: Population Adjusted COVID-19 Vaccine Administration and Distribution by Region</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p>The table below displays the cumulative counts of flu vaccine doses administered in 2021, 2022, and 2023.</p>
-<div class="cell" data-tbl-cap="Table 2: Cumulative Counts of Flu Vaccine Doses Administered in 2021, 2022, and 2023">
+<p>Figure 1 shows the distribution of the COVID-19 vaccine by region from 2021 to 2023. The Northeast’s dominance in the average number of COVID-19 vaccines distributed and administered is visually apparent. The West comes in second. The Midwest and South have similar numbers. Figure 1 also displays the administration of the COVID-19 vaccine by region between 2021 and 2023. It can be seen that the Northeast also had the highest average weekly number of COVID-19 vaccines administered. The West follows and actually had the highest correlation (0.999) between doses administered and distributed (Supplement Table 2). The Midwest and South have similar numbers. Overall, regional trends in vaccine distribution and administration were relatively consistent.</p>
+<div class="cell">
 <div class="cell-output-display">
-<div>
+<div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="cumul-flu-table.png" class="img-fluid figure-img"></p>
+<p><img src="../course-project/results/figures/vaccine_distribution_and_administration_by_region_adj.png" class="img-fluid figure-img"></p>
+<figcaption>Figure 1: Population Adjusted COVID-19 Vaccine Administration and Distribution by Region in the U.S.</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p>Table 2 reveals that out of the three years of interest, 2021 had the greatest number of influenza vaccines administered; 2022 had the fewest number of influenza vaccines administered.</p>
-<p>The plot below displays the cumulative counts of flu vaccine doses administered in 2021, 2022, and 2023.</p>
-<div class="cell" data-tbl-cap="Figure 2: Cumulative Counts of Flu Vaccine Doses Administered in 2021, 2022, and 2023">
+<p>In Figure 2, the distribution of the COVID-19 vaccine by manufacturer in the U.S. is displayed. The Pfizer vaccine had the highest number of doses distributed, followed by Moderna, Janssen, and Novavax. Figure 2 also displays the administration of the COVID-19 vaccine by manufacturer in the U.S. The trends are similar to those of distribution. Pfizer had the highest number of doses administered, followed by Moderna, Janssen, and lastly, Novavax. A significant number of doses were attributed to unknown manufacturers, likely due to incomplete vaccine data records.</p>
+<div class="cell">
 <div class="cell-output-display">
-<div>
+<div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="flu-plot.png" class="img-fluid figure-img"></p>
+<p><img src="../course-project/results/figures/vaccine_distribution_and_administration_by_manuf_adj.png" class="img-fluid figure-img"></p>
+<figcaption>Figure 2: Population Adjusted COVID-19 Vaccine Administration and Distribution by Manufacturer in the U.S.</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p>It is important to note that a new influenza season starts around roughly week 30 of each year, which accounts for the dip at week 30 in the graph above. The administration of the influenza vaccine seems to follow a similar distribution each year.</p>
+<p>Figure 3 displays the distribution of the COVID-19 vaccine by region over time. It can be seen that the distribution of the vaccine rises between 2021 and 2022, but then begins to rapidly fall. All regions follow this trend. However, the doses distributed in the Northeast appear to be significantly higher than the other regions. Between 2022 and 2023, there was an 87.4% decrease in doses distributed in the South; an 87.0% decrease in doses distributed in the West; an 86.7% decrease in doses distributed in the Midwest; and an 86.9% decrease in doses distributed in the Northeast (Supplement Table 3).</p>
+<p>Figure 4 displays the administration of the COVID-19 vaccine by region over time. The administration of the vaccine is also on the rise between 2021 and 2022, but then rapidly drops off as 2022 goes on. Each region’s trend is similar for both the distribution and administration of the vaccine. Between 2022 and 2023, there was an 88.9% decrease in doses administered in the South; an 88.4% decrease in doses administered in the West; an 88.4% decrease in doses administered in the Midwest; and an 88.5% decrease in doses administered in the Northeast (Supplement Table 3).</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../course-project/results/figures/vaccine_distribution_and_administration_by_region_time_adj.png" class="img-fluid figure-img"></p>
+<figcaption>Figures 3 and 4: COVID-19 Vaccine Distribution and Administration by Region Over Time (2021-2023)</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Figure 5 displays the distribution of the COVID-19 vaccine by manufacturer over time. It can be seen that the distribution of the vaccine rises between 2021 and 2022, but then begins to rapidly fall. All manufacturers follow this trend. This trend was observed in the distribution and administration of vaccines by region (Figure 3) as well. Between 2022 and 2023, Janssen observed a 90.1% decrease in doses distributed; Moderna observed an 87.8% decrease; Pfizer observed an 87.4%; and Novavax observed a 33.3% decrease (Supplement Table 4.1). Novavax’s percent decrease in doses distributed is much lower due to the fact that this vaccine did not start rolling out until 2022. By then, Moderna and Pfizer had been dominating the distribution field.</p>
+<p>In Figure 6, the administration of the COVID-19 vaccine by manufacturer over time can be seen. The administration of the vaccine is also on the rise between 2021 and 2022, but then rapidly drops off as 2022 goes on. This trend was also observed in the distribution and administration of vaccines by region (Figure 4). In both Figures 5 and 6, Pfizer and Moderna dominated in the distribution and administration of the vaccine. This goes along with what was seen in Figure 2. Between 2022 and 2023, Janssen observed a 90.1% decrease in doses administered; Moderna observed an 88.9% decrease; Pfizer observed an 88.8% decrease; and Novavax observed a 92.6% decrease (Supplement Table 4.2).</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../course-project/results/figures/vaccine_distribution_and_administration_by_manuf_time_adj.png" class="img-fluid figure-img"></p>
+<figcaption>Figures 5 and 6: Population Adjusted COVID-19 Vaccine Distribution and Administration by Primary Manufacturers Over Time (2021-2023)</figcaption>
+</figure>
+</div>
+</div>
+</div>
 </section>
-<section id="basic-statistical-analysis" class="level2" data-number="4.2">
-<h2 data-number="4.2" class="anchored" data-anchor-id="basic-statistical-analysis"><span class="header-section-number">4.2</span> Basic Statistical Analysis</h2>
-<p>I performed a linear regression analysis to assess the significance of doses .</p>
+<section id="modeling" class="level2" data-number="4.2">
+<h2 data-number="4.2" class="anchored" data-anchor-id="modeling"><span class="header-section-number">4.2</span> Modeling</h2>
+<p>The population adjusted data was split into training data and test data based on year. In order to account for the unique trends present in the three different years, 75% of the data from each year within the dataset went into the training data, while the remaining 25% of the data from each year went into the test data. Then, a null model containing no predictors was fitted in order to predict the outcome, the proportion of Pfizer doses distributed. This null model properly predicted the mean proportion of Pfizer doses distributed. The RMSE of the null model was 0.169 (Supplement Table 5). Five-fold cross-validation was performed and repeated five times to minimize potential overfitting. Then, each predictor was tested by themselves using Simple Linear Regression. The predictors used were: doses distributed per 100k, average age of those vaccinated, vaccine hesitancy index, vaccine accessability index, the proportion of males who received vaccines, public health campaign intensity score, burden of COVID-19 score, year, and MMWR week. All predictors were synthetic except for year, MMWR week, and doses distributed per 100k. None of the predictors stood out as having outstanding metrics. However, year appeared to be the best predictor, with an RMSE of 0.142 and an R-squared of 0.154 (Supplement Table 6). See Supplement Table 6 for all Simple Linear Regression results.</p>
+<p>Three models were fit to the training data: multiple linear regression, LASSO regression, and random forest modeling. For each type of model, two sets of predictors were run. The first set contained all synthetic predictors, year, MMWR week, and doses distributed per 100k. The second set of predictors contained all synthetic predictors and year. This model, to which this set of predictors is fit, will be referred to as the ‘modified model.’ When fit to the training data, the first multiple linear regression model had an RMSE of 0.103 and an R-squared of 0.561. Figure 7 displays the observed vs predicted plot for this model, which displays significant clustering. The modified multiple linear regression model performed considerably worse and had an RMSE of 0.144 and an R-squared value of 0.138. Figure 8 displays the observed vs predicted plot for the modified multiple linear regression model. This plot also displays significant clustering.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="covid-manuf-linear-reg.png" class="img-fluid figure-img"></p>
-<figcaption>Table 3: Linear Regression Analysis to Assess Vaccine Distribution by Manufacturer</figcaption>
+<p><img src="results/figures/Multiple_Linear_Reg.png" class="img-fluid figure-img"></p>
+<figcaption>Figure 7 and 8: Multiple Linear Regression Plots</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p>With an alpa value of 0.05, the p-values for each manufacturer are less than 0.5. This means that the manufacturer has a statistically significant impact on the number of doses administered. It can be noted that Pfizer and Moderna both have very small p-values (both of 2e-16); furthermore they have positive estimate values, indicating they have a higher number of administered does than Janssen. The negative estimate values for Novavax and Unknown Manufacturer indicate that they have a lower number of administered doses compared to Janssen.</p>
-</section>
-<section id="full-analysis" class="level2" data-number="4.3">
-<h2 data-number="4.3" class="anchored" data-anchor-id="full-analysis"><span class="header-section-number">4.3</span> Full analysis</h2>
-<p><em>Not completed yet - use one or several statistical/machine learning methods to analyze your data and make figures/tables</em></p>
-<p>I completed a Granger Causality Test to assess the relationship between the administration of the COVID-19 vaccine and the flu vaccine. The results of the test are displayed in the table below.</p>
+<p>Next, LASSO regression was performed in an attempt to reduce overfitting. The original LASSO regression model had an RMSE of 0.002 with an R-squared of 0.003. This R-squared is quite low; the multiple linear regression model’s R-squared value of 0.561 was much better. The observed vs predicted plot for this LASSO model is shown in Figure 9. The clustering pattern appears to be similar to that of the original multiple linear regression model in Figure 7. Next, the modified set of predictors was used in a LASSO regression model. This modified LASSO regression model had an RMSE of 0.004 and an R-squared of 0.011. Within the model’s observed vs predicted plot in Figure 10, there appears to be clustering with a similar pattern to that of the modified multiple linear regression model in Figure 8. Overall, it seems that the LASSO regression models did not perform well.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="granger-test-table.png" class="img-fluid figure-img"></p>
-<figcaption>Table 4: Granger Causality Test</figcaption>
+<p><img src="results/figures/Lasso_Reg.png" class="img-fluid figure-img"></p>
+<figcaption>Figures 9 and 10: LASSO Regression Plots</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p>We must fail to reject the null hypothesis (F = 0.65; p = 0.42). This suggests that changes in COVID vaccination rates do not appear to influence flu vaccination rates in a predictive sense.</p>
-<p>I performed a Cross-Correlation Function to further assess the relationship between the administration of the COVID-19 vaccine and the flu vaccine. Specifically, this analysis assesses correlation between administration of the vaccines through time. The results of the test are displayed in the graph below.</p>
+<p>The final models run were random forest models. The first random forest model, including all predictors, resulted in an RMSE value of 0.008 and an R-squared value of 0.998. This indicated overfitting. In Figure 11, the model’s observed vs predicted plot is shown to display significant overfitting. Next, the modified random forest model was run. With an RMSE of 0.049 and an R-squared value of 0.929, this model performed better than the first random forest model. As can be seen, there appears to be some clustering within the bottom left and upper right corners of the modified model’s observed vs predicted plot in Figure 12. Overall, this model appeared to perform the best out of all the models run in this analysis. Therefore, this model would be fitted to the test data. Table 3 displays a summary table of the metrics of each of the models run.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="ccf-manuscript.png" class="img-fluid figure-img"></p>
-<figcaption>Figure 3: Cross-Correlation Function</figcaption>
+<p><img src="results/figures/Random_Forest.png" class="img-fluid figure-img"></p>
+<figcaption>Figures 11 and 12: Random Forest Plots</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p>The small peaks and bars suggest that there is a very weak correlation between the administration of covid vaccines and flu vaccines during this time period (2021-2023). There appear to be a few small negative lags, indicating that flu vaccinations might slightly precede Covid-19 vaccinations. Overall, there is no strong relationship beween the two.</p>
-<p>I then ran a few models: simple linear regression, cross-validated linear regression, LASSO regression, and random forest. Their Root Mean Squared Errors (RMSEs) and R-squared values can be seen below.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="model-comparison-table.png" class="img-fluid figure-img"></p>
-<figcaption>Table 5: Model Comparison</figcaption>
+<p><img src="../course-project/results/tables/model_performance_summary.png" class="img-fluid figure-img"></p>
+<figcaption>Table 3: Summary of Model Performance</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p>As can be seen, it appears as though there was an issue with overfitting with each of the models.</p>
-<p>The corresponding plots of observed vs.&nbsp;predicted points for each of the models can be seen below.</p>
+<p>When the modified random forest model was fit to the test data, an RMSE of 0.117 and an R-squared of 0.427 were obtained. This RMSE is higher than that of the model fit to the training data. Furthermore, the R-squared value is significantly lower, indicating that this model did not sufficiently fit the data. Figure 13 displays the model’s observed vs predicted plot. There appears to be much less of a close fit to the diagonal line than in Figure 12. Out of curiosity, the original random forest model that suffered from significant overfitting was fitted to the test data. The resulting RMSE and R-squared values were 0.013 and 0.993 respectively (Supplement Table 7). The observed vs predicted plot confirmed that overfitting remained an issue when the model was fitted to the test data (Supplement Figure 6).</p>
 <div class="cell">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="model-comparison-plot.png" class="img-fluid figure-img"></p>
-<figcaption>Figure 4: Model Comparison Plots</figcaption>
+<p><img src="../course-project/results/tables/mod_rf_test_metrics_table.png" class="img-fluid figure-img"></p>
+<figcaption>Table 4: Modified Random Forest Model Performance on Test Data</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p>From Table 5 and Figure 4, it appears as though overfitting was an issue with the models. The Cross-Validated Linear Regression model appears to have performed the best, with an RMSE value equivalent to 0 and an R-squared value of 1.0. I used LASSO Regression in an attempt to reduce overfitting. However, the RMSE value is 1,314505.0 while its R-squared value is 0.99999. Unfortunatley, it seems that overfitting was not significantly reduced after LASSO Regression was performed. It appears that Simple Linear Regression performed the worst, with an incredibly high RMSE of 143,707,237,506.00 and an R-squared value of 1.0.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="results/figures/mod_rf_model_test_plot.png" class="img-fluid figure-img"></p>
+<figcaption>Figure 13: Modified Random Forest Model Observed vs Predicted (Test Data Fit)</figcaption>
+</figure>
+</div>
+</div>
+</div>
 <div style="page-break-after: always;"></div>
 </section>
 </section>
@@ -404,30 +454,39 @@ window.Quarto = {
 <h1 data-number="5"><span class="header-section-number">5</span> Discussion</h1>
 <section id="summary-and-interpretation" class="level2" data-number="5.1">
 <h2 data-number="5.1" class="anchored" data-anchor-id="summary-and-interpretation"><span class="header-section-number">5.1</span> Summary and Interpretation</h2>
-<p><em>Not completed yet</em></p>
+<p>This project examined the distribution and administration of COVID-19 vaccines across regions of the United States from 2021 to 2023. Three key research questions were addressed: (1) How do regional differences impact the distribution and administration of COVID-19 vaccines, and are these patterns associated with specific vaccine manufacturers?; (2) How have regional patterns and manufacturer-specific trends in distribution and administration changed over time?; (3) Can the proportion of Pfizer vaccines distributed be predicted by several synthetic variables, year, MMWR week, and doses distributed per 100k? The synthetic variables created for this model were: the average age of those vaccinated in the region that week, the weekly COVID-19 vaccine hesitancy index, the weekly COVID-19 vaccine accessibility index, the weekly proportion of vaccines administered to males, the weekly public health campaign intensity score, and the weekly burden of COVID-19 score.</p>
+<p>Descriptive analyses exhibited that Pfizer had the highest number of doses distributed and administered, followed by Moderna, Janssen, then Novavax between 2021 and 2023. It should be noted that the Novavax vaccine was not made available until 2022 and that the Janssen vaccine was discontinued in 2023. Furthermore, it was revealed that the Northeast consistently had the highest number of both distributed and administered doses across 2021 to 2023, followed by the West, the Midwest, and lastly, the South. Temporal analyses revealed that the distribution and administration of COVID-19 vaccines peaked between 2021 and 2022, followed by a sharp decline. This trend may be associated with public health campaigns, initial rollout efforts, and changes in public perception of the vaccine and the COVID-19 pandemic.</p>
+<p>To assess whether the proportion of Pfizer doses distributed could be predicted by the previously described synthetic variables, as well as doses distributed per 100k, year, and MMWR week. Along with simple linear regression to assess each individual predictor, three models were utilized: multiple linear regression, LASSO regression, and random forest. The multiple linear regression models and LASSO regression models performed poorly. Overfitting was a significant issue with the first random forest model. The modified random forest model appeared to perform the best. The test data was fitted to this modified random forest model. The resulting metrics revealed that the model did not sufficiently fit the test data. This suggests that the synthetic variables used in this analysis were not strong predictors of the proportion of Pfizer vaccines distributed.</p>
 </section>
 <section id="strengths-and-limitations" class="level2" data-number="5.2">
 <h2 data-number="5.2" class="anchored" data-anchor-id="strengths-and-limitations"><span class="header-section-number">5.2</span> Strengths and Limitations</h2>
-<p><em>Not completed yet</em></p>
-<ul>
-<li>Data was obtained from CDC, which is a reliable source; but there are drawbacks to not collecting your own data</li>
-<li>The data is limited to the United States, so the results may not be generalizable to other countries</li>
-<li>Large number of covid-19 vaccines were reported as “unknown manufacturer”</li>
-<li>Overfitting was an issue</li>
-</ul>
+<p>A strength of this research project is that the data was obtained from the CDC, which is a reliable source. The data contained a large number of observations from all states within the U.S., which enhanced the representativeness of the study. The use of standardized temporal units (MMWR weeks) allowed for consistent analysis of distribution and administration trends over time. Furthermore, data from the U.S. Census Bureau allowed for population differences to be controlled for.</p>
+<p>However, there were a significant number of limitations to this project. First and foremost, there are always drawbacks to not collecting one’s own data. An issue that stemmed from this was that there were not enough predictor variables to use in the modeling analysis. Therefore, synthetic variables had to be created. These synthetic variables may not have fully reflected the influences on manufacturer-specific uptake (such as the proportion of Pfizer vaccines distributed). Overfitting appeared to be an issue with some of the models used in the analysis, such as the first random forest model. Additionally, many distributed and administered doses were reported with an “unknown manufacturer”, which may have limited the ability to obtain accurate estimates for each manufacturer. Furthermore, the dataset was limited to the United States, which may limit the generalizability of the findings to other countries.</p>
 </section>
 <section id="conclusions" class="level2" data-number="5.3">
 <h2 data-number="5.3" class="anchored" data-anchor-id="conclusions"><span class="header-section-number">5.3</span> Conclusions</h2>
-<p><em>Not completed yet - include main take home messages</em></p>
-<ul>
-<li>Further research needs to be done to assess the relationship between the administration of the COVID-19 vaccine and the flu vaccine (especially since the covid-19 vaccine is relatively new compared to the influenza vaccine)</li>
-</ul>
+<p>In conclusion, this project revealed distinct regional and temporal trends in both the distribution and administration of the COVID-19 vaccine across the U.S. from 2021 to 2023. However, attempts to predict the proportion of Pfizer vaccines distributed using synthetic predictors and MMWR week were ultimately unsuccessful. Further research needs to be done to assess the factors that influence COVID-19 vaccine manufacturer-specific uptake. The collection of open-ended qualitative data from the public would be of great benefit to obtaining a deeper understanding of these factors.</p>
 <div style="page-break-after: always;"></div>
 </section>
 </section>
 <section id="references" class="level1" data-number="6">
 <h1 data-number="6"><span class="header-section-number">6</span> References</h1>
-<p>Note: reference formatting is determined by the CSL file specified in the YAML header</p>
+<ol type="1">
+<li>Coronavirus disease 2019 (COVID-19) - Symptoms and causes. (https://www.mayoclinic.org/diseases-conditions/coronavirus/symptoms-causes/syc-20479963). (Accessed February 21, 2025)</li>
+<li>Li F. Structure, Function, and Evolution of Coronavirus Spike Proteins. Annu Rev Virol [electronic article]. 2016;3(1):237–261. (https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5457962/). (Accessed February 21, 2025)</li>
+<li>CDC. COVID-19 Vaccine Basics. 2024;(https://www.cdc.gov/covid/vaccines/how-they-work.html). (Accessed February 21, 2025)</li>
+<li>Comparing the COVID-19 Vaccines: How Are They Different? (https://www.yalemedicine.org/news/covid-19-vaccine-comparison). (Accessed February 21, 2025)</li>
+<li>The Johnson &amp; Johnson adenovirus vaccine explained. (https://www.mayoclinic.org/johnson-johnson-adenovirus-vaccine-explained/vid-20510091). (Accessed February 21, 2025)</li>
+<li>Medicine NA of, National Academies of Sciences E, Division H and M, et al.&nbsp;Vaccine Distribution and Delivery. In: Globally Resilient Supply Chains for Seasonal and Pandemic Influenza Vaccines. National Academies Press (US); 2021 (Accessed April 18, 2025)(https://www.ncbi.nlm.nih.gov/books/NBK580009/). (Accessed April 18, 2025)</li>
+<li>Muckstadt JA, Klein MG, Jackson PL, et al.&nbsp;Efficient and effective large-scale vaccine distribution. International Journal of Production Economics [electronic article]. 2023;262:108921. (https://www.sciencedirect.com/science/article/pii/S0925527323001536). (Accessed April 18, 2025)</li>
+<li>Bertsimas D, Digalakis Jr V, Jacquillat A, et al.&nbsp;Where to locate COVID-19 mass vaccination facilities? Naval Research Logistics (NRL) [electronic article]. 2021;69(2):179–200. (https://onlinelibrary.wiley.com/doi/abs/10.1002/nav.22007). (Accessed April 18, 2025)</li>
+<li>Alemi F, Lee KH. Impact of Political Leaning on COVID-19 Vaccine Hesitancy: A Network-Based Multiple Mediation Analysis. Cureus [electronic article]. 15(8):e43232. (https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10491458/). (Accessed April 30, 2025)</li>
+<li><pre><code>Pfizer dominates social media during Covid-19 - Clinical Trials Arena. (https://www.clinicaltrialsarena.com/news/pfizer-dominates-social-media-covid-19/). (Accessed April 30, 2025)</code></pre></li>
+<li><pre><code>COVID-19 Vaccinations in the United States,Jurisdiction | Data | Centers for Disease Control and Prevention. (https://data.cdc.gov/Vaccinations/COVID-19-Vaccinations-in-the-United-States-Jurisdi/unsk-b7fc/about_data). (Accessed May 1, 2025)</code></pre></li>
+<li><pre><code>Bureau UC. Growth in U.S. Population Shows Early Indication of Recovery Amid COVID-19 Pandemic. (https://www.census.gov/newsroom/press-releases/2022/2022-population-estimates.html). (Accessed April 17, 2025)</code></pre></li>
+<li><pre><code>United States Population Growth by Region. (https://www.census.gov/popclock/data_tables.php?component=growth). (Accessed May 1, 2025)</code></pre></li>
+<li><pre><code>Geographic division or region - Health, United States. 2024;(https://www.cdc.gov/nchs/hus/sources-definitions/geographic-region.htm). (Accessed April 17, 2025)</code></pre></li>
+</ol>
 
 
 </section>
