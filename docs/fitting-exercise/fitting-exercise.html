@@ -169,6 +169,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <a class="dropdown-item" href="../course-project/Project-Manuscript.html">
  <span class="dropdown-text">Course Project</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="../course-project/Supplementary-Material.html">
+ <span class="dropdown-text">Course Project - Supplementary Material</span></a>
+  </li>  
     </ul>
   </li>
 </ul>
@@ -311,7 +315,7 @@ The following object is masked from 'package:purrr':
 <div class="cell-output cell-output-stdout">
 <pre><code>
 The downloaded binary packages are in
-    /var/folders/n7/2hn_592d3db_b95vx1v5wcjr0000gn/T//RtmpBwMJ7q/downloaded_packages</code></pre>
+    /var/folders/n7/2hn_592d3db_b95vx1v5wcjr0000gn/T//RtmpDPZrBW/downloaded_packages</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(nlmixr2data) <span class="co"># load package</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -1572,19 +1576,19 @@ Summary of sample sizes: 120, 120, 120, 120, 120, 120, ...
 Resampling results across tuning parameters:
 
   k   RMSE      Rsquared   MAE     
-   5  765.5680  0.4313438  582.6302
-   7  726.9596  0.4768647  557.0096
-   9  702.9112  0.5055499  538.6803
-  11  686.4940  0.5269320  529.9950
-  13  679.1912  0.5353466  524.8702
-  15  679.9610  0.5332320  525.9890
-  17  674.1119  0.5451693  522.4568
-  19  669.5949  0.5525834  517.2584
-  21  670.3659  0.5529713  515.4481
-  23  671.7023  0.5556909  514.5243
+   5  743.1179  0.4456853  573.5414
+   7  715.5882  0.4760053  553.4720
+   9  685.0205  0.5105298  529.5252
+  11  671.8827  0.5227416  518.8879
+  13  657.3583  0.5408937  509.5288
+  15  654.4251  0.5447018  507.6123
+  17  650.3378  0.5495376  506.2350
+  19  647.7359  0.5546348  503.3721
+  21  647.8614  0.5546128  501.3653
+  23  645.7857  0.5579418  499.1903
 
 RMSE was used to select the optimal model using the smallest value.
-The final value used for the model was k = 19.</code></pre>
+The final value used for the model was k = 23.</code></pre>
 </div>
 </div>
 <p>k = 23 has the lowest RMSE, 698.5967. Therefore, on average, the model’s predictions are approximately 698.5967 units off from the actual values. k = 23 also has the highest R-squared value, of 0.5056991 (which is truly not that high at all). This means that roughly 50.5056991% of the variance in Y can be explained by the model. k = 23 has a Mean Absolute Error (MAE) of 527.1237; indicating that the model’s predictions deviate by roughly 527.1237 units from the actual values.</p>
@@ -1611,17 +1615,17 @@ Resampling: Bootstrapped (25 reps)
 Summary of sample sizes: 120, 120, 120, 120, 120, 120, ... 
 Resampling results across tuning parameters:
 
-  k   Accuracy   Kappa     
-   5  0.8536393  0.25278278
-   7  0.8597455  0.21637229
-   9  0.8577352  0.15754322
-  11  0.8627509  0.15571728
-  13  0.8625974  0.11551663
-  15  0.8609266  0.05754218
-  17  0.8625800  0.04479476
-  19  0.8620627  0.01048340
-  21  0.8647044  0.03440784
-  23  0.8676064  0.02772733
+  k   Accuracy   Kappa       
+   5  0.8459553   0.208231820
+   7  0.8537939   0.193012255
+   9  0.8497230   0.158027963
+  11  0.8553246   0.109302095
+  13  0.8612985   0.103762917
+  15  0.8684224   0.094455331
+  17  0.8596239   0.031815437
+  19  0.8678849   0.043144525
+  21  0.8681432  -0.004106408
+  23  0.8733454   0.004442708
 
 Accuracy was used to select the optimal model using the largest value.
 The final value used for the model was k = 23.</code></pre>
