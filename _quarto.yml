@@ -3,12 +3,12 @@ project:
   output-dir: docs
 
 website:
-  title: "Natalie Cann Data Analysis Portfolio"
+  title: "Natalie Cann's EPID 8060E Data Analysis Portfolio"
   navbar:
     left:
       - text: "About Me"
         file: aboutme.qmd
-      - text: "Projects"
+      - text: "Assignments & Projects"
         menu:
           - text: "Starter Analysis Exercise"
             file: starter-analysis-exercise/products/report/starter-analysis-report.qmd
@@ -36,7 +36,7 @@ website:
         href: https://github.com/NatalieCann16/nataliecann-MADA-portfolio        
 format:
   html:
-    theme: journal
+    theme: sandstone
     highlight: zenburn
     css: styles.css
     toc: FALSE

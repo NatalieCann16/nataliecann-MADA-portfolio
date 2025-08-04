@@ -1,11 +1,11 @@
 ---
 title: "My website and data analysis portfolio"
 ---
-# **Hi, everyone! :)**
 
-### *Natalie Cann | MADA Spring 2025*
+## *Natalie Cann | MADA Spring 2025*
 
-Welcome to my website and data analysis portfolio. 
+Welcome to my data analysis portfolio created for the EPID 8060E course (Modern Applied Data Analysis) at UGA's College of Public Health. 
 
--   Please use the `Menu Bar` above to look around.
+The menu bar above can be used to view various assignments done for the course - as well as the course project. 
 
+Please use this link to view the repository: https://github.com/NatalieCann16/nataliecann-MADA-portfolio
